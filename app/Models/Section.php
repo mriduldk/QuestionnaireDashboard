@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Question;
+use App\Models\Survey;
 
 class Section extends Model
 {
@@ -11,4 +12,9 @@ class Section extends Model
     public function questions() {
         return $this->hasMany(Question::class);
     }
+
+    public function survey() {
+        return $this->belongsTo(Survey::class);
+    }
+
 }

@@ -3,17 +3,37 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\Admin\SurveyAdminController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Auth\AdminLoginController;
+use App\Http\Controllers\Admin\SectionAdminController;
+use App\Http\Controllers\Admin\QuestionAdminController;
+use App\Http\Controllers\Api\SurveyApiController;
 
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/surveys', [SurveyController::class, 'index']);
-Route::get('/surveys/{id}', [SurveyController::class, 'show']);
-Route::post('/answers', [AnswerController::class, 'store']);
+Route::get('/adminLogin', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin-login-post', [AdminLoginController::class, 'login'])->name('admin.login-post');
+Route::post('/admin-logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
-Route::middleware('auth:sanctum')->group(function () {
-    
+Route::get('/surveys/{survey}', [SurveyApiController::class, 'show']);
+
+
+Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
+
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
+    // Route::get('/surveys', [SurveyController::class, 'index']);
+    // Route::get('/surveys/{id}', [SurveyController::class, 'show']);
+    // Route::post('/answers', [AnswerController::class, 'store']);
+
+    Route::resource('surveys', SurveyAdminController::class);
+    Route::resource('sections', SectionAdminController::class);
+    Route::resource('questions', QuestionAdminController::class);
+
 });
+
 
