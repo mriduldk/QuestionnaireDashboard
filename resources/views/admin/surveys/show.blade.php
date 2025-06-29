@@ -4,11 +4,11 @@
     <h2>{{ $survey->title }}</h2>
     <p>{{ $survey->description }}</p>
 
-    <div class="mb-3">
+    {{-- <div class="mb-3">
         <a href="{{ url('/admin/sections/create?survey_id=' . $survey->id) }}" class="btn btn-primary">
             + Add Section
         </a>
-    </div>
+    </div> --}}
 
     {{-- <h5>Sections</h5>
     @foreach($survey->sections as $section)

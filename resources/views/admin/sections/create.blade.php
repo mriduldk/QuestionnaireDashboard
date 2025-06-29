@@ -14,7 +14,7 @@
 
     <div class="card">
         <div class="card-header">
-            <h2 class="card-label">Add Survey</h2>
+            <h2 class="card-label">Add Section</h2>
         </div>
 
         <form action="{{ route('sections.store') }}" method="POST">
