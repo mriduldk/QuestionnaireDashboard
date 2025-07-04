@@ -7,7 +7,7 @@ use App\Models\Section;
 
 class Question extends Model
 {
-    protected $fillable = ['section_id', 'parent_id', 'question_text', 'type', 'is_required', 'metadata', 'conditional_logic'];
+    protected $fillable = ['survey_id','section_id', 'parent_id', 'question_text', 'type', 'is_required', 'metadata', 'conditional_logic'];
     protected $casts = [
         'metadata' => 'array',
         'conditional_logic' => 'array',
