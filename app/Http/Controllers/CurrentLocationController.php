@@ -49,7 +49,7 @@ class CurrentLocationController extends Controller
 
         $history = LocationHistory::create($historyData);
 
-        return ApiResponse::success($location, $message, 200, "currentLocation");
+        return ApiResponse::success(200, $message, "currentLocation", $location);
     }
 
 

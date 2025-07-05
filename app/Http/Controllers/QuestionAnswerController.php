@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
 use App\Models\QuestionAnswer;
 use Illuminate\Support\Facades\Validator;
@@ -37,13 +38,13 @@ class QuestionAnswerController extends Controller
             $questionAnswer->fill($validated);
             $questionAnswer->save();
 
-            return ApiResponse::success($questionAnswer, 'Question answer updated');
+            return ApiResponse::success(200, 'Question answer updated', "questionAnswer", $questionAnswer);
 
         } else {
             // Insert
             $questionAnswer = QuestionAnswer::create($validated);
 
-            return ApiResponse::success($questionAnswer, 'Question answer created');
+            return ApiResponse::success(200, 'Question answer created', "questionAnswer", $questionAnswer);
         }
     }
 }

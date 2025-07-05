@@ -48,12 +48,12 @@ class SurveyAnswerController extends Controller
             // Update
             $surveyAnswer->fill($validated);
             $surveyAnswer->save();
-            return ApiResponse::success($surveyAnswer, 'Survey answer updated', "surveyAnswer");
+            return ApiResponse::success(200, 'Survey answer updated', "surveyAnswer", $surveyAnswer);
         } else {
             // Insert
             $validated['survey_answer_id'] = $validated['survey_answer_id'] ?? Str::uuid()->toString();
             $surveyAnswer = SurveyAnswer::create($validated);
-            return ApiResponse::success($surveyAnswer, 'Survey answer created', 201, "surveyAnswer");
+            return ApiResponse::success(201, 'Survey answer created', "surveyAnswer", $surveyAnswer);
         }
     }
 

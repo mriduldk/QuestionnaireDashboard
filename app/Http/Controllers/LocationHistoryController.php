@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -37,7 +38,7 @@ class LocationHistoryController extends Controller
             $message = 'Location history created';
         }
 
-        return ApiResponse::success($location, $message);
+        return ApiResponse::success(200, $message, "location", $location);
 
     }
 }
