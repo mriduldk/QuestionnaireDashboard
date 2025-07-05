@@ -57,5 +57,36 @@ class SurveyAnswerController extends Controller
         }
     }
 
+    // Show list of survey answers
+    public function index()
+    {
+        $surveyAnswers = SurveyAnswer::latest()->get();
+        return view('admin.survey_answers.index', compact('surveyAnswers'));
+    }
+
+    // Show details of a single survey answer
+    /*public function show($id)
+    {
+        $surveyAnswer = SurveyAnswer::findOrFail($id);
+        return view('admin.survey_answers.show', compact('surveyAnswer'));
+    }*/
+
+    public function show($id)
+    {
+        //$surveyAnswer = SurveyAnswer::findOrFail($id);
+        $surveyAnswer = SurveyAnswer::with('user')->findOrFail($id);
+
+        // Fetch all related question answers grouped by question_id
+        $questionAnswers = \App\Models\QuestionAnswer::where('survey_answer_id', $surveyAnswer->survey_answer_id)
+            ->get()
+            ->keyBy('question_id');
+
+        // Load all surveys with sections and questions
+        $surveys = \App\Models\Survey::with(['sections.questions.subQuestions'])->get();
+
+        return view('admin.survey_answers.show', compact('surveyAnswer', 'questionAnswers', 'surveys'));
+    }
+
+
 
 }

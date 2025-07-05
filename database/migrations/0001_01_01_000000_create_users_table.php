@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text('access_token')->nullable();
             $table->boolean('is_active')->nullable()->default(true);
             $table->boolean('is_delete')->nullable()->default(false);
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

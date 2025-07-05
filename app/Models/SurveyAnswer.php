@@ -43,4 +43,10 @@ class SurveyAnswer extends Model
         'household_livelihood_activities' => 'array',
         'updated' => 'boolean',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
+
 }

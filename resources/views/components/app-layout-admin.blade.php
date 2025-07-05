@@ -49,6 +49,7 @@
         }
     </style>
 
+    @stack('styles')
 
 </head>
 
@@ -393,6 +394,7 @@
 <script src="{{ asset('assets-metronics/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 <script src="{{ asset('assets-metronics/js/pages/crud/datatables/basic/basic.js') }}"></script>
 
+@stack('scripts')
 
 </body>
 <!--end::Body-->

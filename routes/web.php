@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UserLocationController;
+use App\Http\Controllers\SurveyAnswerController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SurveyController;
-use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\Admin\SurveyAdminController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Auth\AdminLoginController;
@@ -33,6 +34,14 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::resource('surveys', SurveyAdminController::class);
     Route::resource('sections', SectionAdminController::class);
     Route::resource('questions', QuestionAdminController::class);
+    Route::resource('users', UserController::class);
+
+    Route::resource('survey-answers', SurveyAnswerController::class)->only(['index', 'show']);
+
+    Route::get('users/{user_id}', [UserController::class, 'show'])->name('admin.users.show');
+
+    Route::get('user-locations', [UserLocationController::class, 'index'])->name('admin.user-locations.map');
+    Route::get('user-locations/ajax', [UserLocationController::class, 'ajax'])->name('admin.user-locations.ajax');
 
 });
 
