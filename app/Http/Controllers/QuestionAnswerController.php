@@ -12,6 +12,10 @@ class QuestionAnswerController extends Controller
 {
     public function upsert(Request $request)
     {
+        $request->merge([
+            'is_answered' => filter_var($request->input('is_answered'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE),
+        ]);
+
         $validator = Validator::make($request->all(), [
             'question_answer_id' => 'required|uuid',
             'survey_answer_id' => 'required|uuid',
