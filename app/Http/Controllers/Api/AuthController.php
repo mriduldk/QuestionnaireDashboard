@@ -52,7 +52,7 @@ class AuthController extends Controller
             /** @query */
             'otp' => 'required|string|min:4|max:4',
             /** @query */
-            'fcm_token' => 'required|string',
+            'fcm_token' => 'nullable|string',
         ]);
 
         $user = User::where('is_delete', 0)->where('phone', $request->phone)->first();
