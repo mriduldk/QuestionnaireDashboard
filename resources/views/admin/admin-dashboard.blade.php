@@ -58,9 +58,18 @@
                     <h3 class="card-title">Submissions Over Time</h3>
                 </div>
                 <div class="card-body">
-                    <canvas id="submissionTrendChart"></canvas>
+                    <canvas id="submissionTrendChart" height="100"></canvas>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h2 class="card-label">Surveys by District</h2>
+        </div>
+        <div class="card-body">
+            <canvas id="districtChart" height="80"></canvas>
         </div>
     </div>
 
@@ -102,8 +111,6 @@
             });
         </script>
     @endpush
-
-
 
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -153,6 +160,32 @@
                 options: {
                     scales: {
                         y: { beginAtZero: true }
+                    }
+                }
+            });
+        </script>
+    @endpush
+
+    @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx2 = document.getElementById('districtChart').getContext('2d');
+            const districtChart = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: {!! json_encode($districtCounts->pluck('district')) !!},
+                    datasets: [{
+                        label: 'Survey Count',
+                        data: {!! json_encode($districtCounts->pluck('total')) !!},
+                        backgroundColor: '#36A2EB',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
             });

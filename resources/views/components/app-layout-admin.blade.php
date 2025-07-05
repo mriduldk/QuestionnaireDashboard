@@ -214,7 +214,7 @@
                                 </span>
                                 <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
                                         <span class="symbol-label font-size-h5 font-weight-bold">
-                                                {{-- {{ strtoupper(substr(Auth::user()->name, 0, 1)) }} --}}
+                                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                                         </span>
                                     </span>
                             </div>
@@ -253,7 +253,7 @@
                         <span class="text-muted font-weight-bold mr-2">
                             Copyright © 2025
                             <span class="text-primary">
-                                <a href="#">B-GRAMS</a>
+                                <a href="#"></a>
                             </span>
                             | Designed & Developed By
                         </span>

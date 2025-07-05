@@ -34,7 +34,7 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/theme.min.css') }}">
-    <title> BTR Grievance Redressal Portel </title>
+    <title>BTR Questionnaire Portal</title>
 
     <link href="{{ asset('assets-metronics/css/timeline.css') }}" rel="stylesheet" type="text/css" />
 
@@ -83,14 +83,10 @@
                             <a class="nav-link" href="{{ url('/contact') }}" role="button"
                                aria-expanded="false">Contact</a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ url('/track') }}" role="button"
-                               aria-expanded="false">Track Grievance</a>
-                        </li>
                     </ul>
                     <div class="mt-3 mt-lg-0 d-flex align-items-center">
-                        <a href="{{ url('/login') }}" class="btn btn-primary mx-2 btn-sm"> <i class="bi bi-person-fill-add"></i>  User Login</a>
-                        <a href="{{ url('/adminLogin') }}" class="btn btn-danger btn-sm"> <i class="bi bi-person-fill-check"></i> Officer Login</a>
+                        {{--<a href="{{ url('/login') }}" class="btn btn-primary mx-2 btn-sm"> <i class="bi bi-person-fill-add"></i>  User Login</a>
+                        <a href="{{ url('/adminLogin') }}" class="btn btn-danger btn-sm"> <i class="bi bi-person-fill-check"></i> Officer Login</a>--}}
                     </div>
                 </div>
             </div>
@@ -116,7 +112,7 @@
                 <div class="small mb-3 mb-lg-0 text-lg-center">
                     Copyright © 2025
 
-                    <span class="text-primary"><a href="#">B-GRAMS</a></span>
+                    <span class="text-primary"><a href="#"></a></span>
                     | Designed & Developed by
                     <span class="text-primary"><a href="https://jypko.com">Jypko</a></span>
                 </div>

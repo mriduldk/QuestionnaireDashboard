@@ -53,11 +53,14 @@ class AdminDashboardController extends Controller
             ->groupBy('caste')
             ->pluck('count', 'caste');
 
-
+        $districtCounts = SurveyAnswer::select('district', DB::raw('count(*) as total'))
+            ->groupBy('district')
+            ->get();
 
         return view('admin.admin-dashboard', compact(
             'totalSurveys', 'completedCount', 'draftCount', 'trendLabels', 'trendData',
-            'genderCounts', 'ageCounts', 'casteCounts'
+            'genderCounts', 'ageCounts', 'casteCounts',
+            'districtCounts'
         ));
     }
 
