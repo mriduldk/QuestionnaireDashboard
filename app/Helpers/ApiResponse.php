@@ -7,7 +7,7 @@ class ApiResponse
     public static function success($code = 200, $message = 'Success', $key = "data",  $data = null): \Illuminate\Http\JsonResponse
     {
         return response()->json([
-            'status' => true,
+            'status' => $code,
             'message' => $message,
             $key => $data
         ], $code);
@@ -16,7 +16,7 @@ class ApiResponse
     public static function error($message = 'Error', $errors = [], $code = 400): \Illuminate\Http\JsonResponse
     {
         return response()->json([
-            'status' => false,
+            'status' => $code,
             'message' => $message,
             'errors' => $errors
         ], $code);
