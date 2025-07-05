@@ -1,0 +1,104 @@
+[
+    {
+        "title": "Dashboard",
+        "icon": "dashboard",
+        "route": "admin.dashboard",
+        "type": "link"
+    },
+
+
+    {
+        "title": "Manage User",
+        "type": "section"
+    },
+    {
+        "title": "Create User",
+        "icon": "create",
+        "route": "users.create",
+        "type": "link"
+    },
+    {
+        "title": "User List",
+        "icon": "list",
+        "route": "users.index",
+        "type": "link"
+    },
+
+    {
+        "title": "Surveys Answers",
+        "type": "section"
+    },
+    {
+        "title": "Surveys With Answers",
+        "icon": "list",
+        "route": "survey-answers.index",
+        "type": "link"
+    },
+    {
+        "title": "Map",
+        "icon": "list",
+        "route": "admin.user-locations.map",
+        "type": "link"
+    },
+
+    {
+        "title": "Manage Survey",
+        "type": "section"
+    },
+    {
+        "title": "Create Survey",
+        "icon": "create",
+        "route": "surveys.create",
+        "type": "link"
+    },
+    {
+        "title": "Survey List",
+        "icon": "list",
+        "route": "surveys.index",
+        "type": "link"
+    },
+
+
+    {
+        "title": "Manage Section",
+        "type": "section"
+    },
+    {
+        "title": "Create Section",
+        "icon": "create",
+        "route": "sections.create",
+        "type": "link"
+    },
+    {
+        "title": "Section List",
+        "icon": "list",
+        "route": "sections.index",
+        "type": "link"
+    },
+
+
+    {
+        "title": "Manage Question",
+        "type": "section"
+    },
+    {
+        "title": "Create Question",
+        "icon": "create",
+        "route": "questions.create",
+        "type": "link"
+    },
+    {
+        "title": "Question List",
+        "icon": "list",
+        "route": "questions.index",
+        "type": "link"
+    },
+
+
+    {
+        "title": "Logout",
+        "icon": "logout",
+        "route": "admin.logout",
+        "type": "logout"
+    }
+]
