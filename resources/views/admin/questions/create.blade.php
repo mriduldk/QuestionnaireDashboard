@@ -21,6 +21,24 @@
             <div class="card-body">
 
                 <div class="form-group">
+                    <label>Survey</label>
+                    <select name="survey_id" id="survey_id" class="form-control" required>
+                        <option value="">Select Survey</option>
+                        @foreach ($surveys as $survey)
+                            <option value="{{ $survey->id }}">{{ $survey->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Section</label>
+                    <select name="section_id" id="section_id" class="form-control" required>
+                        <option value="">Select Section</option>
+                    </select>
+                </div>
+
+
+                {{--<div class="form-group">
                     <label>Section</label>
                     <select name="section_id" class="form-control" required>
                         <option value="">Select Section</option>
@@ -28,7 +46,7 @@
                             <option value="{{ $section->id }}">{{ $section->survey->title }} - {{ $section->title }}</option>
                         @endforeach
                     </select>
-                </div>
+                </div>--}}
 
                 {{-- OPTIONAL PARENT (for sub-question) --}}
                 <div class="form-group">
@@ -232,7 +250,32 @@
         }
     });
 
+    document.getElementById('survey_id').addEventListener('change', function () {
+        const surveyId = this.value;
+        const sectionSelect = document.getElementById('section_id');
 
+        sectionSelect.innerHTML = '<option value="">Select Section</option>';
+
+        if (surveyId) {
+            fetch(`/admin/sections/by-survey/${surveyId}`)
+                .then(response => response.json())
+                .then(sections => {
+                    sections.forEach(section => {
+                        const opt = document.createElement('option');
+                        opt.value = section.id;
+                        opt.textContent = section.title;
+                        sectionSelect.appendChild(opt);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching sections:', error);
+                });
+        }
+
+        // Clear question-based dropdowns when survey changes
+        document.getElementById('parent_id').innerHTML = '<option value="">None (Top-level question)</option>';
+        document.getElementById('conditional_question_id').innerHTML = '<option value="">-- None --</option>';
+    });
 </script>
 
 

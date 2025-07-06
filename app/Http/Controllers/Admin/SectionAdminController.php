@@ -11,10 +11,22 @@ use Illuminate\Validation\Rule;
 
 class SectionAdminController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $sections = Section::with('questions', 'survey')->get();
-        return view('admin.sections.index', compact('sections'));
+        /*$sections = Section::with('questions', 'survey')->get();
+        return view('admin.sections.index', compact('sections'));*/
+
+        $surveys = Survey::all();
+        $query = Section::with('survey');
+
+        if ($request->has('survey_id') && $request->survey_id) {
+            $query->where('survey_id', $request->survey_id);
+        }
+
+        //$sections = $query->orderBy('order')->get();
+        $sections = $query->orderBy('order')->paginate(10); // not ->get()
+
+        return view('admin.sections.index', compact('sections', 'surveys'));
     }
 
     public function create(Request $request)
@@ -47,14 +59,17 @@ class SectionAdminController extends Controller
 
     public function show(Section $section)
     {
-        $section->load('questions');
+        //$section->load('questions');
+        $section->load(['survey', 'questions']);
         return view('admin.sections.show', compact('section'));
     }
 
     public function edit(Section $section)
     {
-        $survey = $section->survey;
-        return view('admin.sections.edit', compact('section', 'survey'));
+        //$survey = $section->survey;
+        $surveys = Survey::pluck('title', 'id'); // id => title array
+        return view('admin.sections.edit', compact('section', 'surveys'));
+        //return view('admin.sections.edit', compact('section', 'survey'));
     }
 
     public function update(Request $request, Section $section)
@@ -78,4 +93,11 @@ class SectionAdminController extends Controller
         return redirect()->route('sections.index')
                          ->with('success', 'Section deleted.');
     }
+
+    public function getBySurvey($surveyId)
+    {
+        $sections = Section::where('survey_id', $surveyId)->get();
+        return response()->json($sections);
+    }
+
 }

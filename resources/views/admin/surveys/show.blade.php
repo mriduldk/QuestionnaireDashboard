@@ -22,7 +22,7 @@
         </div>
     @endforeach --}}
 
-    <h5>Sections</h5>
+    {{--<h5>Sections</h5>--}}
     {{--@foreach($survey->sections as $section)
         <div class="card my-3">
             <div class="card-header"><strong>{{ $section->title }}</strong></div>
@@ -77,7 +77,7 @@
             <div class="card-header"><strong>{{ $section->title }}</strong></div>
             <div class="card-body">
                 @foreach($section->questions->where('parent_id', null) as $q)
-                    @include('admin.surveys._question', ['question' => $q])
+                    @include('admin.questions.partials._question', ['question' => $q])
                 @endforeach
             </div>
         </div>

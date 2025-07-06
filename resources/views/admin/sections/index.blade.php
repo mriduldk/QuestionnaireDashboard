@@ -5,9 +5,22 @@
     @endif
 
     <div class="card">
-        <div class="card-header">
-            <h2 class="card-label">Section List</h2>
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h2 class="card-label mb-0">Section List</h2>
+
+            <form method="GET" action="{{ route('sections.index') }}" class="form-inline">
+                <select name="survey_id" onchange="this.form.submit()" class="form-control" style="min-width: 250px;">
+                    <option value="">-- Filter by Survey --</option>
+                    @foreach($surveys as $survey)
+                        <option value="{{ $survey->id }}" {{ request('survey_id') == $survey->id ? 'selected' : '' }}>
+                            {{ $survey->title }}
+                        </option>
+                    @endforeach
+                </select>
+            </form>
         </div>
+
+
         <div class="card-body">
             <table class="table table-bordered" id="kt_datatables">
                 <thead>
@@ -34,9 +47,15 @@
                             </td>
                         </tr>
                     @endforeach
-                
+
                 </tbody>
             </table>
+
+            {{-- Pagination Links --}}
+            <div class="mt-3">
+                {{ $sections->appends(request()->query())->links() }}
+            </div>
+
         </div>
     </div>
 

@@ -37,6 +37,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::resource('users', UserController::class);
 
     Route::get('/questions/by-section/{section}', [QuestionAdminController::class, 'getBySection']);
+    Route::get('/sections/by-survey/{survey}', [SectionAdminController::class, 'getBySurvey']);
 
     Route::resource('survey-answers', SurveyAnswerController::class)->only(['index', 'show']);
 

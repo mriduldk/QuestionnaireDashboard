@@ -42,11 +42,11 @@
     },
 
     {
-        "title": "Manage Survey",
+        "title": "Manage Scheme / Survey",
         "type": "section"
     },
     {
-        "title": "Create Survey",
+        "title": "Create Scheme / Survey",
         "icon": "create",
         "route": "surveys.create",
         "type": "link"

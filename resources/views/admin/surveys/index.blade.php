@@ -6,7 +6,7 @@
 
     <div class="card">
         <div class="card-header">
-            <h2 class="card-label">Survey List</h2>
+            <h2 class="card-label">Scheme / Survey List</h2>
         </div>
         <div class="card-body">
             <table class="table table-bordered" id="kt_datatables">

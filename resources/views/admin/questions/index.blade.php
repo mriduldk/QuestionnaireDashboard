@@ -5,9 +5,32 @@
     @endif
 
     <div class="card">
-        <div class="card-header">
-            <h2 class="card-label">Question List</h2>
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="card-label mb-0">Question List</h2>
+
+            <form method="GET" action="{{ route('questions.index') }}" class="d-flex gap-2" id="filterForm">
+                <select name="survey_id" id="survey_id" class="form-control mr-4" style="width: 300px;" onchange="document.getElementById('filterForm').submit()">
+                    <option value="">-- Select Survey --</option>
+                    @foreach ($surveys as $survey)
+                        <option value="{{ $survey->id }}" {{ request('survey_id') == $survey->id ? 'selected' : '' }}>
+                            {{ $survey->title }}
+                        </option>
+                    @endforeach
+                </select>
+
+                <select name="section_id" id="section_id" class="form-control" style="width: 300px;" onchange="document.getElementById('filterForm').submit()">
+                    <option value="">-- Select Section --</option>
+                    @foreach ($sections as $section)
+                        <option value="{{ $section->id }}" {{ request('section_id') == $section->id ? 'selected' : '' }}>
+                            {{ $section->title }}
+                        </option>
+                    @endforeach
+                </select>
+            </form>
         </div>
+
+
         <div class="card-body">
             <table class="table table-bordered" id="kt_datatables">
                 <thead>
@@ -37,6 +60,12 @@
                     @endforeach
                 </tbody>
             </table>
+
+            {{--<div class="mt-3">
+                {{ $questions->appends(request()->query())->links() }}
+            </div>--}}
+
+
         </div>
     </div>
 

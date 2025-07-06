@@ -29,6 +29,6 @@
 
     {{-- Recursive sub-questions --}}
     @foreach($question->subQuestions as $child)
-        @include('admin.surveys._question', ['question' => $child, 'indent' => $indent + 1])
+        @include('admin.questions.partials._question', ['question' => $child, 'indent' => $indent + 1])
     @endforeach
 </div>
