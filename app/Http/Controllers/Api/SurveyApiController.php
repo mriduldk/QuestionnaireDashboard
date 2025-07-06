@@ -21,8 +21,8 @@ class SurveyApiController extends Controller
             'title' => $survey->title,
             'description' => $survey->description,
             'status' => $survey->status,
-            'created_at' => $survey->created_at,
-            'updated_at' => $survey->updated_at,
+            'created_at' => $survey->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $survey->updated_at->format('Y-m-d H:i:s'),
             'sections' => $survey->sections->map(function ($section) {
                 $questions = $section->questions->whereNull('parent_id')->map(function ($question) use ($section) {
                     return $this->formatQuestion($question, $section->questions);
@@ -33,8 +33,8 @@ class SurveyApiController extends Controller
                     'title' => $section->title,
                     'survey_id' => $section->survey_id,
                     'order' => $section->order,
-                    'created_at' => $section->created_at,
-                    'updated_at' => $section->updated_at,
+                    'created_at' => $section->created_at->format('Y-m-d H:i:s'),
+                    'updated_at' => $section->updated_at->format('Y-m-d H:i:s'),
                     'questions' => $questions->values(),
                 ];
             }),
@@ -82,8 +82,8 @@ class SurveyApiController extends Controller
             'is_required' => (bool) $question->is_required,
             'metadata' => $question->metadata ?? [],
             'conditional_logic' => $question->conditional_logic,
-            'created_at' => $question->created_at,
-            'updated_at' => $question->updated_at,
+            'created_at' => $question->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $question->updated_at->format('Y-m-d H:i:s'),
             'sub_questions' => $allQuestions
                 ->where('parent_id', $question->id)
                 ->map(fn($q) => $this->formatQuestion($q, $allQuestions))
