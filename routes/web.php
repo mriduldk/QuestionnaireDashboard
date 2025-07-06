@@ -40,7 +40,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::get('/sections/by-survey/{survey}', [SectionAdminController::class, 'getBySurvey']);
     Route::get('/surveys/{survey}/answers', [SurveyAnswerController::class, 'bySurvey'])->name('surveys.answers');
     Route::get('/survey-answers/{id}/export', [SurveyAnswerController::class, 'exportExcel'])->name('survey-answers.export');
-    //Route::get('/sections/by-survey/{surveyId}', [SectionAdminController::class, 'getBySurvey']);
+    Route::get('/questions/existing-by-section/{section}', [QuestionAdminController::class, 'existingBySection']);
 
     Route::resource('survey-answers', SurveyAnswerController::class)->only(['index', 'show']);
 

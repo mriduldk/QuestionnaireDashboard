@@ -41,22 +41,45 @@ class QuestionAdminController extends Controller
         return view('admin.questions.index', compact('questions', 'surveys', 'sections'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $surveys = Survey::all();
+        //$surveys = Survey::all();
+        $surveys = Survey::whereNull('deleted_at')->get();
 
-        $selectedSurveyId = old('survey_id');
-        $selectedSectionId = old('section_id');
+        //$selectedSurveyId = old('survey_id');
+        //$selectedSectionId = old('section_id');
+        $selectedSurveyId = $request->old('survey_id') ?? $request->get('survey_id');
+        $selectedSectionId = $request->old('section_id') ?? $request->get('section_id');
 
-        //dd($selectedSurveyId);
+        $sections = $selectedSurveyId
+            ? Section::where('survey_id', $selectedSurveyId)->orderBy('order')->get()
+            : collect();
 
-        return view('admin.questions.create', compact('surveys', 'selectedSurveyId', 'selectedSectionId'));
+        $existingQuestions = $selectedSectionId
+            ? Question::where('section_id', $selectedSectionId)->whereNull('parent_id')->with('subQuestions')->get()
+            : collect();
+
+        //dd($surveys);
+        return view('admin.questions.create', compact('surveys', 'selectedSurveyId', 'selectedSectionId', 'sections', 'existingQuestions'));
     }
     public function getBySection($sectionId)
     {
         $questions = Question::where('section_id', $sectionId)->get();
         return response()->json($questions);
     }
+
+    public function existingBySection(Section $section)
+    {
+        $questions = Question::where('section_id', $section->id)
+            ->whereNull('parent_id')
+            ->with('subQuestions')
+            ->get();
+
+        $html = view('admin.questions.partials._question_list', compact('questions'))->render();
+
+        return response()->json(['html' => $html]);
+    }
+
 
     public function store(Request $request)
     {
