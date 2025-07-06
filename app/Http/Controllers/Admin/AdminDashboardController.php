@@ -58,9 +58,9 @@ class AdminDashboardController extends Controller
             ->get();*/
 
         $districtCounts = SurveyAnswer::select('district', DB::raw('count(*) as total'))
-            ->whereIn('district', ['Kokrajhar', 'Baksa', 'Chirang', 'Tamulpur', 'Udalguri'])
+            ->whereIn('district', ['Kokrajhar', 'Chirang', 'Baksa', 'Tamulpur', 'Udalguri'])
             ->groupBy('district')
-            ->orderByRaw("FIELD(district, 'Kokrajhar', 'Baksa', 'Chirang', 'Tamulpur', 'Udalguri')")
+            ->orderByRaw("FIELD(district, 'Kokrajhar', 'Chirang', 'Baksa', 'Tamulpur', 'Udalguri')")
             ->get();
 
         return view('admin.admin-dashboard', compact(

@@ -50,12 +50,6 @@
 
                 </tbody>
             </table>
-
-            {{-- Pagination Links --}}
-            <div class="mt-3">
-                {{ $sections->appends(request()->query())->links() }}
-            </div>
-
         </div>
     </div>
 
