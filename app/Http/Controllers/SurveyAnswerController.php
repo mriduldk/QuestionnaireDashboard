@@ -18,6 +18,7 @@ class SurveyAnswerController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'survey_answer_id' => 'required|uuid',
+            'survey_id' => 'required',
             'district' => 'nullable|string',
             'sub_division' => 'nullable|string',
             'block' => 'nullable|string',
