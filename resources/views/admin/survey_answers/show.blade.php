@@ -34,7 +34,7 @@
             {{-- Basic info --}}
             <table class="table table-bordered">
                 <tbody>
-                <tr>
+                {{--<tr>
                     <th>Name</th><td>{{ $surveyAnswer->name }}</td>
                     <th>Phone</th><td>{{ $surveyAnswer->phone_number }}</td>
                     <th>Age</th><td>{{ $surveyAnswer->age }}</td>
@@ -43,13 +43,13 @@
                     <th>Gender</th><td>{{ ucfirst($surveyAnswer->gender) }}</td>
                     <th>Voter ID</th><td>{{ $surveyAnswer->voter_id }}</td>
                     <th>Caste</th><td>{{ $surveyAnswer->caste }}</td>
-                </tr>
+                </tr>--}}
                 <tr>
                     <th>District</th><td>{{ $surveyAnswer->district }}</td>
+                    <th>Sub Division</th><td>{{ $surveyAnswer->sub_division }}</td>
                     <th>Block</th><td>{{ $surveyAnswer->block }}</td>
-                    <th>Village</th><td>{{ $surveyAnswer->village }}</td>
                 </tr>
-                <tr>
+                {{--<tr>
                     <th>Household Members</th>
                     <td colspan="5">{{ implode(', ', $surveyAnswer->house_hold_member ?? []) }}</td>
                 </tr>
@@ -64,12 +64,12 @@
                 <tr>
                     <th>Other Activity</th>
                     <td colspan="5">{{ $surveyAnswer->household_livelihood_activity_other }}</td>
-                </tr>
+                </tr>--}}
                 <tr>
-                    <th>Avg Income</th>
-                    <td>{{ $surveyAnswer->average_annual_income }}</td>
-                    <th>Status</th>
-                    <td>{{ $surveyAnswer->status }}</td>
+                    <th>Village</th>
+                    <td>{{ $surveyAnswer->village }}</td>
+                    <th>VCDC</th>
+                    <td>{{ $surveyAnswer->vcdc }}</td>
                     <th>Last Updated At</th>
                     <td>{{ $surveyAnswer->updated_at ? $surveyAnswer->updated_at->format('d-m-Y h:i A') : 'N/A' }}</td>
                 </tr>

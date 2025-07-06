@@ -42,8 +42,8 @@
                 <table class="table table-bordered table-striped" id="kt_datatables">
                     <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Phone</th>
+                        {{--<th>Name</th>
+                        <th>Phone</th>--}}
                         <th>District</th>
                         <th>Sub Division</th>
                         <th>Block</th>
@@ -56,8 +56,8 @@
                     <tbody>
                     @foreach ($surveyAnswers as $answer)
                         <tr>
-                            <td>{{ $answer->name }}</td>
-                            <td>{{ $answer->phone_number }}</td>
+                            {{--<td>{{ $answer->name }}</td>
+                            <td>{{ $answer->phone_number }}</td>--}}
                             <td>{{ $answer->district }}</td>
                             <td>{{ $answer->sub_division }}</td>
                             <td>{{ $answer->block }}</td>

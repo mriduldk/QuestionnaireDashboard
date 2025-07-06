@@ -40,8 +40,8 @@
             <table class="table table-bordered table-sm" id="kt_datatables">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Phone</th>
+                        {{--<th>Name</th>
+                        <th>Phone</th>--}}
                         <th>District</th>
                         <th>Sub Division</th>
                         <th>VCDC</th>
@@ -55,8 +55,8 @@
                 <tbody>
                 @forelse($answers as $ans)
                     <tr>
-                        <td>{{ $ans->name }}</td>
-                        <td>{{ $ans->phone_number }}</td>
+                        {{--<td>{{ $ans->name }}</td>
+                        <td>{{ $ans->phone_number }}</td>--}}
                         <td>{{ $ans->district }}</td>
                         <td>{{ $ans->sub_division ?? '-' }}</td>
                         <td>{{ $ans->vcdc }}</td>
