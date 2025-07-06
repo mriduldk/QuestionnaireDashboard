@@ -23,8 +23,8 @@ class SectionAdminController extends Controller
             $query->where('survey_id', $request->survey_id);
         }
 
-        //$sections = $query->orderBy('order')->get();
-        $sections = $query->orderBy('order')->paginate(10); // not ->get()
+        $sections = $query->orderBy('order')->get();
+        //$sections = $query->orderBy('order')->paginate(10); // not ->get()
 
         return view('admin.sections.index', compact('sections', 'surveys'));
     }
