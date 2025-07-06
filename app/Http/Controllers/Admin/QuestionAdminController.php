@@ -20,8 +20,8 @@ class QuestionAdminController extends Controller
     public function create()
     {
         $sections = Section::with('survey')->get();
-        $allQuestions = Question::all(); // For parent question dropdown
-        return view('admin.questions.create', compact('sections', 'allQuestions'));
+        //$allQuestions = Question::all(); // For parent question dropdown
+        return view('admin.questions.create', compact('sections'));
         //return view('admin.questions.create', compact('sections'));
     }
     public function getBySection($sectionId)
