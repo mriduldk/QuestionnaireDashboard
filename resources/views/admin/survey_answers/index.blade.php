@@ -1,63 +1,72 @@
 <x-app-layout-admin>
 
+    <style>
+        .survey-card {
+            color: white;
+            border: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 160px; /* 🔧 Set fixed height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .survey-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .survey-card .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .survey-card .badge {
+            background-color: rgba(255, 255, 255, 0.25);
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* 🔷 Gradient backgrounds */
+        .gradient-1 { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .gradient-2 { background: linear-gradient(135deg, #42e695, #3bb2b8); }
+        .gradient-3 { background: linear-gradient(135deg, #007adf, #00ecbc); }
+        .gradient-4 { background: linear-gradient(135deg, #ff4e50, #f9d423); }
+        .gradient-5 { background: linear-gradient(135deg, #8e2de2, #4a00e0); }
+        .gradient-6 { background: linear-gradient(135deg, #00b4db, #0083b0); }
+    </style>
+
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <div class="card">
-        <div class="card-header">
-            <h2 class="card-label">Survey Answers</h2>
-        </div>
-
-        <div class="card-body">
-            <table class="table table-bordered table-striped" id="kt_datatables">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>District</th>
-                    <th>Sub Division</th>
-                    <th>Block</th>
-                    <th>VCDC</th>
-                    <th>Village</th>
-                    <th>Status</th>
-                    <th>Created By</th>
-                    <th>Last Updated On</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach ($surveyAnswers as $answer)
-                    <tr>
-                        <td>{{ $answer->name }}</td>
-                        <td>{{ $answer->phone_number }}</td>
-                        <td>{{ $answer->district }}</td>
-                        <td>{{ $answer->sub_division }}</td>
-                        <td>{{ $answer->block }}</td>
-                        <td>{{ $answer->vcdc }}</td>
-                        <td>{{ $answer->village }}</td>
-                        <td>
-                            @if (strtolower($answer->status) === 'draft')
-                                <span class="badge bg-warning text-dark">Draft</span>
-                            @elseif (strtolower($answer->status) === 'completed')
-                                <span class="badge bg-success">Completed</span>
-                            @else
-                                <span class="badge bg-secondary">{{ ucfirst($answer->status) }}</span>
-                            @endif
-                        </td>
-                        <td>
-                            {{ $answer->user?->name ?? 'N/A' }}
-                        </td>
-                        <td>{{ $answer->updated_at?->format('d-m-Y h:i A') ?? 'N/A' }}</td>
-                        <td>
-                            <a href="{{ route('survey-answers.show', $answer->survey_answer_id) }}" class="btn btn-sm btn-info">
-                                View Details
-                            </a>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+    <div class="mb-4">
+        <h2 class="mb-3">Surveys</h2>
+        <div class="row">
+            @forelse($surveys as $index => $survey)
+                @php
+                    $gradientClass = 'gradient-' . (($index % 6) + 1);
+                @endphp
+                <div class="col-md-3 mb-4">
+                    <a href="{{ route('surveys.answers', $survey->id) }}" class="text-decoration-none">
+                        <div class="card survey-card {{ $gradientClass }} shadow-sm">
+                            <div>
+                                <h5 class="card-title">{{ $survey->title }}</h5>
+                                <p class="mb-0 mt-2">
+                                    <span class="badge rounded-pill">
+                                        {{ $survey->survey_answers_count }} Answers
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            @empty
+                <p>No surveys available.</p>
+            @endforelse
         </div>
     </div>
 
