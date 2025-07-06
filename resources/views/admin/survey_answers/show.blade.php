@@ -87,8 +87,8 @@
                                 <table class="table table-sm table-striped table-bordered">
                                     <thead>
                                     <tr>
-                                        <th>Question</th>
-                                        <th>Answer</th>
+                                        <th style="width: 50%;">Question</th>
+                                        <th style="width: 50%;">Answer</th>
                                     </tr>
                                     </thead>
                                     <tbody>

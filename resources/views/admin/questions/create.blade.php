@@ -33,12 +33,17 @@
                 {{-- OPTIONAL PARENT (for sub-question) --}}
                 <div class="form-group">
                     <label>Parent Question (optional)</label>
-                    <select name="parent_id" class="form-control">
+                    {{--<select name="parent_id" class="form-control">
                         <option value="">None (Top-level question)</option>
                         @foreach ($allQuestions as $q)
                             <option value="{{ $q->id }}">{{ $q->question_text }}</option>
                         @endforeach
+                    </select>--}}
+
+                    <select name="parent_id" id="parent_id" class="form-control">
+                        <option value="">None (Top-level question)</option>
                     </select>
+
                 </div>
 
                 <div class="form-group">
@@ -81,17 +86,22 @@
                     <div class="card-body row g-3">
                         <div class="col-md-4">
                             <label>Dependent on Question</label>
-                            <select name="conditional_question_id" id="conditional_question_id" class="form-control" onchange="updateTriggerValues()">
+                            {{--<select name="conditional_question_id" id="conditional_question_id" class="form-control" onchange="updateTriggerValues()">
                                 <option value="">-- None --</option>
                                 @foreach ($allQuestions as $q)
-                                    {{-- <option value="{{ $q->id }}">{{ $q->question_text }}</option> --}}
+                                    --}}{{-- <option value="{{ $q->id }}">{{ $q->question_text }}</option> --}}{{--
                                     @php $options = $q->metadata['options'] ?? []; @endphp
                                     <option value="{{ $q->id }}"
                                             data-options='@json($options)'>
                                         {{ $q->question_text }}
                                     </option>
                                 @endforeach
+                            </select>--}}
+
+                            <select name="conditional_question_id" id="conditional_question_id" class="form-control" onchange="updateTriggerValues()">
+                                <option value="">-- None --</option>
                             </select>
+
                         </div>
 
                         <div class="col-md-3">
@@ -121,9 +131,9 @@
             </div>
         </form>
     </div>
-    
 
-    
+
+
 <script>
     function toggleOptions() {
         const type = document.getElementById('question_type').value;
@@ -186,6 +196,42 @@
             }
         }
     }
+
+    document.querySelector('select[name="section_id"]').addEventListener('change', function () {
+        const sectionId = this.value;
+
+        const parentDropdown = document.getElementById('parent_id');
+        const conditionalDropdown = document.getElementById('conditional_question_id');
+
+        // Clear both dropdowns
+        parentDropdown.innerHTML = '<option value="">None (Top-level question)</option>';
+        conditionalDropdown.innerHTML = '<option value="">-- None --</option>';
+
+        if (sectionId) {
+            fetch(`/admin/questions/by-section/${sectionId}`)
+                .then(response => response.json())
+                .then(questions => {
+                    questions.forEach(q => {
+                        // Add to Parent Question dropdown
+                        const parentOpt = document.createElement('option');
+                        parentOpt.value = q.id;
+                        parentOpt.textContent = q.question_text;
+                        parentDropdown.appendChild(parentOpt);
+
+                        // Add to Conditional Question dropdown
+                        const condOpt = document.createElement('option');
+                        condOpt.value = q.id;
+                        condOpt.textContent = q.question_text;
+                        condOpt.setAttribute('data-options', JSON.stringify(q.metadata?.options ?? []));
+                        conditionalDropdown.appendChild(condOpt);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching questions:', error);
+                });
+        }
+    });
+
 
 </script>
 

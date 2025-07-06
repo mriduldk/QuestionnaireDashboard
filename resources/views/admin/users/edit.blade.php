@@ -30,10 +30,10 @@
                     <input type="text" name="phone" class="form-control" value="{{ $user->phone }}">
                 </div>
 
-                <div class="form-group">
+                {{--<div class="form-group">
                     <label>New Password (optional)</label>
                     <input type="password" name="password" class="form-control">
-                </div>
+                </div>--}}
 
                 <div class="form-group">
                     <label>Is Active?</label>

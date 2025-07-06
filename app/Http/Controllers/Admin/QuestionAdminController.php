@@ -24,6 +24,12 @@ class QuestionAdminController extends Controller
         return view('admin.questions.create', compact('sections', 'allQuestions'));
         //return view('admin.questions.create', compact('sections'));
     }
+    public function getBySection($sectionId)
+    {
+        $questions = Question::where('section_id', $sectionId)->get();
+        return response()->json($questions);
+    }
+
 
     public function store(Request $request)
     {
@@ -38,7 +44,7 @@ class QuestionAdminController extends Controller
             'conditional_operator' => 'nullable|string',
             'conditional_value' => 'nullable|string'
         ]);
-        
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }

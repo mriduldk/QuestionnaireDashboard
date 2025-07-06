@@ -32,7 +32,6 @@ class UserController extends Controller
             'name'     => 'nullable|string|max:200',
             'email'    => 'nullable|email|max:200|unique:users,email',
             'phone'    => 'nullable|digits:10',
-            'password' => 'required|string|min:6',
             'is_active' => 'nullable|boolean',
         ]);
 
@@ -45,7 +44,7 @@ class UserController extends Controller
             'name'      => $request->name,
             'email'     => $request->email,
             'phone'     => $request->phone,
-            'password'  => Hash::make($request->password),
+            /*'password'  => Hash::make($request->password),*/
             'is_active' => $request->has('is_active'),
             'is_delete' => false,
         ]);
@@ -82,7 +81,7 @@ class UserController extends Controller
             'name'     => 'nullable|string|max:200',
             'email'    => 'nullable|email|max:200|unique:users,email,' . $id,
             'phone'    => 'nullable|digits:10',
-            'password' => 'nullable|string|min:6',
+            /*'password' => 'nullable|string|min:6',*/
             'is_active' => 'nullable|boolean',
         ]);
 
@@ -95,9 +94,9 @@ class UserController extends Controller
         $user->phone = $request->phone ?? $user->phone;
         $user->is_active = $request->has('is_active');
 
-        if ($request->password) {
+        /*if ($request->password) {
             $user->password = Hash::make($request->password);
-        }
+        }*/
 
         $user->save();
 
