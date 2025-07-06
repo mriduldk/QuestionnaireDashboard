@@ -112,5 +112,14 @@ class SectionAdminController extends Controller
         $sections = Section::where('survey_id', $surveyId)->get();
         return response()->json($sections);
     }
+    /*public function getBySurvey($surveyId)
+    {
+        $sections = \App\Models\Section::where('survey_id', $surveyId)
+            ->orderBy('order')
+            ->get(['id', 'title', 'order']);
+
+        return response()->json($sections);
+    }*/
+
 
 }
