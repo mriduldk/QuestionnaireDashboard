@@ -22,6 +22,7 @@ class User extends Authenticatable
         'user_id',
         'name',
         'email',
+        'survey_id',
         'is_email_verified',
         'email_verified_at',
         'phone',
