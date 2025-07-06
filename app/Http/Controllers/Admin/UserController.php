@@ -33,7 +33,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name'     => 'nullable|string|max:200',
-            'email'    => 'nullable|email|max:200|unique:users,email',
+            'email'    => 'nullable|email|max:200',
             'phone'    => 'nullable|digits:10',
             'survey_id' => 'required|exists:surveys,id',
             'is_active' => 'nullable|boolean',
@@ -86,7 +86,7 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name'     => 'nullable|string|max:200',
-            'email'    => 'nullable|email|max:200|unique:users,email,' . $id,
+            'email'    => 'nullable|email|max:200',
             'phone'    => 'nullable|digits:10',
             /*'password' => 'nullable|string|min:6',*/
             'survey_id' => 'required|exists:surveys,id',
