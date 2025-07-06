@@ -11,9 +11,11 @@
     @endif
 
     <div class="card">
-        <div class="card-header d-flex align-items-center justify-content-between">
-            <h2 class="card-label mb-0">Section List</h2>
+        <div class="card-header flex-column">
+            {{-- Title on top --}}
+            <h2 class="card-label mb-3">All Section List</h2>
 
+            {{-- Filter form below title --}}
             <form method="GET" action="{{ route('sections.index') }}" class="form-inline">
                 <select name="survey_id" onchange="this.form.submit()" class="form-control" style="min-width: 250px;">
                     <option value="">-- Filter by Survey --</option>
@@ -25,6 +27,8 @@
                 </select>
             </form>
         </div>
+
+
 
 
         <div class="card-body">

@@ -16,6 +16,7 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
+                    <th>Survey</th>
                     <th>Active</th>
                     <th>Actions</th>
                 </tr>
@@ -26,6 +27,7 @@
                         <td>{{ $u->name }}</td>
                         <td>{{ $u->email }}</td>
                         <td>{{ $u->phone }}</td>
+                        <td>{{ $u->survey->title ?? 'N/A' }}</td>
                         <td>{{ $u->is_active ? 'Yes' : 'No' }}</td>
                         <td>
                             <a href="{{ route('admin.users.show', $u->user_id) }}" class="btn btn-sm btn-info">View</a>

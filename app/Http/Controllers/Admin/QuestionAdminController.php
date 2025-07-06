@@ -44,16 +44,19 @@ class QuestionAdminController extends Controller
     public function create()
     {
         $surveys = Survey::all();
-        //$sections = Section::with('survey')->get();
-        //$allQuestions = Question::all(); // For parent question dropdown
-        return view('admin.questions.create', compact('surveys'));
+
+        $selectedSurveyId = old('survey_id');
+        $selectedSectionId = old('section_id');
+
+        //dd($selectedSurveyId);
+
+        return view('admin.questions.create', compact('surveys', 'selectedSurveyId', 'selectedSectionId'));
     }
     public function getBySection($sectionId)
     {
         $questions = Question::where('section_id', $sectionId)->get();
         return response()->json($questions);
     }
-
 
     public function store(Request $request)
     {
@@ -101,7 +104,7 @@ class QuestionAdminController extends Controller
             'conditional_logic' => $conditionalLogic,
         ]);
 
-        return redirect()->route('questions.index')->with('success', 'Question added successfully.');
+        return redirect()->route('questions.create')->with('success', 'Question added successfully.')->withInput();
     }
 
     public function show(Question $question)

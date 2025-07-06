@@ -30,10 +30,17 @@
                     <input type="text" name="phone" class="form-control" value="{{ $user->phone }}">
                 </div>
 
-                {{--<div class="form-group">
-                    <label>New Password (optional)</label>
-                    <input type="password" name="password" class="form-control">
-                </div>--}}
+                <div class="form-group">
+                    <label>Assign Survey</label>
+                    <select name="survey_id" class="form-control" required>
+                        <option value="">-- Select Survey --</option>
+                        @foreach($surveys as $id => $title)
+                            <option value="{{ $id }}" {{ $user->survey_id == $id ? 'selected' : '' }}>
+                                {{ $title }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
                 <div class="form-group">
                     <label>Is Active?</label>

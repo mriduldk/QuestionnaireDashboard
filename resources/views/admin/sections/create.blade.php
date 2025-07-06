@@ -11,6 +11,16 @@
         </div>
     @endif
 
+      @if(session('success'))
+          <div class="alert alert-success">{{ session('success') }}</div>
+      @endif
+
+      @if(session('error'))
+          <div class="alert alert-danger">
+              {{ session('error') }}
+          </div>
+      @endif
+
 
     <div class="card">
         <div class="card-header">
@@ -23,16 +33,26 @@
 
                 <div class="form-group">
                     <label>Survey:</label>
-                    <select name="survey_id" class="form-control" required>
+                    {{--<select name="survey_id" class="form-control" required>
                         <option value="">Select a Survey</option>
                         @foreach ($surveys as $id => $title)
                             <option value="{{ $id }}" {{ old('survey_id') == $id ? 'selected' : '' }}>
                                 {{ $title }}
                             </option>
                         @endforeach
-                    </select>
-                </div>
+                    </select>--}}
 
+                    <select name="survey_id" class="form-control" required>
+                        <option value="">Select a Survey</option>
+                        @foreach ($surveys as $id => $title)
+                            <option value="{{ $id }}"
+                                {{ old('survey_id', $selectedSurveyId) == $id ? 'selected' : '' }}>
+                                {{ $title }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                </div>
 
                 <div class="form-group">
                     <label>Section Title:</label>
@@ -50,6 +70,6 @@
             </div>
         </form>
     </div>
-    
+
 
 </x-app-layout-admin>

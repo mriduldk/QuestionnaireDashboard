@@ -30,10 +30,16 @@
                     <input type="text" name="phone" class="form-control">
                 </div>
 
-                {{--<div class="form-group">
-                    <label>Password</label>
-                    <input type="password" name="password" class="form-control" required>
-                </div>--}}
+                <div class="form-group">
+                    <label>Assign Survey</label>
+                    <select name="survey_id" class="form-control" required>
+                        <option value="">-- Select Survey --</option>
+                        @foreach($surveys as $id => $title)
+                            <option value="{{ $id }}">{{ $title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
 
                 <div class="form-group">
                     <label>Is Active?</label>

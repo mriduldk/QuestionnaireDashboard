@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Survey;
 use App\Models\SurveyAnswer;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,14 +16,16 @@ class UserController extends Controller
     // GET /users
     public function index()
     {
-        $users = User::where('is_delete', false)->get();
+        //$users = User::where('is_delete', false)->get();
+        $users = User::where('is_delete', false)->with('survey')->get();
         return view('admin.users.index', compact('users'));
     }
 
     // GET /users/create
     public function create()
     {
-        return view('admin.users.create');
+        $surveys = Survey::pluck('title', 'id'); // or Survey::all() if you need more info
+        return view('admin.users.create', compact('surveys'));
     }
 
     // POST /users
@@ -32,6 +35,7 @@ class UserController extends Controller
             'name'     => 'nullable|string|max:200',
             'email'    => 'nullable|email|max:200|unique:users,email',
             'phone'    => 'nullable|digits:10',
+            'survey_id' => 'required|exists:surveys,id',
             'is_active' => 'nullable|boolean',
         ]);
 
@@ -45,6 +49,7 @@ class UserController extends Controller
             'email'     => $request->email,
             'phone'     => $request->phone,
             /*'password'  => Hash::make($request->password),*/
+            'survey_id' => $request->survey_id,
             'is_active' => $request->has('is_active'),
             'is_delete' => false,
         ]);
@@ -69,7 +74,9 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        return view('admin.users.edit', compact('user'));
+        //return view('admin.users.edit', compact('user'));
+        $surveys = Survey::pluck('title', 'id'); // or Survey::all() if needed
+        return view('admin.users.edit', compact('user', 'surveys'));
     }
 
     // PUT /users/{user}
@@ -82,6 +89,7 @@ class UserController extends Controller
             'email'    => 'nullable|email|max:200|unique:users,email,' . $id,
             'phone'    => 'nullable|digits:10',
             /*'password' => 'nullable|string|min:6',*/
+            'survey_id' => 'required|exists:surveys,id',
             'is_active' => 'nullable|boolean',
         ]);
 
@@ -92,6 +100,7 @@ class UserController extends Controller
         $user->name = $request->name ?? $user->name;
         $user->email = $request->email ?? $user->email;
         $user->phone = $request->phone ?? $user->phone;
+        $user->survey_id = $request->survey_id;
         $user->is_active = $request->has('is_active');
 
         /*if ($request->password) {

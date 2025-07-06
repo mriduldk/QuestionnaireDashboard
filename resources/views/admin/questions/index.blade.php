@@ -13,7 +13,7 @@
     <div class="card">
 
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h2 class="card-label mb-0">Question List</h2>
+            <h2 class="card-label mb-0">All Question List</h2>
 
             <form method="GET" action="{{ route('questions.index') }}" class="d-flex gap-2" id="filterForm">
                 <select name="survey_id" id="survey_id" class="form-control mr-4" style="width: 300px;" onchange="document.getElementById('filterForm').submit()">

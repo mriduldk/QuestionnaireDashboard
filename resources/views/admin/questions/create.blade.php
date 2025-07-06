@@ -10,6 +10,16 @@
         </div>
     @endif
 
+    @if(session('success'))
+      <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    @if(session('error'))
+      <div class="alert alert-danger">
+          {{ session('error') }}
+      </div>
+    @endif
+
 
     <div class="card">
         <div class="card-header">
@@ -20,20 +30,25 @@
             @csrf
             <div class="card-body">
 
+                {{-- Survey --}}
                 <div class="form-group">
                     <label>Survey</label>
                     <select name="survey_id" id="survey_id" class="form-control" required>
                         <option value="">Select Survey</option>
                         @foreach ($surveys as $survey)
-                            <option value="{{ $survey->id }}">{{ $survey->title }}</option>
+                            <option value="{{ $survey->id }}" {{ old('survey_id') == $survey->id ? 'selected' : '' }}>
+                                {{ $survey->title }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
 
+                {{-- Section --}}
                 <div class="form-group">
                     <label>Section</label>
                     <select name="section_id" id="section_id" class="form-control" required>
                         <option value="">Select Section</option>
+                        {{-- Sections are dynamically filled --}}
                     </select>
                 </div>
 
@@ -276,6 +291,29 @@
         document.getElementById('parent_id').innerHTML = '<option value="">None (Top-level question)</option>';
         document.getElementById('conditional_question_id').innerHTML = '<option value="">-- None --</option>';
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const surveyId = "{{ old('survey_id') }}";
+        const sectionId = "{{ old('section_id') }}";
+
+        if (surveyId) {
+            fetch(`/admin/sections/by-survey/${surveyId}`)
+                .then(response => response.json())
+                .then(sections => {
+                    const sectionSelect = document.getElementById('section_id');
+                    sectionSelect.innerHTML = '<option value="">Select Section</option>';
+
+                    sections.forEach(section => {
+                        const opt = document.createElement('option');
+                        opt.value = section.id;
+                        opt.textContent = section.title;
+                        if (sectionId == section.id) opt.selected = true;
+                        sectionSelect.appendChild(opt);
+                    });
+                });
+        }
+    });
+
 </script>
 
 

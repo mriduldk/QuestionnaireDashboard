@@ -55,4 +55,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // App\Models\User.php
+
+    public function survey()
+    {
+        return $this->belongsTo(Survey::class);
+    }
+
 }

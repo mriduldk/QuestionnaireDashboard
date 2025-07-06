@@ -33,7 +33,8 @@ class SectionAdminController extends Controller
     public function create(Request $request)
     {
         $surveys = \App\Models\Survey::pluck('title', 'id'); // [id => title]
-        return view('admin.sections.create', compact('surveys'));
+        $selectedSurveyId = $request->query('survey_id');
+        return view('admin.sections.create', compact('surveys', 'selectedSurveyId'));
 
         // $surveyId = $request->query('survey_id');
         // $survey = Survey::findOrFail($surveyId);
@@ -54,7 +55,7 @@ class SectionAdminController extends Controller
 
         Section::create($request->only('survey_id', 'title', 'order'));
 
-        return redirect()->route('sections.index')
+        return redirect()->route('sections.create', ['survey_id' => $request->survey_id])
                          ->with('success', 'Section added successfully.');
     }
 
