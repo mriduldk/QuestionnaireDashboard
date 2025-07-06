@@ -55,4 +55,10 @@ class SurveyAnswer extends Model
         return $this->belongsTo(Survey::class, 'survey_id');
     }
 
+    public function questionAnswers()
+    {
+        return $this->hasMany(QuestionAnswer::class, 'survey_answer_id', 'survey_answer_id');
+    }
+
+
 }

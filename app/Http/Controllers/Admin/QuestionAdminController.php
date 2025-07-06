@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\QuestionAnswer;
 use App\Models\Survey;
 use Illuminate\Http\Request;
 use App\Models\Question;
@@ -160,7 +161,16 @@ class QuestionAdminController extends Controller
 
     public function destroy(Question $question)
     {
-        $question->delete();
-        return redirect()->route('questions.index')->with('success', 'Question deleted.');
+        $hasAnswers = QuestionAnswer::where('question_id', $question->id)->exists();
+
+        if ($hasAnswers) {
+            return redirect()->route('questions.index')
+                ->with('error', 'Cannot delete this question because answers exist.');
+        }
+
+        $question->delete(); // soft delete (assuming model has SoftDeletes)
+        return redirect()->route('questions.index')->with('success', 'Question deleted successfully.');
     }
+
+
 }

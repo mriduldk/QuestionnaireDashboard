@@ -5,6 +5,10 @@
         <div class="card-header d-flex justify-content-between align-items-start">
             <div>
                 <h2 class="card-label mb-1">Survey Answer Details</h2>
+                <a href="{{ route('survey-answers.export', $surveyAnswer->survey_answer_id) }}" class="btn btn-sm btn-success">
+                    Download as Excel
+                </a>
+
                 <a href="{{ route('survey-answers.index') }}" class="btn btn-sm btn-secondary mt-1">Back</a>
             </div>
 
@@ -65,21 +69,20 @@
                     <th>Avg Income</th>
                     <td>{{ $surveyAnswer->average_annual_income }}</td>
                     <th>Status</th>
-                    <td >{{ $surveyAnswer->status }}</td>
+                    <td>{{ $surveyAnswer->status }}</td>
                     <th>Last Updated At</th>
                     <td>{{ $surveyAnswer->updated_at ? $surveyAnswer->updated_at->format('d-m-Y h:i A') : 'N/A' }}</td>
                 </tr>
                 </tbody>
             </table>
 
-            {{-- Survey Answers --}}
-            @foreach ($surveys as $survey)
+            {{-- Survey Sections, Questions, Sub-Questions --}}
+            @if ($survey)
                 <div class="card mb-4">
                     <div class="card-header h4 bg-primary text-white">
                         <strong>Survey:</strong> {{ $survey->title }}
                     </div>
                     <div class="card-body">
-
                         @foreach ($survey->sections as $section)
                             <div class="mb-8">
                                 <h5 class="text-info">Section: {{ $section->title }}</h5>
@@ -95,12 +98,9 @@
                                     @foreach ($section->questions as $question)
                                         <tr>
                                             <td>{{ $question->question_text }}</td>
-                                            <td>
-                                                {{ $questionAnswers[$question->id]->answer_text ?? '-' }}
-                                            </td>
+                                            <td>{{ $questionAnswers[$question->id]->answer_text ?? '-' }}</td>
                                         </tr>
 
-                                        {{-- Sub-questions --}}
                                         @foreach ($question->subQuestions as $sub)
                                             <tr>
                                                 <td class="ps-4">↳ {{ $sub->question_text }}</td>
@@ -110,13 +110,13 @@
                                     @endforeach
                                     </tbody>
                                 </table>
-
                             </div>
                         @endforeach
-
                     </div>
                 </div>
-            @endforeach
+            @else
+                <p class="text-muted">No survey data found for this answer.</p>
+            @endif
 
         </div>
     </div>

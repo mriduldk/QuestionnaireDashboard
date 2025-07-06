@@ -3,11 +3,19 @@
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+
 
     <div class="card">
-        <div class="card-header">
-            <h2 class="card-label">Scheme / Survey List</h2>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="card-label mb-0">Scheme / Survey List</h2>
+            <a href="{{ route('surveys.create') }}" class="btn btn-primary">
+                + Add Survey
+            </a>
         </div>
+
         <div class="card-body">
             <table class="table table-bordered" id="kt_datatables">
                 <thead>

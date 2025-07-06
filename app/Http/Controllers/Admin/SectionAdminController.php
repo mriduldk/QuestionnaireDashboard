@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\QuestionAnswer;
 use Illuminate\Http\Request;
 use App\Models\Section;
 use App\Models\Survey;
@@ -87,12 +88,23 @@ class SectionAdminController extends Controller
 
     public function destroy(Section $section)
     {
-        $surveyId = $section->survey_id;
-        $section->delete();
+        // Get IDs of all questions in this section
+        $questionIds = $section->questions()->pluck('id');
+
+        // Check if any question has answers
+        $hasAnswers = QuestionAnswer::whereIn('question_id', $questionIds)->exists();
+
+        if ($hasAnswers) {
+            return redirect()->route('sections.index')
+                ->with('error', 'Cannot delete this section because answers exist for its questions.');
+        }
+
+        $section->delete(); // Soft delete
 
         return redirect()->route('sections.index')
-                         ->with('success', 'Section deleted.');
+            ->with('success', 'Section deleted successfully.');
     }
+
 
     public function getBySurvey($surveyId)
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SurveyAnswerExport;
 use App\Models\Survey;
 use Illuminate\Http\Request;
 use App\Models\SurveyAnswer;
@@ -9,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Helpers\ApiResponse;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SurveyAnswerController extends Controller
 {
@@ -70,19 +72,19 @@ class SurveyAnswerController extends Controller
 
     public function show($id)
     {
-        //$surveyAnswer = SurveyAnswer::findOrFail($id);
-        $surveyAnswer = SurveyAnswer::with('user')->findOrFail($id);
+        $surveyAnswer = SurveyAnswer::with('user', 'survey')->findOrFail($id);
 
-        // Fetch all related question answers grouped by question_id
         $questionAnswers = \App\Models\QuestionAnswer::where('survey_answer_id', $surveyAnswer->survey_answer_id)
             ->get()
             ->keyBy('question_id');
 
-        // Load all surveys with sections and questions
-        $surveys = \App\Models\Survey::with(['sections.questions.subQuestions'])->get();
+        $survey = $surveyAnswer->survey()
+            ->with(['sections.questions.subQuestions'])
+            ->first();
 
-        return view('admin.survey_answers.show', compact('surveyAnswer', 'questionAnswers', 'surveys'));
+        return view('admin.survey_answers.show', compact('surveyAnswer', 'questionAnswers', 'survey'));
     }
+
 
     public function bySurvey(Request $request, Survey $survey)
     {
@@ -110,5 +112,15 @@ class SurveyAnswerController extends Controller
 
         return view('admin.survey_answers.by_survey', compact('survey', 'answers', 'districts', 'vcdcs', 'subDivisions'));
     }
+
+    public function exportExcel($id)
+    {
+        $surveyAnswer = SurveyAnswer::findOrFail($id);
+        $filename = 'survey_answer_' . $surveyAnswer->survey_answer_id . '.xlsx';
+
+        return Excel::download(new SurveyAnswerExport($surveyAnswer), $filename);
+    }
+
+
 
 }

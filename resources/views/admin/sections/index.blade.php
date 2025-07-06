@@ -4,6 +4,12 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h2 class="card-label mb-0">Section List</h2>

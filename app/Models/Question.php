@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Section;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Question extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = ['survey_id','section_id', 'parent_id', 'question_text', 'type', 'is_required', 'metadata', 'conditional_logic'];
     protected $casts = [
         'metadata' => 'array',
