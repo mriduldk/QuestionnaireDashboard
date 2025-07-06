@@ -47,9 +47,8 @@
                         <th>VCDC</th>
                         <th>Block</th>
                         <th>Address</th>
+                        <th>Surveyed By</th>
                         <th>Status</th>
-                        <th>Created By</th>
-                        <th>Updated At</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -63,6 +62,7 @@
                         <td>{{ $ans->vcdc }}</td>
                         <td>{{ $ans->block }}</td>
                         <td>{{ $ans->village }}</td>
+                        <td>{{ $ans->user?->name ?? 'N/A' }}<br>{{ $ans->updated_at?->format('d-m-Y h:i A') }}</td>
                         <td>
                             @if (strtolower($ans->status) === 'draft')
                                 <span class="badge bg-warning text-dark">Draft</span>
@@ -72,8 +72,6 @@
                                 <span class="badge bg-secondary">{{ ucfirst($ans->status) }}</span>
                             @endif
                         </td>
-                        <td>{{ $ans->user?->name ?? 'N/A' }}</td>
-                        <td>{{ $ans->updated_at?->format('d-m-Y h:i A') }}</td>
                         <td>
                             <a href="{{ route('survey-answers.show', $ans->survey_answer_id) }}" class="btn btn-sm btn-info">
                                 View

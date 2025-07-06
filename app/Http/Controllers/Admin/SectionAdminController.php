@@ -17,7 +17,7 @@ class SectionAdminController extends Controller
         /*$sections = Section::with('questions', 'survey')->get();
         return view('admin.sections.index', compact('sections'));*/
 
-        $surveys = Survey::all();
+        $surveys = Survey::whereNull('deleted_at')->get();
         $query = Section::with('survey');
 
         if ($request->has('survey_id') && $request->survey_id) {
