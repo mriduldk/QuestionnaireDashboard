@@ -98,7 +98,7 @@
 
                           <div class="form-group">
                               <label>Is Required?</label>
-                              <input type="checkbox" name="is_required" value="1">
+                              <input type="checkbox" name="is_required" value="1" {{ old('is_required', 1) ? 'checked' : '' }}>
                           </div>
 
                           {{-- <div class="form-group">
