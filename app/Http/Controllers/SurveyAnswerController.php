@@ -86,7 +86,6 @@ class SurveyAnswerController extends Controller
         return view('admin.survey_answers.show', compact('surveyAnswer', 'questionAnswers', 'survey'));
     }
 
-
     public function bySurvey(Request $request, Survey $survey)
     {
         $query = SurveyAnswer::where('survey_id', $survey->id);

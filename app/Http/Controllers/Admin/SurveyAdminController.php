@@ -46,7 +46,6 @@ class SurveyAdminController extends Controller
         return redirect()->route('surveys.index')->with('success', 'Survey updated successfully.');
     }
 
-
     public function show(Survey $survey) {
         $survey->load('sections.questions');
         return view('admin.surveys.show', compact('survey'));

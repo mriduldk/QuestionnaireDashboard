@@ -27,3 +27,7 @@ Route::post('/current-location/upsert', [CurrentLocationController::class, 'upse
 
 Route::post('/location-history/upsert', [LocationHistoryController::class, 'upsert']);
 
+Route::get('/surveys/{survey}/json', [SurveyApiController::class, 'showJson']);
+
+
+

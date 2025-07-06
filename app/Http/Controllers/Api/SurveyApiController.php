@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Survey;
 use Illuminate\Http\Request;
@@ -32,7 +33,18 @@ class SurveyApiController extends Controller
             }),
         ];
 
-        return response()->json($data);
+
+        return ApiResponse::success(200, "Survey Fetched Successfully", "survey", $data);
+        //return response()->json($data);
+    }
+
+    public function showJson(Survey $survey)
+    {
+        $survey->load([
+            'sections.questions.subQuestions', // loads nested questions
+        ]);
+
+        return response()->json($survey);
     }
 
     private function formatQuestion($question, $allQuestions)
