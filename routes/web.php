@@ -16,6 +16,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::get('/privacyPolicy', function () {
+    return view('privacyPolicy');
+});
+Route::get('/termsAndCondition', function () {
+    return view('termsAndCondition');
+});
+
 Route::get('/adminLogin', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin-login-post', [AdminLoginController::class, 'login'])->name('admin.login-post');
 Route::post('/admin-logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
