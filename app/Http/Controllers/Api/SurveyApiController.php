@@ -80,6 +80,7 @@ class SurveyApiController extends Controller
             'question_text' => $question->question_text,
             'type' => $question->type,
             'is_required' => (bool) $question->is_required,
+            'is_multiple' => (bool) $question->is_multiple,
             'metadata' => $question->metadata ?? [],
             'conditional_logic' => $question->conditional_logic,
             //'created_at' => $question->created_at->format('Y-m-d H:i:s'),
