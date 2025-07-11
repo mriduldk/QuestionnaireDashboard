@@ -90,6 +90,7 @@ class QuestionAdminController extends Controller
             'question_text' => 'required|string',
             'type' => 'required|in:text,number,radio,checkbox,select,textarea',
             'is_required' => 'boolean',
+            'is_multiple' => 'boolean',
             'metadata' => 'nullable|array',
             'conditional_question_id' => 'nullable|integer|exists:questions,id',
             'conditional_operator' => 'nullable|string',
@@ -123,6 +124,7 @@ class QuestionAdminController extends Controller
             'question_text' => $request->question_text,
             'type' => $request->type,
             'is_required' => $request->has('is_required'),
+            'is_multiple' => $request->has('is_multiple'),
             'metadata' => $request->metadata,
             'conditional_logic' => $conditionalLogic,
         ]);
@@ -153,6 +155,7 @@ class QuestionAdminController extends Controller
             'question_text' => 'required|string',
             'type' => 'required|in:text,number,radio,checkbox,select,textarea',
             'is_required' => 'boolean',
+            'is_multiple' => 'boolean',
             'metadata' => 'nullable|array',
             'conditional_question_id' => 'nullable|exists:questions,id',
             'conditional_operator' => 'nullable|string',
@@ -178,6 +181,7 @@ class QuestionAdminController extends Controller
             'question_text' => $request->question_text,
             'type' => $request->type,
             'is_required' => $request->has('is_required'),
+            'is_multiple' => $request->has('is_multiple'),
             'metadata' => $request->metadata,
             'conditional_logic' => $conditionalLogic,
         ]);

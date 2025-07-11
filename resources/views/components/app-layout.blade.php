@@ -72,21 +72,21 @@
                                aria-expanded="false">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/about') }}" role="button"
-                               aria-expanded="false">About</a>
+                            <a class="nav-link" href="{{ url('/privacyPolicy') }}" role="button"
+                               aria-expanded="false">Privay Policy</a>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{ url('/doc') }}" role="button"
-                               aria-expanded="false">Notification</a>
+                            <a class="nav-link" href="{{ url('/termsAndCondition') }}" role="button"
+                               aria-expanded="false">Terms & Condition</a>
                         </li>
-                        <li class="nav-item ">
+                        {{-- <li class="nav-item ">
                             <a class="nav-link" href="{{ url('/contact') }}" role="button"
                                aria-expanded="false">Contact</a>
-                        </li>
+                        </li> --}}
                     </ul>
                     <div class="mt-3 mt-lg-0 d-flex align-items-center">
-                        {{--<a href="{{ url('/login') }}" class="btn btn-primary mx-2 btn-sm"> <i class="bi bi-person-fill-add"></i>  User Login</a>
-                        <a href="{{ url('/adminLogin') }}" class="btn btn-danger btn-sm"> <i class="bi bi-person-fill-check"></i> Officer Login</a>--}}
+                        {{-- <a href="{{ url('/adminLogin') }}" class="btn btn-primary mx-2 btn-sm"> <i class="bi bi-person-fill-add"></i>Admin Login</a> --}}
+                        <a href="{{ url('/adminLogin') }}" class="btn btn-danger btn-sm"> <i class="bi bi-person-fill-check"></i> Admin Login</a>
                     </div>
                 </div>
             </div>

@@ -101,6 +101,11 @@
                               <input type="checkbox" name="is_required" value="1" {{ old('is_required', 1) ? 'checked' : '' }}>
                           </div>
 
+                        <div class="form-group">
+                              <label>Is Multiple?</label>
+                              <input type="checkbox" name="is_multiple" value="0"  >
+                        </div>
+
                           {{-- <div class="form-group">
                               <label>Metadata (JSON, for options etc.)</label>
                               <textarea name="metadata" class="form-control" rows="3" placeholder='e.g. {"options":["Yes","No"]}'></textarea>

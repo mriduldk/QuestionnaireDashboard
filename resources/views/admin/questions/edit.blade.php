@@ -76,6 +76,12 @@
                     <input type="checkbox" name="is_required" value="1" {{ $question->is_required ? 'checked' : '' }}>
                 </div>
 
+                {{-- Multiple --}}
+                <div class="form-group">
+                    <label>Is Multiple?</label>
+                    <input type="checkbox" name="is_multiple" value="0" {{ $question->is_multiple ? 'checked' : '' }}>
+                </div>
+
                 {{-- Options (if applicable) --}}
                 <div class="form-group" id="options-container" style="display: none;">
                     <label>Options</label>

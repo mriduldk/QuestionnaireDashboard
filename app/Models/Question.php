@@ -10,11 +10,12 @@ class Question extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['survey_id','section_id', 'parent_id', 'question_text', 'type', 'is_required', 'metadata', 'conditional_logic'];
+    protected $fillable = ['survey_id','section_id', 'parent_id', 'question_text', 'type', 'is_required', 'is_multiple', 'metadata', 'conditional_logic'];
     protected $casts = [
         'metadata' => 'array',
         'conditional_logic' => 'array',
         'is_required' => 'boolean',
+        'is_multiple' => 'boolean',
     ];
 
     public function section() {
