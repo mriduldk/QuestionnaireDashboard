@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\MultipleQuestionAnswerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SurveyApiController;
 use App\Http\Controllers\SurveyAnswerController;
@@ -26,6 +27,8 @@ Route::post('/question-answer/upsert', [QuestionAnswerController::class, 'upsert
 Route::post('/current-location/upsert', [CurrentLocationController::class, 'upsert']);
 
 Route::post('/location-history/upsert', [LocationHistoryController::class, 'upsert']);
+
+Route::post('/multiple-question-answer/upsert', [MultipleQuestionAnswerController::class, 'upsert']);
 
 Route::get('/surveys/{survey}/json', [SurveyApiController::class, 'showJson']);
 
