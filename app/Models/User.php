@@ -32,6 +32,11 @@ class User extends Authenticatable
         'fcm_token',
         'is_active',
         'is_delete',
+
+        'district',
+        'sub_division',
+        'block',
+        'vcdc',
     ];
 
     /**
