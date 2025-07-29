@@ -33,5 +33,5 @@ Route::post('/multiple-question-answer/upsert', [MultipleQuestionAnswerControlle
 
 Route::get('/surveys/{survey}/json', [SurveyApiController::class, 'showJson']);
 
-Route::get('/survey-answer-images/{survey_answer_id}', [SurveyAnswerImageController::class, 'index']);
+Route::post('/survey-answer-images', [SurveyAnswerImageController::class, 'store']);
 
