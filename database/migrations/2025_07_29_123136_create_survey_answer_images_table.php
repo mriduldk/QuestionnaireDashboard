@@ -17,11 +17,6 @@ return new class extends Migration
             $table->string('image_url');
             $table->string('caption')->nullable();
             $table->timestamps();
-
-            $table->foreign('survey_answer_id')
-                ->references('survey_answer_id')
-                ->on('survey_answers')
-                ->onDelete('cascade');
         });
     }
 

@@ -11,7 +11,7 @@ class SurveyAnswerImageController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'survey_answer_id' => 'required|exists:survey_answers,survey_answer_id',
+            'survey_answer_id' => 'required',
             'caption' => 'nullable|string',
             'image' => 'required|image|max:2048'
         ]);
