@@ -40,12 +40,12 @@
             <table class="table table-bordered table-sm" id="kt_datatables">
                 <thead>
                     <tr>
-                        {{--<th>Name</th>
-                        <th>Phone</th>--}}
+                        <th>Responder's Name</th>
+                        <th>Responder's Phone</th>
                         <th>District</th>
                         <th>Sub Division</th>
-                        <th>VCDC</th>
                         <th>Block</th>
+                        <th>VCDC</th>
                         <th>Address</th>
                         <th>Surveyed By</th>
                         <th>Status</th>
@@ -55,12 +55,12 @@
                 <tbody>
                 @forelse($answers as $ans)
                     <tr>
-                        {{--<td>{{ $ans->name }}</td>
-                        <td>{{ $ans->phone_number }}</td>--}}
+                        <td>{{ $ans->name }}</td>
+                        <td>{{ $ans->phone_number }}</td>
                         <td>{{ $ans->district }}</td>
                         <td>{{ $ans->sub_division ?? '-' }}</td>
-                        <td>{{ $ans->vcdc }}</td>
                         <td>{{ $ans->block }}</td>
+                        <td>{{ $ans->vcdc }}</td>
                         <td>{{ $ans->village }}</td>
                         <td>{{ $ans->user?->name ?? 'N/A' }}<br>{{ $ans->updated_at?->format('d-m-Y h:i A') }}</td>
                         <td>

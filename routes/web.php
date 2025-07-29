@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\BlockController;
+use App\Http\Controllers\Admin\DistrictController;
+use App\Http\Controllers\Admin\LocationController;
+use App\Http\Controllers\Admin\SubDivisionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserLocationController;
+use App\Http\Controllers\Admin\VcdcController;
 use App\Http\Controllers\SurveyAnswerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\SurveyAdminController;
@@ -43,6 +48,15 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::resource('sections', SectionAdminController::class);
     Route::resource('questions', QuestionAdminController::class);
     Route::resource('users', UserController::class);
+    Route::resource('districts', DistrictController::class);
+    Route::resource('sub-divisions', SubDivisionController::class);
+    Route::resource('blocks', BlockController::class);
+    Route::resource('vcdcs', VcdcController::class);
+
+    Route::get('/api/sub-divisions/{district}', [LocationController::class, 'getSubDivisions']);
+    Route::get('/api/blocks/{subDivision}', [LocationController::class, 'getBlocks']);
+    Route::get('/api/vcdcs/{block}', [LocationController::class, 'getVcdcs']);
+
 
     Route::get('/questions/by-section/{section}', [QuestionAdminController::class, 'getBySection']);
     Route::get('/sections/by-survey/{survey}', [SectionAdminController::class, 'getBySurvey']);

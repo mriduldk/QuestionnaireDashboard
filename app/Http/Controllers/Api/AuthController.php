@@ -55,7 +55,10 @@ class AuthController extends Controller
             'fcm_token' => 'nullable|string',
         ]);
 
-        $user = User::where('is_delete', 0)->where('phone', $request->phone)->first();
+        $user = User::where('is_delete', 0)
+            ->where('phone', $request->phone)
+            ->with(['districtInfo', 'subDivisionInfo', 'blockInfo', 'vcdcInfo'])
+            ->first();
 
         if(empty($user)){
             return ApiResponse::error('User Not Found', null, 403);
@@ -71,7 +74,14 @@ class AuthController extends Controller
                 $user->fcm_token = $request->fcm_token;
                 $user->save();
 
-                return ApiResponse::success(200, "OTP verified successfully", "user", $user,);
+                // Convert model to array and replace district ID with name
+                $data = $user->toArray();
+                $data['district'] = $user->districtInfo->name ?? null;
+                $data['sub_division'] = $user->subDivisionInfo->name ?? null;
+                $data['block'] = $user->blockInfo->name ?? null;
+                $data['vcdc'] = $user->vcdcInfo->name ?? null;
+
+                return ApiResponse::success(200, "OTP verified successfully", "user", $data,);
             }
         }
     }

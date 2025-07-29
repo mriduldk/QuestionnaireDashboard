@@ -37,6 +37,11 @@ class User extends Authenticatable
         'sub_division',
         'block',
         'vcdc',
+
+        'father_name',
+        'village',
+        'address',
+        'photo',
     ];
 
     /**
@@ -68,5 +73,25 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Survey::class);
     }
+
+    public function districtInfo()
+    {
+        return $this->belongsTo(District::class, 'district');
+    }
+    public function subDivisionInfo()
+    {
+        return $this->belongsTo(SubDivision::class, 'sub_division');
+    }
+
+    public function blockInfo()
+    {
+        return $this->belongsTo(Block::class, 'block');
+    }
+
+    public function vcdcInfo()
+    {
+        return $this->belongsTo(Vcdc::class, 'vcdc');
+    }
+
 
 }

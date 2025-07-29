@@ -34,42 +34,26 @@
             {{-- Basic info --}}
             <table class="table table-bordered">
                 <tbody>
-                {{--<tr>
-                    <th>Name</th><td>{{ $surveyAnswer->name }}</td>
-                    <th>Phone</th><td>{{ $surveyAnswer->phone_number }}</td>
-                    <th>Age</th><td>{{ $surveyAnswer->age }}</td>
+                <tr>
+                    <th>Responder's Name</th><td>{{ $surveyAnswer->name }}</td>
+                    <th>Responder's Phone</th><td>{{ $surveyAnswer->phone_number }}</td>
+                    <th>Responder's Age</th><td>{{ $surveyAnswer->age }}</td>
                 </tr>
                 <tr>
-                    <th>Gender</th><td>{{ ucfirst($surveyAnswer->gender) }}</td>
-                    <th>Voter ID</th><td>{{ $surveyAnswer->voter_id }}</td>
-                    <th>Caste</th><td>{{ $surveyAnswer->caste }}</td>
-                </tr>--}}
+                    <th>Responder's Gender</th><td>{{ ucfirst($surveyAnswer->gender) }}</td>
+                    <th>Responder's Caste</th><td>{{ $surveyAnswer->caste }}</td>
+                </tr>
                 <tr>
                     <th>District</th><td>{{ $surveyAnswer->district }}</td>
                     <th>Sub Division</th><td>{{ $surveyAnswer->sub_division }}</td>
                     <th>Block</th><td>{{ $surveyAnswer->block }}</td>
                 </tr>
-                {{--<tr>
-                    <th>Household Members</th>
-                    <td colspan="5">{{ implode(', ', $surveyAnswer->house_hold_member ?? []) }}</td>
-                </tr>
+
                 <tr>
-                    <th>Other Household Member</th>
-                    <td colspan="5">{{ $surveyAnswer->house_hold_member_other }}</td>
-                </tr>
-                <tr>
-                    <th>Livelihood Activities</th>
-                    <td colspan="5">{{ implode(', ', $surveyAnswer->household_livelihood_activities ?? []) }}</td>
-                </tr>
-                <tr>
-                    <th>Other Activity</th>
-                    <td colspan="5">{{ $surveyAnswer->household_livelihood_activity_other }}</td>
-                </tr>--}}
-                <tr>
-                    <th>Village</th>
-                    <td>{{ $surveyAnswer->village }}</td>
                     <th>VCDC</th>
                     <td>{{ $surveyAnswer->vcdc }}</td>
+                    <th>Village</th>
+                    <td>{{ $surveyAnswer->village }}</td>
                     <th>Last Updated At</th>
                     <td>{{ $surveyAnswer->updated_at ? $surveyAnswer->updated_at->format('d-m-Y h:i A') : 'N/A' }}</td>
                 </tr>

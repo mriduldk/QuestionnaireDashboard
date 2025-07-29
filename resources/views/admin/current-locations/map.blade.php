@@ -19,9 +19,15 @@
         <script>
             let userLocationMap = L.map('map').setView([26.2006, 92.9376], 8);
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            /*L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 18,
                 attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(userLocationMap);*/
+
+            // ✅ Satellite tiles from Esri
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles © Esri — Source: Esri, Earthstar Geographics',
+                maxZoom: 18
             }).addTo(userLocationMap);
 
             let markers = [];
