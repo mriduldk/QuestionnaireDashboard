@@ -8,6 +8,7 @@ use App\Http\Controllers\SurveyAnswerController;
 use App\Http\Controllers\QuestionAnswerController;
 use App\Http\Controllers\CurrentLocationController;
 use App\Http\Controllers\LocationHistoryController;
+use App\Http\Controllers\SurveyAnswerImageController;
 
 
 Route::controller(AuthController::class)->prefix('auth')->group(function () {
@@ -32,5 +33,5 @@ Route::post('/multiple-question-answer/upsert', [MultipleQuestionAnswerControlle
 
 Route::get('/surveys/{survey}/json', [SurveyApiController::class, 'showJson']);
 
-
+Route::get('/survey-answer-images/{survey_answer_id}', [SurveyAnswerImageController::class, 'index']);
 
