@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SurveyAnswerImage;
 use Illuminate\Support\Facades\Storage;
+use App\Helpers\ApiResponse;
 
 class SurveyAnswerImageController extends Controller
 {
