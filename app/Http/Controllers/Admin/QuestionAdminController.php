@@ -21,17 +21,23 @@ class QuestionAdminController extends Controller
         $surveys = Survey::all();
 
         $sections = collect(); // empty by default
+
         if ($request->filled('survey_id')) {
             $sections = Section::where('survey_id', $request->survey_id)->get();
         }
 
-        $query = Question::with('section.survey');
+        //$query = Question::with('section.survey');
+        $query = Question::with(['section' => function ($q) {
+            $q->whereNull('deleted_at');
+        }])->whereHas('section', function ($q) {
+            $q->whereNull('deleted_at');
+        });
 
         if ($request->filled('section_id')) {
             $query->where('section_id', $request->section_id);
         } elseif ($request->filled('survey_id')) {
             $query->whereHas('section', function ($q) use ($request) {
-                $q->where('survey_id', $request->survey_id);
+                $q->where('survey_id', $request->survey_id)->whereNull('deleted_at');
             });
         }
 
