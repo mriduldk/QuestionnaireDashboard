@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Admin\SectionAdminController;
 use App\Http\Controllers\Admin\QuestionAdminController;
 use App\Http\Controllers\Api\SurveyApiController;
+use App\Http\Controllers\CallLetterController;
 
 
 Route::get('/', function () {
@@ -29,6 +30,7 @@ Route::get('/termsAndCondition', function () {
     return view('termsAndCondition');
 });
 
+Route::get('/adminLogin', [AdminLoginController::class, 'showLoginForm'])->name('login');
 Route::get('/adminLogin', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin-login-post', [AdminLoginController::class, 'login'])->name('admin.login-post');
 Route::post('/admin-logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
@@ -74,4 +76,6 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 });
 
 
+Route::get('/call-letter', [CallLetterController::class, 'showCallLetterPage'])->name('showCallLetterPage');
+Route::post('/call-letter-pdf', [CallLetterController::class, 'printPdf'])->name('printPdf');
 
