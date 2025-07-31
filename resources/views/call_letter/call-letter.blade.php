@@ -14,7 +14,7 @@
                                 width="40%" />
                         </a>
 
-                        <h1 class="mb-1">Welcome To CEM's Special Initiative</h1>
+                        <h2 class="mb-1">CEM's Special Initiative</h2>
                         <p class="mb-0">
                             Provide your information to download Call Letter.
                         </p>
@@ -32,55 +32,103 @@
                     <div class="card shadow-sm mb-6">
                         <div class="card-body">
 
-                            <form class="needs-validation mb-6" action="{{ route('printPdf') }}" method="POST"
-                                novalidate>
-                                @csrf
+                            @if (!session('showOtp'))
+                                <form class="needs-validation mb-6" action="{{ route('validate') }}" method="POST"
+                                      novalidate>
+                                    @csrf
 
-                                @if (session('success'))
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        {{ session('success') }}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                            aria-label="Close"></button>
+                                    @if (session('success'))
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            {{ session('success') }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                    @endif
+                                    @if (session('error'))
+                                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                            {{ session('error') }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                    @endif
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">
+                                            Phone Number
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number"
+                                               required />
+                                        <div class="invalid-feedback">Please enter phone number.</div>
                                     </div>
-                                @endif
-                                @if (session('error'))
-                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        {{ session('error') }}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                            aria-label="Close"></button>
+
+                                    <div class="d-grid">
+                                        <button class="btn btn-info" type="submit">Generate OTP</button>
                                     </div>
-                                @endif
-                                @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
+
+                                </form>
+
+                            @endif
+                            @if (session('showOtp'))
+                                <form class="needs-validation mb-6" action="{{ route('printPdf') }}" method="POST"
+                                      novalidate>
+                                    @csrf
+
+                                    @if (session('success'))
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            {{ session('success') }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                    @endif
+                                    @if (session('error'))
+                                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                            {{ session('error') }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                    @endif
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">
+                                            Phone Number
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number"
+                                               required value="{{ session('phone') }}" readonly />
+                                        <div class="invalid-feedback">Please enter phone number.</div>
                                     </div>
-                                @endif
+                                    <div class="mb-3">
+                                        <label for="otp" class="form-label">OTP</label>
+                                        <input type="number" class="form-control" id="otp"
+                                               name="otp" required />
+                                        <div class="invalid-feedback">Please enter OTP.</div>
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">
-                                        Phone Number
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number"
-                                        required />
-                                    <div class="invalid-feedback">Please enter phone number.</div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="dob" class="form-label">Date Of Birth</label>
-                                    <input type="date" class="form-control" id="dob"
-                                            name="dob" required />
-                                    <div class="invalid-feedback">Please select date of birth.</div>
-                                </div>
+                                    <div class="d-grid">
+                                        <button class="btn btn-info" type="submit">Download Call Letter</button>
+                                    </div>
 
-                                <div class="d-grid">
-                                    <button class="btn btn-info" type="submit">Download Call Letter</button>
-                                </div>
-
-                            </form>
+                                </form>
+                            @endif
 
                         </div>
                     </div>

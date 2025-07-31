@@ -5,7 +5,6 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
         <style>
             body {
-                font-family: 'Roboto';
                 border: 1px solid black;
                 padding: 20px;
             }
@@ -15,7 +14,18 @@
                 font-size: 12px;
                 font-weight: bold;
                 margin-bottom: 20px;
-                text-decoration: underline;
+            }
+
+            .text-header {
+                font-size: 20px;
+            }
+            .text-sub-header {
+                font-size: 14px;
+            }
+            .center-table {
+                margin-left: auto;
+                margin-right: auto;
+                font-weight: bold;
             }
 
             .content {
@@ -70,36 +80,128 @@
     </head>
     <body>
         <div class="header">
-            <img src="{{ public_path('assets/images/logo/btc.png') }}" alt="Logo" width="100">
-            <h2>Grievance Application Acknowledgement</h2>
+            {{--<img src="{{ public_path('assets/images/logo/btc.png') }}" alt="Logo" width="100">--}}
+            <span >OFFICE OF THE</span><br>
+            <span class="text-header">PROJECT MANAGEMENT UNIT</span><br>
+            <span class="text-sub-header">CEM SPECIAL INITIATIVE SCHEME</span><br>
+            <span >Amguri, Near Don Bosco School, Haltugaon, Kokrajhar, Assam - 783370</span>
         </div>
 
+
         <div class="content">
-            <span style="float: left;">Acknowledgement No: {{ $user->name }}</span>
-            <span style="float: right;">Date: {{ $user->name }}</span>
+            <span style="float: left;">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>To,</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Shri/Smt./Miss.</td>
+                            <td>:</td>
+                            <td>{{ $user->name }}</td>
+                        </tr>
+                        <tr>
+                            <td>C/O </td>
+                            <td>:</td>
+                            <td>{{ $user->father_name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Address </td>
+                            <td>:</td>
+                            <td>{{ $user->address }}</td>
+                        </tr>
+                        <tr>
+                            <td>Roll No </td>
+                            <td>:</td>
+                            <td>{{ $user->roll }}</td>
+                        </tr>
+                        <tr>
+                            <td>Post Name </td>
+                            <td>:</td>
+                            <td>{{ $user->post_name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Subject </td>
+                            <td>:</td>
+                            <td style="font-weight: bold">CALL LETTER</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </span>
+            <span style="float: right; border: 1px solid black;">
+                <img src="{{ public_path('assets/images/avatar/placeholder.png') }}" alt="Image" width="100" style="border: 1px solid black;">
+            </span>
         </div>
         <div style="clear: both;"></div>
 
         <div class="content" style="margin-top: 10px">
-            <span>Dear {{ $user->name }},</span>
+            <span>Dear Candidate,</span>
         </div>
 
         <div class="content" style="margin-top: 20px; text-align: justify;">
-            <span>Your grievance application regarding the <i><b>{{ $user->name }}</b></i> has been successfully submitted on {{ \Carbon\Carbon::parse($user->created_at)->format('F j, Y \a\t h:i:s A') }}.</span>
-            </br></br><span>Your Acknowledgement Number is <b>{{ $user->name }}</b>, and the concerned department is <b>{{ $user->name }}</b>. Please use this number to track your application and for any future correspondence. If your application is accepted by the concerned department, a resolution will be provided within 15 to 30 days.</span>
-            </br></br><span>For any queries or feedback, you may contact us at 1800-000-0000 (Monday to Friday, 10 AM – 5 PM) or email us at grievance@bodoland.gov.in.</span>
+            <span>With reference to your application for the position of <b>'Disabled Friendly BTR Champion'</b> under CEM Special Initiative Scheme, You're requested to attend the interview and physical test as per the schedule given bellow :</span>
+
+            <table class="center-table ">
+                <tbody>
+                    <tr>
+                        <td>Venue</td>
+                        <td>:</td>
+                        <td>{{ $user->venue }}</td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>:</td>
+                        <td>{{ \Carbon\Carbon::parse($user->date)->format('Y-m-d') }}</td>
+                    </tr>
+                    <tr>
+                        <td>Time </td>
+                        <td>:</td>
+                        <td>{{ $user->time }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
         </div>
 
-        <div class="content" style="margin-top: 20px; text-align: justify;">
-            <span><b>Petitioner Name:</b> {{ $user->name }}</span>
-            </br>
-            <span><b>Contact Number:</b> {{ $user->name }}</span>
+        <div style="margin-top: 20px; text-align: center;">
+            <span><u><b>INSTRUCTIONS</b></u></span>
         </div>
 
-        <div class="footer" style="margin-top: 60px">
-            <span style="font-size: 16px; font-weight: bold;">B-GRMS</span></br>
-            <span style="font-size: 16px;">Bodoland Territorial Council</span></br>
-            <span style="font-size: 16px;">Kokrajhar</span>
+        <div style="font-size: 16px;">
+            <ol>
+                <li>
+                    You are requested to bring this Call Letter to the interview and physical test.
+                    Without the call letter, you will not be allowed for interview and physical test.
+                </li>
+                <li>
+                    You are hereby instructed to report at the venue as per the mentioned time.
+                    No TA/DA will be admissible for this purpose.
+                </li>
+                <li>
+                    Candidates are advised to bring original as well as Xerox copies of all the documents mentioned below:
+                    <ul>
+                        <li>Photo ID Proof (PAN/Aadhaar Card).</li>
+                        <li>Up-to-dated Resume/CV/Bio-Data along with Photo.</li>
+                        <li>Age Proof (HSLC Admit or Birth Certificate).</li>
+                        <li>Highest Qualification Certificate.</li>
+                        <li>Caste Certificate (if applicable).</li>
+                        <li>VCDC Certificate (Original).</li>
+                        <li>Disability Certificate issued by competent authority.</li>
+                    </ul>
+                </li>
+            </ol>
+
+        </div>
+
+
+        <div style="text-align: right; margin-top: 20px;">
+            {{--Yours Faithfully<br>--}}
+            <img src="{{ public_path('assets/images/sign-csis.jpeg') }}" alt="Logo" width="100"><br>
+            <strong>PMU Head</strong><br>
+            CEM Special Initiative<br>
+            NRDS Management Pvt. Ltd.
         </div>
 
         @php
@@ -140,7 +242,7 @@
         @endphp
 
         <div class="nb">
-            NB: Computer generated acknowledgement copy.
+
         </div>
 
         <div class="print-info-container">

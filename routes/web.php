@@ -77,5 +77,6 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
 
 Route::get('/call-letter', [CallLetterController::class, 'showCallLetterPage'])->name('showCallLetterPage');
+Route::post('/validate-user', [CallLetterController::class, 'validate'])->name('validate');
 Route::post('/call-letter-pdf', [CallLetterController::class, 'printPdf'])->name('printPdf');
 
