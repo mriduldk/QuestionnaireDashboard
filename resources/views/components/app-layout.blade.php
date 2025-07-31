@@ -84,10 +84,16 @@
                                aria-expanded="false">Contact</a>
                         </li> --}}
                     </ul>
-                    <div class="mt-3 mt-lg-0 d-flex align-items-center">
-                        {{-- <a href="{{ url('/adminLogin') }}" class="btn btn-primary mx-2 btn-sm"> <i class="bi bi-person-fill-add"></i>Admin Login</a> --}}
-                        <a href="{{ url('/adminLogin') }}" class="btn btn-danger btn-sm"> <i class="bi bi-person-fill-check"></i> Admin Login</a>
-                    </div>
+
+                    @if (Request::path() !== '/')
+                        <div class="mt-3 mt-lg-0 d-flex align-items-center">
+                            <a href="{{ url('/adminLogin') }}" class="btn btn-danger btn-sm">
+                                <i class="bi bi-person-fill-check"></i> Admin Login
+                            </a>
+                        </div>
+                    @endif
+
+
                 </div>
             </div>
         </div>
