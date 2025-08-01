@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserLocationController;
 use App\Http\Controllers\Admin\VcdcController;
 use App\Http\Controllers\SurveyAnswerController;
+use App\Http\Controllers\VisitorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\SurveyAdminController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -29,6 +30,10 @@ Route::get('/privacyPolicy', function () {
 Route::get('/termsAndCondition', function () {
     return view('termsAndCondition');
 });
+
+Route::post('/track-visitor', [VisitorController::class, 'index']);
+Route::get('/visitor-count', [VisitorController::class, 'trackVisitor']);
+
 
 Route::get('/adminLogin', [AdminLoginController::class, 'showLoginForm'])->name('login');
 Route::get('/adminLogin', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');

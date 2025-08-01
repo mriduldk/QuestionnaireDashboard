@@ -383,6 +383,47 @@
 
 </script>
 
+
+<script>
+    // Function to track visitor
+    function trackVisitor() {
+        $.ajax({
+            url: "{{ url('/track-visitor') }}",  // API endpoint
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}", // CSRF Token
+            },
+            success: function(response) {
+                console.log("Visitor Tracked");
+                getVisitorCount(); // Refresh the visitor count after tracking
+            },
+            error: function(xhr, status, error) {
+                console.log("Error: " + error);
+            }
+        });
+    }
+
+    // Function to get the total visitor count
+    function getVisitorCount() {
+        $.ajax({
+            url: "{{ url('/visitor-count') }}",  // API endpoint
+            type: "GET",
+            success: function(response) {
+                $('#visitor-count').text(response.total_visitors); // Update the count on the page
+            },
+            error: function(xhr, status, error) {
+                console.log("Error: " + error);
+            }
+        });
+    }
+
+    // Call trackVisitor on page load
+    $(document).ready(function() {
+        trackVisitor();  // Track the visitor when the page loads
+        getVisitorCount();  // Get the total visitor count
+    });
+</script>
+
 <!--begin::Page Vendors(used by this page)-->
 <script src="{{ asset('assets-metronics/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
 <script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM"></script>

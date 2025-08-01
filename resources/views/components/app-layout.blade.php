@@ -67,22 +67,24 @@
                 </div>
                 <div class="offcanvas-body pt-0 align-items-center">
                     <ul class="navbar-nav mx-auto align-items-lg-center">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/') }}" role="button"
-                               aria-expanded="false">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/privacyPolicy') }}" role="button"
-                               aria-expanded="false">Privay Policy</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ url('/termsAndCondition') }}" role="button"
-                               aria-expanded="false">Terms & Condition</a>
-                        </li>
-                        {{-- <li class="nav-item ">
-                            <a class="nav-link" href="{{ url('/contact') }}" role="button"
-                               aria-expanded="false">Contact</a>
-                        </li> --}}
+
+                        @if (Request::path() !== '/')
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/') }}" role="button"
+                                   aria-expanded="false">Home</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/privacyPolicy') }}" role="button"
+                                   aria-expanded="false">Privay Policy</a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link" href="{{ url('/termsAndCondition') }}" role="button"
+                                   aria-expanded="false">Terms & Condition</a>
+                            </li>
+                        @endif
+
                     </ul>
 
                     @if (Request::path() !== '/')
@@ -106,16 +108,16 @@
     <div class="container pb-4">
         <hr>
         <div class="row align-items-center">
-            <div class="col-md-3">
+            {{--<div class="col-md-3">
                 <a class="mb-4 mb-lg-0 d-block text-inverse" href=".{{ url('/') }}"><img
                         src="./assets/images/logo/btc.png" width="30%" alt="" /></a>
-            </div>
-            <div class="col-md-9 col-lg-6">
+            </div>--}}
+            <div class="col-md-12 col-lg-6">
 
-                <div class="count text-sm-center">
+                <div class="count">
                     <span class="text btn btn-outline-primary btn-sm mb-2">Total Visitors : <span id="visitor-count"></span> </span> <br>
                 </div>
-                <div class="small mb-3 mb-lg-0 text-lg-center">
+                <div class="small mb-3 mb-lg-0">
                     Copyright © 2025
 
                     <span class="text-primary"><a href="#"></a></span>
