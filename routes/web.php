@@ -79,5 +79,6 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 Route::get('/', [CallLetterController::class, 'showCallLetterPage'])->name('showCallLetterPage');
 //Route::get('/call-letter', [CallLetterController::class, 'showCallLetterPage'])->name('showCallLetterPage');
 Route::post('/validate-user', [CallLetterController::class, 'validate'])->name('validate');
+Route::post('/validate-user-json', [CallLetterController::class, 'validateJson'])->name('validateJson');
 Route::post('/call-letter-pdf', [CallLetterController::class, 'printPdf'])->name('printPdf');
 

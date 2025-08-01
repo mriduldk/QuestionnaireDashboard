@@ -34,7 +34,7 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/theme.min.css') }}">
-    <title>BTR Questionnaire Portal</title>
+    <title>Welcome to CEM Special Initiative Schemes, BTR</title>
 
     <link href="{{ asset('assets-metronics/css/timeline.css') }}" rel="stylesheet" type="text/css" />
 

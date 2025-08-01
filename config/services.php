@@ -34,5 +34,10 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'msg91' => [
+        'auth_key' => env('MSG91_AUTH_KEY'),
+        'widget_id' => env('MSG91_WIDGET_ID'),
+    ],
+
 
 ];

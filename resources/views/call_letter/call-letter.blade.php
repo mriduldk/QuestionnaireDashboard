@@ -32,8 +32,87 @@
                     <div class="card shadow-sm mb-6">
                         <div class="card-body">
 
-                            @if (!session('showOtp'))
-                                <form class="needs-validation mb-6" action="{{ route('validate') }}" method="POST"
+                            <form class="needs-validation mb-6" action="{{ route('validate') }}" method="POST" id="validateForm"
+                                  novalidate>
+                                @csrf
+                                <meta name="csrf-token" content="{{ csrf_token() }}">
+
+                                <div class="alert alert-success alert-dismissible fade show success-message" role="alert">
+                                    <span class="success-message-text"></span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="alert alert-warning alert-dismissible fade show error-message" role="alert">
+                                    <span class="error-message-text"></span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="phone1" class="form-label">
+                                        Phone Number
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="phone1" name="phone1" placeholder="Enter Phone Number"
+                                           required />
+                                    <div class="invalid-feedback">Please enter phone number.</div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button class="btn btn-info" type="button" onclick="sentOtp2()">Generate OTP</button>
+                                </div>
+
+                            </form>
+
+
+                            <form class="needs-validation mb-6" action="{{ route('printPdf') }}" method="POST" id="printPdfForm"
+                                  novalidate>
+                                @csrf
+
+                                <div class="alert alert-success alert-dismissible fade show success-message" role="alert">
+                                    <span class="success-message-text"></span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="alert alert-warning alert-dismissible fade show error-message" role="alert">
+                                    <span class="error-message-text"></span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">
+                                        Phone Number
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number"
+                                           required value="{{ session('phone') }}" readonly />
+                                    <div class="invalid-feedback">Please enter phone number.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="otp" class="form-label">OTP</label>
+                                    <input type="number" class="form-control" id="otp"
+                                           name="otp" required />
+                                    <div class="invalid-feedback">Please enter OTP.</div>
+                                </div>
+
+                                <input type="text" class="form-control" id="token"
+                                       name="token" hidden=""/>
+
+                                <div class="d-grid">
+                                    <button class="btn btn-info" type="button" onclick="verifyOTP()">Download Call Letter</button>
+                                </div>
+
+                                <div class="mt-4 text-center">
+                                    <button type="button" id="resendOtpBtn" class="btn btn-sm btn-outline-primary" onclick="resendOtp()" disabled>
+                                        Resend OTP <span id="resendTimer">(30s)</span>
+                                    </button>
+                                </div>
+
+                            </form>
+
+                            @if (session('showOtp'))
+                                <form class="needs-validation mb-6" action="{{ route('validate') }}" method="POST" id="validateForm"
                                       novalidate>
                                     @csrf
 
@@ -72,14 +151,14 @@
                                     </div>
 
                                     <div class="d-grid">
-                                        <button class="btn btn-info" type="submit">Generate OTP</button>
+                                        <button class="btn btn-info" type="button" onclick="sentOtp2()">Generate OTP</button>
                                     </div>
 
                                 </form>
 
                             @endif
                             @if (session('showOtp'))
-                                <form class="needs-validation mb-6" action="{{ route('printPdf') }}" method="POST"
+                                <form class="needs-validation mb-6" action="{{ route('printPdf') }}" method="POST" id="printPdfForm"
                                       novalidate>
                                     @csrf
 
@@ -124,7 +203,7 @@
                                     </div>
 
                                     <div class="d-grid">
-                                        <button class="btn btn-info" type="submit">Download Call Letter</button>
+                                        <button class="btn btn-info" type="button" onclick="verifyOTP()">Download Call Letter</button>
                                     </div>
 
                                 </form>
@@ -134,19 +213,155 @@
                     </div>
                 </div>
             </div>
-{{--            <div class="row">--}}
-{{--                <div class="col-lg-12">--}}
-{{--                    <div class="text-center">--}}
-{{--                        <div class="small mb-3 mb-lg-0 text-body-tertiary">--}}
-{{--                            Copyright © 2024 | Designed & Developed By--}}
-{{--                            <span class="text-primary"><a href="https://education.bodoland.gov.in/">Department of--}}
-{{--                                    Grievance, BTR</a></span>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+
         </div>
     </section>
+
+    <script type="text/javascript">
+        var configuration = {
+            widgetId: "326b426c6f37393930323939",
+            tokenAuth: "383102TpxSHyrxgU638459f1P1",
+            identifier: "",
+            exposeMethods: true,
+            captchaRenderId: '', // id(must be unique) of html element where to render captcha, only works if there is exposedMethod is true,.
+            success: (data) => {
+                document.getElementById('printPdfForm').submit();
+            },
+            failure: (error) => {
+                console.log('failure reason', error);
+                $(".success-message").hide();
+                $(".error-message").show();
+                $(".error-message-text").text(error.message);
+            },
+
+        };
+
+        $("#printPdfForm").hide();
+        $(".success-message").hide();
+        $(".error-message").hide();
+
+    </script>
+    <script type="text/javascript" onload="initSendOTP(configuration)" src="https://verify.msg91.com/otp-provider.js"></script>
+
+    <script>
+
+        var messageId = ""
+        function sentOtp2() {
+
+            var phone = $("#phone1").val();
+
+            fetch('/validate-user-json', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                },
+                body: JSON.stringify({ phone: phone })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status) {
+
+                        window.sendOtp(
+                            '91' + phone, // mandatory
+                            (data1) => {
+                                debugger;
+                                console.log('OTP sent successfully.' + data1)
+                                //document.getElementById('validateForm').submit();
+
+                                $("#printPdfForm").show();
+                                $("#validateForm").hide();
+                                $("#phone").val($("#phone1").val())
+
+                                $(".success-message").show();
+                                $(".success-message-text").text(data.message);
+                                $(".error-message").hide();
+
+
+                                showResendButton();
+                            },
+                            (error) => console.log('Error occurred')
+                        );
+
+                    } else {
+
+                        $("#printPdfForm").hide();
+                        $("#validateForm").show();
+
+                        $(".success-message").hide();
+                        $(".error-message").show();
+                        $(".error-message-text").text(data.message);
+
+                    }
+                });
+        }
+
+        function verifyOTP() {
+
+            var otp = Number($("#otp").val());
+            window.verifyOtp(
+                otp,
+                (data) => {
+                    console.log('OTP verified: ', data)
+                },
+                (error) => console.log(error),
+            );
+
+
+        }
+
+        let resendCooldown = 3; // seconds
+        let resendInterval;
+
+        function startResendTimer() {
+            let timeLeft = resendCooldown;
+            const resendBtn = document.getElementById("resendOtpBtn");
+            const timerSpan = document.getElementById("resendTimer");
+
+            resendBtn.disabled = true;
+            timerSpan.textContent = `(${timeLeft}s)`;
+
+            resendInterval = setInterval(() => {
+                timeLeft--;
+                timerSpan.textContent = `(${timeLeft}s)`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(resendInterval);
+                    resendBtn.disabled = false;
+                    timerSpan.textContent = "";
+                }
+            }, 1000);
+        }
+
+        // Call this after initial OTP is sent
+        function showResendButton() {
+            document.getElementById("resendOtpBtn").style.display = "inline-block";
+            startResendTimer();
+        }
+
+        // Call this to resend OTP manually
+        function resendOtp() {
+            const phone = $("#phone1").val();
+
+            window.sendOtp(
+                '91' + phone,
+                (data) => {
+                    console.log('OTP resent successfully.', data);
+                    messageId = data.messageId;
+                    startResendTimer();
+
+                    $(".success-message").text("OTP resent successfully").show();
+                    $(".error-message").hide();
+                },
+                (error) => {
+                    console.error('Resend OTP failed:', error);
+                    $(".success-message").hide();
+                    $(".error-message").text("Failed to resend OTP").show();
+                }
+            );
+        }
+
+    </script>
 
 
 </x-app-layout>
