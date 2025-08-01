@@ -310,7 +310,7 @@
 
         }
 
-        let resendCooldown = 3; // seconds
+        let resendCooldown = 30; // seconds
         let resendInterval;
 
         function startResendTimer() {
