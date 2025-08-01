@@ -126,8 +126,8 @@
                 </div>
 
             </div>
-            <div class="col-lg-3">
-                <div class="text-lg-end d-flex align-items-center justify-content-lg-end">
+            <div class="col-lg-6">
+                <div class="text-lg-end d-flex justify-content-lg-end">
                     <div class="dropdown">
                         <button class="btn btn-light btn-icon rounded-circle d-flex align-items-center" type="button"
                                 aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
