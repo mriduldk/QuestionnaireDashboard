@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\CallLetterDownload;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Applicant;
@@ -93,6 +94,13 @@ class CallLetterController extends Controller
         $user = Applicant::where('phone', $request->phone)->first();
 
         if ($user) {
+
+            CallLetterDownload::create([
+                'phone' => $request->phone,
+                'ip_address' => request()->ip(),
+                'post_name' => $user->post_name,
+                'applicant_id' => $user->id
+            ]);
 
             $pdf = Pdf::loadView('call_letter.callLetterPdf', compact('user'));
             //return $pdf->stream('call-letter.pdf');
