@@ -1,5 +1,41 @@
 <x-app-layout>
 
+    <style>
+        .dot-loader {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            height: 1em;
+        }
+
+        .dot-loader span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            animation: blink 1.4s infinite both;
+        }
+
+        .dot-loader span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot-loader span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes blink {
+            0%, 80%, 100% {
+                opacity: 0;
+            }
+            40% {
+                opacity: 1;
+            }
+        }
+    </style>
+
 
     <div class="pattern-square"></div>
     <!--Pageheader start-->
@@ -11,7 +47,7 @@
 
                         <a href="{{ url('/') }}">
                             <img src="{{ asset('assets/images/logo/btc.png') }}" alt="brand" class="mb-3"
-                                width="40%" />
+                                 width="40%"/>
                         </a>
 
                         <h2 class="mb-1">CEM's Special Initiative</h2>
@@ -32,12 +68,14 @@
                     <div class="card shadow-sm mb-6">
                         <div class="card-body">
 
-                            <form class="needs-validation mb-6" action="{{ route('validate') }}" method="POST" id="validateForm"
+                            <form class="needs-validation mb-6" action="{{ route('validate') }}" method="POST"
+                                  id="validateForm"
                                   novalidate>
                                 @csrf
                                 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-                                <div class="alert alert-success alert-dismissible fade show success-message" role="alert">
+                                <div class="alert alert-success alert-dismissible fade show success-message"
+                                     role="alert">
                                     <span class="success-message-text"></span>
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"
                                             aria-label="Close"></button>
@@ -53,23 +91,39 @@
                                         Phone Number
                                         <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" id="phone1" name="phone1" placeholder="Enter Phone Number"
-                                           required />
+                                    <input type="text" class="form-control" id="phone1" name="phone1"
+                                           placeholder="Enter Phone Number"
+                                           required/>
                                     <div class="invalid-feedback">Please enter phone number.</div>
                                 </div>
 
+                                {{--<div class="d-grid">
+                                    <button class="btn btn-info" type="button" onclick="sentOtp2()">Generate OTP
+                                    </button>
+                                </div>--}}
+
                                 <div class="d-grid">
-                                    <button class="btn btn-info" type="button" onclick="sentOtp2()">Generate OTP</button>
+                                    <button class="btn btn-info d-flex justify-content-center align-items-center"
+                                            type="button" onclick="sentOtp2(this)">
+                                        <span class="btn-text">Generate OTP</span>
+                                        <span class="dot-loader ms-2">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </span>
+                                    </button>
                                 </div>
 
                             </form>
 
 
-                            <form class="needs-validation mb-6" action="{{ route('printPdf') }}" method="POST" id="printPdfForm"
+                            <form class="needs-validation mb-6" action="{{ route('printPdf') }}" method="POST"
+                                  id="printPdfForm"
                                   novalidate>
                                 @csrf
 
-                                <div class="alert alert-success alert-dismissible fade show success-message" role="alert">
+                                <div class="alert alert-success alert-dismissible fade show success-message"
+                                     role="alert">
                                     <span class="success-message-text"></span>
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"
                                             aria-label="Close"></button>
@@ -85,26 +139,41 @@
                                         Phone Number
                                         <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number"
-                                           required value="{{ session('phone') }}" readonly />
+                                    <input type="text" class="form-control" id="phone" name="phone"
+                                           placeholder="Enter Phone Number"
+                                           required value="{{ session('phone') }}" readonly/>
                                     <div class="invalid-feedback">Please enter phone number.</div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="otp" class="form-label">OTP</label>
                                     <input type="number" class="form-control" id="otp"
-                                           name="otp" required />
+                                           name="otp" required/>
                                     <div class="invalid-feedback">Please enter OTP.</div>
                                 </div>
 
                                 <input type="text" class="form-control" id="token"
                                        name="token" hidden=""/>
 
+                                {{--<div class="d-grid">
+                                    <button class="btn btn-info" type="button" onclick="verifyOTP()">Download Call
+                                        Letter
+                                    </button>
+                                </div>--}}
                                 <div class="d-grid">
-                                    <button class="btn btn-info" type="button" onclick="verifyOTP()">Download Call Letter</button>
+                                    <button id="verifyOtpBtn" class="btn btn-info d-flex justify-content-center align-items-center"
+                                            type="button" onclick="verifyOTP(this)">
+                                        <span class="btn-text">Download Call Letter</span>
+                                        <span class="dot-loader ms-2">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </span>
+                                    </button>
                                 </div>
 
                                 <div class="mt-4 text-center">
-                                    <button type="button" id="resendOtpBtn" class="btn btn-sm btn-outline-primary" onclick="resendOtp()" disabled>
+                                    <button type="button" id="resendOtpBtn" class="btn btn-sm btn-outline-primary"
+                                            onclick="resendOtp()" disabled>
                                         Resend OTP <span id="resendTimer">(30s)</span>
                                     </button>
                                 </div>
@@ -112,7 +181,8 @@
                             </form>
 
                             @if (session('showOtp'))
-                                <form class="needs-validation mb-6" action="{{ route('validate') }}" method="POST" id="validateForm"
+                                <form class="needs-validation mb-6" action="{{ route('validate') }}" method="POST"
+                                      id="validateForm"
                                       novalidate>
                                     @csrf
 
@@ -145,20 +215,23 @@
                                             Phone Number
                                             <span class="text-danger">*</span>
                                         </label>
-                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number"
-                                               required />
+                                        <input type="text" class="form-control" id="phone" name="phone"
+                                               placeholder="Enter Phone Number"
+                                               required/>
                                         <div class="invalid-feedback">Please enter phone number.</div>
                                     </div>
 
                                     <div class="d-grid">
-                                        <button class="btn btn-info" type="button" onclick="sentOtp2()">Generate OTP</button>
+                                        <button class="btn btn-info" type="button" onclick="sentOtp2()">Generate OTP
+                                        </button>
                                     </div>
 
                                 </form>
 
                             @endif
                             @if (session('showOtp'))
-                                <form class="needs-validation mb-6" action="{{ route('printPdf') }}" method="POST" id="printPdfForm"
+                                <form class="needs-validation mb-6" action="{{ route('printPdf') }}" method="POST"
+                                      id="printPdfForm"
                                       novalidate>
                                     @csrf
 
@@ -191,19 +264,22 @@
                                             Phone Number
                                             <span class="text-danger">*</span>
                                         </label>
-                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number"
-                                               required value="{{ session('phone') }}" readonly />
+                                        <input type="text" class="form-control" id="phone" name="phone"
+                                               placeholder="Enter Phone Number"
+                                               required value="{{ session('phone') }}" readonly/>
                                         <div class="invalid-feedback">Please enter phone number.</div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="otp" class="form-label">OTP</label>
                                         <input type="number" class="form-control" id="otp"
-                                               name="otp" required />
+                                               name="otp" required/>
                                         <div class="invalid-feedback">Please enter OTP.</div>
                                     </div>
 
                                     <div class="d-grid">
-                                        <button class="btn btn-info" type="button" onclick="verifyOTP()">Download Call Letter</button>
+                                        <button class="btn btn-info" type="button" onclick="verifyOTP()">Download Call
+                                            Letter
+                                        </button>
                                     </div>
 
                                 </form>
@@ -225,9 +301,31 @@
             exposeMethods: true,
             captchaRenderId: '', // id(must be unique) of html element where to render captcha, only works if there is exposedMethod is true,.
             success: (data) => {
+
+                setTimeout(() => {
+
+                    $('#verifyOtpBtn').find('.dot-loader').hide();
+                    $('#verifyOtpBtn').find('.btn-text').show();
+
+                    $(".success-message").show();
+                    $(".error-message").hide();
+                    $(".success-message-text").text("Call letter downloaded successfully.");
+
+                    $("#otp").val("");
+
+                    $("#printPdfForm").hide();
+                    $("#validateForm").show();
+
+                }, 2500);
+
                 document.getElementById('printPdfForm').submit();
+
             },
             failure: (error) => {
+
+                $('#verifyOtpBtn').find('.dot-loader').hide();
+                $('#verifyOtpBtn').find('.btn-text').show();
+
                 console.log('failure reason', error);
                 $(".success-message").hide();
                 $(".error-message").show();
@@ -241,12 +339,21 @@
         $(".error-message").hide();
 
     </script>
-    <script type="text/javascript" onload="initSendOTP(configuration)" src="https://verify.msg91.com/otp-provider.js"></script>
+    <script type="text/javascript" onload="initSendOTP(configuration)"
+            src="https://verify.msg91.com/otp-provider.js"></script>
 
     <script>
 
         var messageId = ""
-        function sentOtp2() {
+
+        function sentOtp2(btn) {
+
+            const btnText = btn.querySelector('.btn-text');
+            const loader = btn.querySelector('.dot-loader');
+
+            // Show loader, hide text
+            btnText.style.display = 'none';
+            loader.style.display = 'flex';
 
             var phone = $("#phone1").val();
 
@@ -256,7 +363,7 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 },
-                body: JSON.stringify({ phone: phone })
+                body: JSON.stringify({phone: phone})
             })
                 .then(res => res.json())
                 .then(data => {
@@ -265,7 +372,10 @@
                         window.sendOtp(
                             '91' + phone, // mandatory
                             (data1) => {
-                                debugger;
+
+                                loader.style.display = 'none';
+                                btnText.style.display = 'inline';
+
                                 console.log('OTP sent successfully.' + data1)
                                 //document.getElementById('validateForm').submit();
 
@@ -280,7 +390,13 @@
 
                                 showResendButton();
                             },
-                            (error) => console.log('Error occurred')
+                            (error) => {
+
+                                loader.style.display = 'none';
+                                btnText.style.display = 'inline';
+
+                                console.log('Error occurred')
+                            }
                         );
 
                     } else {
@@ -292,11 +408,21 @@
                         $(".error-message").show();
                         $(".error-message-text").text(data.message);
 
+                        loader.style.display = 'none';
+                        btnText.style.display = 'inline';
+
                     }
                 });
         }
 
-        function verifyOTP() {
+        function verifyOTP(btn) {
+
+            const btnText = btn.querySelector('.btn-text');
+            const loader = btn.querySelector('.dot-loader');
+
+            // Show loader, hide text
+            btnText.style.display = 'none';
+            loader.style.display = 'flex';
 
             var otp = Number($("#otp").val());
             window.verifyOtp(
@@ -304,7 +430,13 @@
                 (data) => {
                     console.log('OTP verified: ', data)
                 },
-                (error) => console.log(error),
+                (error) => {
+                    console.log(error);
+
+                    loader.style.display = 'none';
+                    btnText.style.display = 'inline';
+
+                }
             );
 
 
