@@ -116,6 +116,7 @@ class AuthController extends Controller
 
         $user = User::where('is_delete', 0)
             ->where('user_id', $request->user_id)
+            ->with(['districtInfo', 'subDivisionInfo', 'blockInfo', 'vcdcInfo'])
             ->first();
 
         if(empty($user)){
@@ -134,7 +135,13 @@ class AuthController extends Controller
                 $user->photo = Storage::url($path);
                 $user->save();
 
-                return ApiResponse::success(200, "Image Uploaded Successfully", "user", $user,);
+                $data = $user->toArray();
+                $data['district'] = $user->districtInfo->name ?? null;
+                $data['sub_division'] = $user->subDivisionInfo->name ?? null;
+                $data['block'] = $user->blockInfo->name ?? null;
+                $data['vcdc'] = $user->vcdcInfo->name ?? null;
+
+                return ApiResponse::success(200, "Image Uploaded Successfully", "user", $data,);
             }
         }
     }
