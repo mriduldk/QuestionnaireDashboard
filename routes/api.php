@@ -35,3 +35,6 @@ Route::get('/surveys/{survey}/json', [SurveyApiController::class, 'showJson']);
 
 Route::post('/survey-answer-images', [SurveyAnswerImageController::class, 'store']);
 
+Route::post('/store-profile-image', [AuthController::class, 'storeProfileImage']);
+Route::post('/update-profile-info', [AuthController::class, 'updateSubDivisionAndBlock']);
+

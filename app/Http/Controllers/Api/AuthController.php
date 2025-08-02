@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 
 class AuthController extends Controller
@@ -105,4 +106,72 @@ class AuthController extends Controller
         ]);
     }
 
+    public function storeProfileImage(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required',
+            'image' => 'required|image|max:2048'
+        ]);
+
+
+        $user = User::where('is_delete', 0)
+            ->where('user_id', $request->user_id)
+            ->first();
+
+        if(empty($user)){
+            return ApiResponse::error('User Not Found', null, 403);
+        }
+        else{
+
+            if($user->is_active == 0){
+
+                return ApiResponse::error('User is not active.', null, 403);
+            }
+            else{
+
+                $path = $request->file('image')->store('users/photos', 'public');
+
+                $user->photo = Storage::url($path);
+                $user->save();
+
+                return ApiResponse::success(200, "Image Uploaded Successfully", "user", $user,);
+            }
+        }
+    }
+
+    public function updateSubDivisionAndBlock(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required',
+            'sub_division_id' => 'required',
+            'block_id' => 'required'
+        ]);
+
+
+        $user = User::where('is_delete', 0)
+            ->where('user_id', $request->user_id)
+            ->first();
+
+        if(empty($user)){
+            return ApiResponse::error('User Not Found', null, 403);
+        }
+        else{
+
+            if($user->is_active == 0){
+
+                return ApiResponse::error('User is not active.', null, 403);
+            }
+            else{
+
+                $user->sub_division = $request->sub_division_id;
+                $user->block = $request->block_id;
+                $user->save();
+
+                return ApiResponse::success(200, "Updated Successfully", "user", $user,);
+            }
+        }
+    }
+
+
 }
+

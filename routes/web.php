@@ -42,7 +42,6 @@ Route::post('/admin-logout', [AdminLoginController::class, 'logout'])->name('adm
 
 Route::get('/surveys/{survey}', [SurveyApiController::class, 'show']);
 
-
 Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
@@ -79,7 +78,6 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::get('user-locations/ajax', [UserLocationController::class, 'ajax'])->name('admin.user-locations.ajax');
 
 });
-
 
 Route::get('/', [CallLetterController::class, 'showCallLetterPage'])->name('showCallLetterPage');
 //Route::get('/call-letter', [CallLetterController::class, 'showCallLetterPage'])->name('showCallLetterPage');
