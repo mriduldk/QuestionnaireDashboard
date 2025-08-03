@@ -13,7 +13,7 @@ class DistrictController extends Controller
      */
     public function index()
     {
-        $districts = District::latest()->get();
+        $districts = District::all();
         return view('admin.districts.index', compact('districts'));
     }
 

@@ -11,8 +11,6 @@
                 <tr>
                     <th>#</th>
                     <th>VCDC Name</th>
-                    <th>Block</th>
-                    <th>Sub-Division</th>
                     <th>District</th>
                     <th>Actions</th>
                 </tr>
@@ -22,9 +20,7 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $vcdc->name }}</td>
-                        <td>{{ $vcdc->block->name ?? '-' }}</td>
-                        <td>{{ $vcdc->block->subDivision->name ?? '-' }}</td>
-                        <td>{{ $vcdc->block->subDivision->district->name ?? '-' }}</td>
+                        <td>{{ $vcdc->district->name ?? '-' }}</td>
                         <td>
                             <a href="{{ route('vcdcs.edit', $vcdc) }}" class="btn btn-sm btn-warning">Edit</a>
                             <form action="{{ route('vcdcs.destroy', $vcdc) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure?')">

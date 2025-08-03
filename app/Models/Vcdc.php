@@ -9,10 +9,10 @@ class Vcdc extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'block_id'];
+    protected $fillable = ['name', 'district_id'];
 
-    public function block()
+    public function district()
     {
-        return $this->belongsTo(Block::class);
+        return $this->belongsTo(District::class);
     }
 }

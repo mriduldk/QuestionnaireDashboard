@@ -7,14 +7,14 @@
             <div class="card-body">
 
                 <div class="form-group">
-                    <label>Block</label>
-                    <select name="block_id" class="form-control" required>
-                        <option value="">-- Select Block --</option>
-                        @foreach($blocks as $id => $name)
-                            <option value="{{ $id }}" {{ old('block_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
+                    <label>District</label>
+                    <select name="district_id" class="form-control" required>
+                        <option value="">-- Select District --</option>
+                        @foreach($districts as $id => $name)
+                            <option value="{{ $id }}" {{ old('district_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
                         @endforeach
                     </select>
-                    @error('block_id') <div class="text-danger">{{ $message }}</div> @enderror
+                    @error('district_id') <div class="text-danger">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="form-group">
