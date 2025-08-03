@@ -112,40 +112,6 @@
     },
 
     {
-        "title": "Manage Sub Division",
-        "type": "section"
-    },
-    {
-        "title": "Create Sub Division",
-        "icon": "create",
-        "route": "sub-divisions.create",
-        "type": "link"
-    },
-    {
-        "title": "Sub Division List",
-        "icon": "list",
-        "route": "sub-divisions.index",
-        "type": "link"
-    },
-
-    {
-        "title": "Manage Block",
-        "type": "section"
-    },
-    {
-        "title": "Create Block",
-        "icon": "create",
-        "route": "blocks.create",
-        "type": "link"
-    },
-    {
-        "title": "Block List",
-        "icon": "list",
-        "route": "blocks.index",
-        "type": "link"
-    },
-
-    {
         "title": "Manage VCDC",
         "type": "section"
     },
