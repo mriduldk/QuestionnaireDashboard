@@ -80,8 +80,8 @@
                         <th>Responder's Name</th>
                         <th>Responder's Phone</th>
                         <th>District</th>
-                        <th>Sub Division</th>
-                        <th>Block</th>
+                        {{--<th>Sub Division</th>
+                        <th>Block</th>--}}
                         <th>VCDC</th>
                         <th>Village</th>
                         <th>Submitted On</th>
@@ -94,8 +94,8 @@
                             <td>{{ $answer->name }}</td>
                             <td>{{ $answer->phone_number }}</td>
                             <td>{{ $answer->district }}</td>
-                            <td>{{ $answer->sub_division }}</td>
-                            <td>{{ $answer->block }}</td>
+                            {{--<td>{{ $answer->sub_division }}</td>
+                            <td>{{ $answer->block }}</td>--}}
                             <td>{{ $answer->vcdc }}</td>
                             <td>{{ $answer->village }}</td>
                             <td>{{ $answer->created_at?->format('d-m-Y h:i A') }}</td>

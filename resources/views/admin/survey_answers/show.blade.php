@@ -45,15 +45,15 @@
                 </tr>
                 <tr>
                     <th>District</th><td>{{ $surveyAnswer->district }}</td>
-                    <th>Sub Division</th><td>{{ $surveyAnswer->sub_division }}</td>
-                    <th>Block</th><td>{{ $surveyAnswer->block }}</td>
-                </tr>
-
-                <tr>
+                    {{--<th>Sub Division</th><td>{{ $surveyAnswer->sub_division }}</td>
+                    <th>Block</th><td>{{ $surveyAnswer->block }}</td>--}}
                     <th>VCDC</th>
                     <td>{{ $surveyAnswer->vcdc }}</td>
                     <th>Village</th>
                     <td>{{ $surveyAnswer->village }}</td>
+                </tr>
+
+                <tr>
                     <th>Last Updated At</th>
                     <td>{{ $surveyAnswer->updated_at ? $surveyAnswer->updated_at->format('d-m-Y h:i A') : 'N/A' }}</td>
                 </tr>
