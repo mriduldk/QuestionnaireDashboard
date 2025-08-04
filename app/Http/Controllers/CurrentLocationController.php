@@ -47,7 +47,7 @@ class CurrentLocationController extends Controller
             'created_at' => now(),
         ]);
 
-        $history = LocationHistory::create($historyData);
+        //$history = LocationHistory::create($historyData);
 
         return ApiResponse::success(200, $message, "currentLocation", $location);
     }

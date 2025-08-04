@@ -31,10 +31,10 @@ class LocationHistoryController extends Controller
         $location = LocationHistory::find($data['location_history_id']);
 
         if ($location) {
-            $location->update($data);
+            //$location->update($data);
             $message = 'Location history updated';
         } else {
-            $location = LocationHistory::create($data);
+            //$location = LocationHistory::create($data);
             $message = 'Location history created';
         }
 
