@@ -79,7 +79,7 @@ class AuthController extends Controller
                 $data = $user->toArray();
                 $data['district'] = $user->districtInfo->name ?? null;
                 $data['sub_division'] = $user->subDivisionInfo->name ?? null;
-                $data['block'] = $user->blockInfo->name ?? null;
+                /*$data['block'] = $user->blockInfo->name ?? null;*/
                 $data['vcdc'] = $user->vcdcInfo->name ?? null;
 
                 return ApiResponse::success(200, "OTP verified successfully", "user", $data,);
@@ -138,10 +138,10 @@ class AuthController extends Controller
                 $data = $user->toArray();
                 $data['district'] = $user->districtInfo->name ?? null;
                 $data['sub_division'] = $user->subDivisionInfo->name ?? null;
-                $data['block'] = $user->blockInfo->name ?? null;
+                /*$data['block'] = $user->blockInfo->name ?? null;*/
                 $data['vcdc'] = $user->vcdcInfo->name ?? null;
 
-                return ApiResponse::success(200, "Image Uploaded Successfully", "user", $data,);
+                return ApiResponse::success(200, "Image Uploaded Successfully", "user", $data);
             }
         }
     }
@@ -150,8 +150,9 @@ class AuthController extends Controller
     {
         $request->validate([
             'user_id' => 'required',
-            'sub_division_id' => 'required',
-            'block_id' => 'required'
+            'block' => 'required',
+            'village' => 'required',
+            'address' => 'required'
         ]);
 
 
@@ -170,11 +171,18 @@ class AuthController extends Controller
             }
             else{
 
-                $user->sub_division = $request->sub_division_id;
-                $user->block = $request->block_id;
+                $user->block = $request->block;
+                $user->village = $request->village;
+                $user->address = $request->address;
                 $user->save();
 
-                return ApiResponse::success(200, "Updated Successfully", "user", $user,);
+
+                $data = $user->toArray();
+                $data['district'] = $user->districtInfo->name ?? null;
+                $data['sub_division'] = $user->subDivisionInfo->name ?? null;
+                $data['vcdc'] = $user->vcdcInfo->name ?? null;
+
+                return ApiResponse::success(200, "Updated Successfully", "user", $data);
             }
         }
     }
