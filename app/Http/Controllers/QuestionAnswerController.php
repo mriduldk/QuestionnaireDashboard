@@ -25,6 +25,7 @@ class QuestionAnswerController extends Controller
             'type' => 'required|string',
             'answer_text' => 'nullable|string',
             'is_answered' => 'nullable|boolean',
+            'is_multiple' => 'nullable|boolean',
             'user_id' => 'required|uuid'
         ]);
 
