@@ -206,7 +206,7 @@ class AuthController extends Controller
                 return ApiResponse::error('User is not active.', null, 403);
             }
             else{
-                return ApiResponse::success(200, "Updated Successfully", "user", $data);
+                return ApiResponse::success(200, "Updated Successfully", "user", $user);
             }
         }
     }
