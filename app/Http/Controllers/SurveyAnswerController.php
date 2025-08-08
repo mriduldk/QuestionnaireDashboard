@@ -63,8 +63,30 @@ class SurveyAnswerController extends Controller
 
     public function getByUserId($userId)
     {
-        $surveyAnswer = SurveyAnswer::with('survey', 'questionAnswers', 'multipleQuestionAnswers')->where('user_id', $userId)->get();
-        return ApiResponse::success(200, 'Survey answer updated', "surveyAnswersServer", $surveyAnswer);
+        //$surveyAnswer = SurveyAnswer::with('survey', 'questionAnswers', 'multipleQuestionAnswers')->where('user_id', $userId)->get();
+
+        $surveyAnswer = SurveyAnswer::with('survey', 'questionAnswers', 'multipleQuestionAnswers')
+        ->where('user_id', $userId)
+        ->get()
+        ->toArray(); // 👈 convert models to plain array first
+
+        $surveyAnswerCamelCase = $this->toCamelCaseArray($surveyAnswer);
+
+        return ApiResponse::success(200, 'Survey answer updated', "surveyAnswersServer", $surveyAnswerCamelCase);
+    }
+    private function toCamelCaseArray($data)
+    {
+        if (is_array($data)) {
+            $newArray = [];
+            foreach ($data as $key => $value) {
+                $camelKey = is_string($key)
+                    ? lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))))
+                    : $key;
+                $newArray[$camelKey] = $this->toCamelCaseArray($value);
+            }
+            return $newArray;
+        }
+        return $data;
     }
 
     // Show list of survey answers
