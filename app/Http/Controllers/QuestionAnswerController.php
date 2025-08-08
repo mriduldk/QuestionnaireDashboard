@@ -14,6 +14,7 @@ class QuestionAnswerController extends Controller
     {
         $request->merge([
             'is_answered' => filter_var($request->input('is_answered'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE),
+            'is_multiple' => filter_var($request->input('is_multiple'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE),
         ]);
 
         $validator = Validator::make($request->all(), [
@@ -25,6 +26,7 @@ class QuestionAnswerController extends Controller
             'type' => 'required|string',
             'answer_text' => 'nullable|string',
             'is_answered' => 'nullable|boolean',
+            'is_multiple' => 'nullable|boolean',
             'user_id' => 'required|uuid'
         ]);
 

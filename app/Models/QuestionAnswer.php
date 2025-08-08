@@ -24,11 +24,13 @@ class QuestionAnswer extends Model
         'type',
         'answer_text',
         'is_answered',
+        'is_multiple',
         'user_id',
         'updated',
     ];
 
     protected $casts = [
         'is_answered' => 'boolean',
+        'is_multiple' => 'boolean',
     ];
 }
