@@ -22,6 +22,7 @@ Route::controller(AuthController::class)->prefix('auth')->group(function () {
 Route::get('/surveys/{survey}', [SurveyApiController::class, 'show']);
 
 Route::post('/survey-answer/upsert', [SurveyAnswerController::class, 'upsert']);
+Route::get('/survey-answer/getByUserId/{userId}', [SurveyAnswerController::class, 'getByUserId']);
 
 Route::post('/question-answer/upsert', [QuestionAnswerController::class, 'upsert']);
 

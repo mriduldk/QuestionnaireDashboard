@@ -60,6 +60,11 @@ class SurveyAnswer extends Model
         return $this->hasMany(QuestionAnswer::class, 'survey_answer_id', 'survey_answer_id');
     }
 
+    public function multipleQuestionAnswers()
+    {
+        return $this->hasMany(MultipleQuestionAnswer::class, 'survey_answer_id', 'survey_answer_id');
+    }
+
     public function images()
     {
         return $this->hasMany(SurveyAnswerImage::class, 'survey_answer_id', 'survey_answer_id');
