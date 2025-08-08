@@ -27,4 +27,11 @@ class MultipleQuestionAnswer extends Model
         'is_multiple',
         'sl_no',
     ];
+
+    protected $casts = [
+        'is_answered' => 'boolean',
+        'is_multiple' => 'boolean',
+    ];
+
+
 }
