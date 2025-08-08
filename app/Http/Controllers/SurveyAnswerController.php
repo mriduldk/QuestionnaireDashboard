@@ -63,9 +63,8 @@ class SurveyAnswerController extends Controller
 
     public function getByUserId($userId)
     {
-        $surveyAnswer = SurveyAnswer::with('user', 'survey', 'questionAnswers', 'multipleQuestionAnswers')->where('user_id', $userId)->get();
-
-        return ApiResponse::success(200, 'Survey answer updated', "surveyAnswer", $surveyAnswer);
+        $surveyAnswer = SurveyAnswer::with('survey', 'questionAnswers', 'multipleQuestionAnswers')->where('user_id', $userId)->get();
+        return ApiResponse::success(200, 'Survey answer updated', "surveyAnswersServer", $surveyAnswer);
     }
 
     // Show list of survey answers
