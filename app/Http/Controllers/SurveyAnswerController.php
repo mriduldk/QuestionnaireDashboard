@@ -67,6 +67,7 @@ class SurveyAnswerController extends Controller
 
         $surveyAnswer = SurveyAnswer::with('survey', 'questionAnswers', 'multipleQuestionAnswers')
         ->where('user_id', $userId)
+        ->where('survey_answer_id', 'f29cd91a-1c78-4773-b9cf-673e4b08e08c')
         ->get()
         ->toArray(); // 👈 convert models to plain array first
 

@@ -38,4 +38,5 @@ Route::post('/survey-answer-images', [SurveyAnswerImageController::class, 'store
 
 Route::post('/store-profile-image', [AuthController::class, 'storeProfileImage']);
 Route::post('/update-profile-info', [AuthController::class, 'updateSubDivisionAndBlock']);
+Route::post('/getByUserId', [AuthController::class, 'getByUserId']);
 
