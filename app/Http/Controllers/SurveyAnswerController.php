@@ -79,6 +79,12 @@ class SurveyAnswerController extends Controller
         if (is_array($data)) {
             $newArray = [];
             foreach ($data as $key => $value) {
+                 // If the current key is "multiple_question_answers", keep as-is
+                if ($key === 'multiple_question_answers') {
+                    $newArray[$key] = $value; // No camelCase change
+                    continue;
+                }
+
                 $camelKey = is_string($key)
                     ? lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))))
                     : $key;
