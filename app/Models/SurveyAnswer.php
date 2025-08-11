@@ -23,6 +23,8 @@ class SurveyAnswer extends Model
         'block',
         'vcdc',
         'village',
+        'ward_no',       // ✅ added
+        'house_no',      // ✅ added
         'name',
         'phone_number',
         'age',

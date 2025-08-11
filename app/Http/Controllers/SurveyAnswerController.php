@@ -24,6 +24,8 @@ class SurveyAnswerController extends Controller
             'block' => 'nullable|string',
             'vcdc' => 'nullable|string',
             'village' => 'nullable|string',
+            'ward_no' => 'nullable|string',
+            'house_no' => 'nullable|string',
             'name' => 'nullable|string',
             'phone_number' => 'nullable|string',
             'age' => 'nullable|string',
