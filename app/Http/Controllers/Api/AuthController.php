@@ -242,7 +242,7 @@ class AuthController extends Controller
             }
             else{
 
-                $user->password = $request->language;
+                $user->fcm_token = $request->language;
                 $user->save();
 
                 return ApiResponse::success(200, "Updated Successfully", "user", $user);
