@@ -218,5 +218,39 @@ class AuthController extends Controller
         }
     }
 
+
+    public function updateUserLanguage(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required',
+            'language' => 'required',
+        ]);
+
+
+        $user = User::where('is_delete', 0)
+            ->where('user_id', $request->user_id)
+            ->first();
+
+        if(empty($user)){
+            return ApiResponse::error('User Not Found', null, 403);
+        }
+        else{
+
+            if($user->is_active == 0){
+
+                return ApiResponse::error('User is not active.', null, 403);
+            }
+            else{
+
+                $user->password = $request->language;
+                $user->save();
+
+                return ApiResponse::success(200, "Updated Successfully", "user", $data);
+            }
+        }
+    }
+
+
+
 }
 
