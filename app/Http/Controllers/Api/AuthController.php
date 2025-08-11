@@ -206,7 +206,7 @@ class AuthController extends Controller
                 return ApiResponse::error('User is not active.', null, 403);
             }
             else{
-                
+
                 $data = $user->toArray();
                 $data['district'] = $user->districtInfo->name ?? null;
                 $data['sub_division'] = $user->subDivisionInfo->name ?? null;
@@ -245,7 +245,7 @@ class AuthController extends Controller
                 $user->password = $request->language;
                 $user->save();
 
-                return ApiResponse::success(200, "Updated Successfully", "user", $data);
+                return ApiResponse::success(200, "Updated Successfully", "user", $user);
             }
         }
     }
