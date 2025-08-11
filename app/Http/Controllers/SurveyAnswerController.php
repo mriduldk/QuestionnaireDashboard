@@ -70,9 +70,15 @@ class SurveyAnswerController extends Controller
         ->get()
         ->toArray(); // 👈 convert models to plain array first
 
-        $surveyAnswerCamelCase = $this->toCamelCaseArray($surveyAnswer);
+        if ($surveyAnswer) {
 
-        return ApiResponse::success(200, 'Survey answer updated', "surveyAnswersServer", $surveyAnswerCamelCase);
+            $surveyAnswerCamelCase = $this->toCamelCaseArray($surveyAnswer);
+
+            return ApiResponse::success(200, 'Survey answer updated', "surveyAnswersServer", $surveyAnswerCamelCase);
+
+        } else {
+            return ApiResponse::success(204, 'Survey answer updated', "surveyAnswersServer", null);
+        }
     }
     private function toCamelCaseArray($data)
     {
