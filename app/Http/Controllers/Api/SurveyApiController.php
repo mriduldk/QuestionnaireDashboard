@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class SurveyApiController extends Controller
 {
-    public function show(Survey $survey)
+    public function show(Survey $survey, string $userId)
     {
         //dd($survey);
         $survey->load(['sections.questions' => function ($query) {
