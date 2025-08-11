@@ -12,6 +12,12 @@ class Section extends Model
     use SoftDeletes;
 
     protected $fillable = ['survey_id', 'title', 'order', 'required'];
+
+    protected $casts = [
+        'required' => 'boolean',
+    ];
+
+
     public function questions() {
         return $this->hasMany(Question::class);
     }
