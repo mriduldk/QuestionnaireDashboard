@@ -84,6 +84,8 @@ class SurveyApiController extends Controller
             'is_multiple' => (bool) $question->is_multiple,
             'metadata' => $question->metadata ?? [],
             'conditional_logic' => $question->conditional_logic,
+            'repeating' => $question->repeating,
+            'header' => $question->header,
             //'created_at' => $question->created_at->format('Y-m-d H:i:s'),
             //'updated_at' => $question->updated_at->format('Y-m-d H:i:s'),
             'sub_questions' => $allQuestions
