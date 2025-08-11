@@ -33,6 +33,7 @@ class SurveyApiController extends Controller
                     'title' => $section->title,
                     'survey_id' => $section->survey_id,
                     'order' => $section->order,
+                    'required' => $section->required,
                     //'created_at' => $section->created_at->format('Y-m-d H:i:s'),
                     //'updated_at' => $section->updated_at->format('Y-m-d H:i:s'),
                     'questions' => $questions->values(),
