@@ -131,14 +131,14 @@ class SurveyApiController extends Controller
                         "title" => "Customer Intake",
                         "surveyId" => 17,
                         "components" => [
-                            ["type" => "text", "id" => "fullName", "label" => "Full name", "hint" => "Enter your name", "required" => true],
-                            ["type" => "number", "id" => "age", "label" => "Age", "hint" => "18+", "required" => true, "min" => 18, "max" => 100],
-                            ["type" => "radio", "id" => "gender", "label" => "Gender", "options" => ["Male", "Female", "Other"], "required" => true],
-                            ["type" => "checkbox", "id" => "hobbies", "label" => "Hobbies", "options" => ["Sports", "Music", "Reading"]],
-                            ["type" => "dropdown", "id" => "country", "label" => "Country", "options" => ["India", "USA", "UK"], "required" => true],
-                            ["type" => "date", "id" => "dob", "label" => "Date of Birth"],
-                            ["type" => "text", "id" => "pan", "label" => "PAN", "hint" => "ABCDE1234F", "regex" => "^[A-Z]{5}[0-9]{4}[A-Z]$"],
-                            ["type" => "button", "id" => "submit", "label" => "Submit"]
+                            ["type" => "Text", "id" => "fullName", "label" => "Full name", "hint" => "Enter your name", "required" => true],
+                            ["type" => "Number", "id" => "age", "label" => "Age", "hint" => "18+", "required" => true, "min" => 18, "max" => 100],
+                            ["type" => "Radio", "id" => "gender", "label" => "Gender", "options" => ["Male", "Female", "Other"], "required" => true],
+                            ["type" => "Checkbox", "id" => "hobbies", "label" => "Hobbies", "options" => ["Sports", "Music", "Reading"]],
+                            ["type" => "Dropdown", "id" => "country", "label" => "Country", "options" => ["India", "USA", "UK"], "required" => true],
+                            ["type" => "Date", "id" => "dob", "label" => "Date of Birth"],
+                            ["type" => "Text", "id" => "pan", "label" => "PAN", "hint" => "ABCDE1234F", "regex" => "^[A-Z]{5}[0-9]{4}[A-Z]$"],
+                            ["type" => "Button", "id" => "submit", "label" => "Submit"]
                         ]
                     ],
                     [
@@ -146,8 +146,8 @@ class SurveyApiController extends Controller
                         "title" => "Customer Feedback",
                         "surveyId" => 17,
                         "components" => [
-                            ["type" => "text", "id" => "feedback", "label" => "Feedback", "hint" => "Enter your feedback", "required" => true],
-                            ["type" => "radio", "id" => "rating", "label" => "Rating", "options" => ["1", "2", "3", "4", "5"], "required" => true]
+                            ["type" => "Text", "id" => "feedback", "label" => "Feedback", "hint" => "Enter your feedback", "required" => true],
+                            ["type" => "Radio", "id" => "rating", "label" => "Rating", "options" => ["1", "2", "3", "4", "5"], "required" => true]
                         ]
                     ]
                 ]
