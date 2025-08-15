@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Survey;
-use Illuminate\Http\Request;
 
 class SurveyApiController extends Controller
 {
@@ -55,22 +54,6 @@ class SurveyApiController extends Controller
         return response()->json($survey);
     }
 
-    /*private function formatQuestion($question, $allQuestions)
-    {
-        return [
-            'id' => $question->id,
-            'text' => $question->question_text,
-            'type' => $question->type,
-            'is_required' => $question->is_required,
-            'metadata' => $question->metadata ?? [],
-            'conditional_logic' => $question->conditional_logic ?? null,
-            'sub_questions' => $allQuestions
-                ->where('parent_id', $question->id)
-                ->map(fn ($sub) => $this->formatQuestion($sub, $allQuestions))
-                ->values()
-        ];
-    }*/
-
     private function formatQuestion($question, $allQuestions)
     {
         $formatted = [
@@ -80,8 +63,8 @@ class SurveyApiController extends Controller
             'parent_id' => $question->parent_id,
             'question_text' => $question->question_text,
             'type' => $question->type,
-            'is_required' => (bool) $question->is_required,
-            'is_multiple' => (bool) $question->is_multiple,
+            'is_required' => (bool)$question->is_required,
+            'is_multiple' => (bool)$question->is_multiple,
             'metadata' => $question->metadata ?? [],
             'conditional_logic' => $question->conditional_logic,
             'repeating' => $question->repeating,
@@ -96,4 +79,82 @@ class SurveyApiController extends Controller
 
         return $formatted;
     }
+
+
+    public function showWithUserId(int $surveyId, string $userId)
+    {
+        $survey = Survey::with([
+            'sections.questions' => function ($query) {
+                $query->orderBy('id');
+            }
+        ])->find($surveyId);
+
+
+        if (empty($survey)) {
+            return ApiResponse::error(404, "Survey not found");
+        }
+
+        $data = [
+            'id' => $survey->id,
+            'title' => $survey->title,
+            'description' => $survey->description,
+            'status' => $survey->status,
+            //'created_at' => $survey->created_at->format('Y-m-d H:i:s'),
+            //'updated_at' => $survey->updated_at->format('Y-m-d H:i:s'),
+            'sections' => $survey->sections->map(function ($section) {
+                $questions = $section->questions->whereNull('parent_id')->map(function ($question) use ($section) {
+                    return $this->formatQuestion($question, $section->questions);
+                });
+
+                return [
+                    'id' => $section->id,
+                    'title' => $section->title,
+                    'survey_id' => $section->survey_id,
+                    'order' => $section->order,
+                    'required' => $section->required,
+                    //'created_at' => $section->created_at->format('Y-m-d H:i:s'),
+                    //'updated_at' => $section->updated_at->format('Y-m-d H:i:s'),
+                    'questions' => $questions->values(),
+                ];
+            }),
+        ];
+
+
+        return response()->json([
+            'status' => 200,
+            'message' => "Survey Fetched Successfully",
+            'survey' => $data,
+            'surveyHeaderSections' =>
+                [
+                    [
+                        "id" => 1,
+                        "title" => "Customer Intake",
+                        "surveyId" => 17,
+                        "components" => [
+                            ["type" => "text", "id" => "fullName", "label" => "Full name", "hint" => "Enter your name", "required" => true],
+                            ["type" => "number", "id" => "age", "label" => "Age", "hint" => "18+", "required" => true, "min" => 18, "max" => 100],
+                            ["type" => "radio", "id" => "gender", "label" => "Gender", "options" => ["Male", "Female", "Other"], "required" => true],
+                            ["type" => "checkbox", "id" => "hobbies", "label" => "Hobbies", "options" => ["Sports", "Music", "Reading"]],
+                            ["type" => "dropdown", "id" => "country", "label" => "Country", "options" => ["India", "USA", "UK"], "required" => true],
+                            ["type" => "date", "id" => "dob", "label" => "Date of Birth"],
+                            ["type" => "text", "id" => "pan", "label" => "PAN", "hint" => "ABCDE1234F", "regex" => "^[A-Z]{5}[0-9]{4}[A-Z]$"],
+                            ["type" => "button", "id" => "submit", "label" => "Submit"]
+                        ]
+                    ],
+                    [
+                        "id" => 2,
+                        "title" => "Customer Feedback",
+                        "surveyId" => 17,
+                        "components" => [
+                            ["type" => "text", "id" => "feedback", "label" => "Feedback", "hint" => "Enter your feedback", "required" => true],
+                            ["type" => "radio", "id" => "rating", "label" => "Rating", "options" => ["1", "2", "3", "4", "5"], "required" => true]
+                        ]
+                    ]
+                ]
+
+        ], 200);
+
+        //return ApiResponse::success(200, "Survey Fetched Successfully", "survey", $data);
+    }
+
 }
