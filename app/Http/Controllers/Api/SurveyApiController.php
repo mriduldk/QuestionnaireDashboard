@@ -131,11 +131,11 @@ class SurveyApiController extends Controller
                         "title" => "Demographic Information",
                         "surveyId" => 17,
                         "components" => [
-                            ["type" => "Text", "id" => "district", "label" => "District", "hint" => "Enter District", "required" => true],
-                            ["type" => "Text", "id" => "vcdc", "label" => "VCDC", "hint" => "Enter VCDC", "required" => true],
-                            ["type" => "Text", "id" => "village", "label" => "Village Name", "hint" => "Enter village name", "required" => true],
-                            ["type" => "Text", "id" => "wardno", "label" => "Ward No", "hint" => "Enter Ward No", "required" => true],
-                            ["type" => "Text", "id" => "houseno", "label" => "House No", "hint" => "Enter House No", "required" => true],
+                            ["type" => "Text", "id" => "district", "label" => "District", "hint" => "Enter District", "required" => true, 'header' => true, 'holdPreviousValue' => true],
+                            ["type" => "Text", "id" => "vcdc", "label" => "VCDC", "hint" => "Enter VCDC", "required" => true, 'header' => true, 'holdPreviousValue' => true],
+                            ["type" => "Text", "id" => "village", "label" => "Village Name", "hint" => "Enter village name", "required" => true, 'header' => true, 'holdPreviousValue' => true],
+                            ["type" => "Text", "id" => "wardno", "label" => "Ward No", "hint" => "Enter Ward No", "required" => true, 'header' => true, 'holdPreviousValue' => true],
+                            ["type" => "Text", "id" => "houseno", "label" => "House No", "hint" => "Enter House No", "required" => true, 'header' => true, 'holdPreviousValue' => false],
                             /*["type" => "Number", "id" => "age", "label" => "Age", "hint" => "18+", "required" => true, "min" => 18, "max" => 100],
                             ["type" => "Radio", "id" => "gender", "label" => "Gender", "options" => ["Male", "Female", "Other"], "required" => true],
                             ["type" => "Checkbox", "id" => "hobbies", "label" => "Hobbies", "options" => ["Sports", "Music", "Reading"]],
@@ -150,12 +150,12 @@ class SurveyApiController extends Controller
                         "title" => "Responder's Information",
                         "surveyId" => 17,
                         "components" => [
-                            ["type" => "Text", "id" => "name", "label" => "Name of the Responder", "hint" => "Enter Name of the Responder", "required" => true],
-                            ["type" => "Text", "id" => "phone", "label" => "Phone / Mobile Number (Optional)", "hint" => "Enter Phone / Mobile Number", "required" => false],
-                            ["type" => "Number", "id" => "age", "label" => "Age", "hint" => "Enter Age", "required" => true, "min" => 5, "max" => 100],
-                            ["type" => "Text", "id" => "relationshipWithHousehold", "label" => "Relationship with Head of Household", "hint" => "Enter Relationship with Head of Household", "required" => true],
-                            ["type" => "Dropdown", "id" => "gender", "label" => "Gender", "options" => ["MALE", "FEMALE", "OTHER"], "required" => true],
-                            ["type" => "Dropdown", "id" => "caste", "label" => "Caste", "options" => ["GENERAL", "OBC / MOBC", "SC", "ST"], "required" => true]
+                            ["type" => "Text", "id" => "name", "label" => "Name of the Responder", "hint" => "Enter Name of the Responder", "required" => true, 'header' => true, 'holdPreviousValue' => false],
+                            ["type" => "Number", "id" => "phone", "label" => "Phone / Mobile Number (Optional)", "hint" => "Enter Phone / Mobile Number", "required" => false, 'header' => true, 'holdPreviousValue' => false],
+                            ["type" => "Number", "id" => "age", "label" => "Age", "hint" => "Enter Age", "required" => true, "min" => 5, "max" => 100, 'header' => false, 'holdPreviousValue' => false],
+                            ["type" => "Text", "id" => "relationshipWithHousehold", "label" => "Relationship with Head of Household", "hint" => "Enter Relationship with Head of Household", "required" => true, 'header' => false, 'holdPreviousValue' => false],
+                            ["type" => "Dropdown", "id" => "gender", "label" => "Gender", "options" => ["MALE", "FEMALE", "OTHER"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
+                            ["type" => "Dropdown", "id" => "caste", "label" => "Caste", "options" => ["GENERAL", "OBC / MOBC", "SC", "ST"], "required" => true, 'header' => false, 'holdPreviousValue' => false]
                         ]
                     ]
                 ]
