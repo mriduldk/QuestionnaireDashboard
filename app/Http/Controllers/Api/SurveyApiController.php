@@ -128,26 +128,34 @@ class SurveyApiController extends Controller
                 [
                     [
                         "id" => 1,
-                        "title" => "Customer Intake",
+                        "title" => "Demographic Information",
                         "surveyId" => 17,
                         "components" => [
-                            ["type" => "Text", "id" => "fullName", "label" => "Full name", "hint" => "Enter your name", "required" => true],
-                            ["type" => "Number", "id" => "age", "label" => "Age", "hint" => "18+", "required" => true, "min" => 18, "max" => 100],
+                            ["type" => "Text", "id" => "district", "label" => "District", "hint" => "Enter District", "required" => true],
+                            ["type" => "Text", "id" => "vcdc", "label" => "VCDC", "hint" => "Enter VCDC", "required" => true],
+                            ["type" => "Text", "id" => "village", "label" => "Village Name", "hint" => "Enter village name", "required" => true],
+                            ["type" => "Text", "id" => "wardno", "label" => "Ward No", "hint" => "Enter Ward No", "required" => true],
+                            ["type" => "Text", "id" => "houseno", "label" => "House No", "hint" => "Enter House No", "required" => true],
+                            /*["type" => "Number", "id" => "age", "label" => "Age", "hint" => "18+", "required" => true, "min" => 18, "max" => 100],
                             ["type" => "Radio", "id" => "gender", "label" => "Gender", "options" => ["Male", "Female", "Other"], "required" => true],
                             ["type" => "Checkbox", "id" => "hobbies", "label" => "Hobbies", "options" => ["Sports", "Music", "Reading"]],
                             ["type" => "Dropdown", "id" => "country", "label" => "Country", "options" => ["India", "USA", "UK"], "required" => true],
                             ["type" => "Date", "id" => "dob", "label" => "Date of Birth"],
                             ["type" => "Text", "id" => "pan", "label" => "PAN", "hint" => "ABCDE1234F", "regex" => "^[A-Z]{5}[0-9]{4}[A-Z]$"],
-                            ["type" => "Button", "id" => "submit", "label" => "Submit"]
+                            ["type" => "Button", "id" => "submit", "label" => "Submit"]*/
                         ]
                     ],
                     [
                         "id" => 2,
-                        "title" => "Customer Feedback",
+                        "title" => "Responder's Information",
                         "surveyId" => 17,
                         "components" => [
-                            ["type" => "Text", "id" => "feedback", "label" => "Feedback", "hint" => "Enter your feedback", "required" => true],
-                            ["type" => "Radio", "id" => "rating", "label" => "Rating", "options" => ["1", "2", "3", "4", "5"], "required" => true]
+                            ["type" => "Text", "id" => "name", "label" => "Name of the Responder", "hint" => "Enter Name of the Responder", "required" => true],
+                            ["type" => "Text", "id" => "phone", "label" => "Phone / Mobile Number (Optional)", "hint" => "Enter Phone / Mobile Number", "required" => false],
+                            ["type" => "Number", "id" => "age", "label" => "Age", "hint" => "Enter Age", "required" => true, "min" => 5, "max" => 100],
+                            ["type" => "Text", "id" => "relationshipWithHousehold", "label" => "Relationship with Head of Household", "hint" => "Enter Relationship with Head of Household", "required" => true],
+                            ["type" => "Dropdown", "id" => "gender", "label" => "Gender", "options" => ["MALE", "FEMALE", "OTHER"], "required" => true],
+                            ["type" => "Dropdown", "id" => "caste", "label" => "Caste", "options" => ["GENERAL", "OBC / MOBC", "SC", "ST"], "required" => true]
                         ]
                     ]
                 ]
