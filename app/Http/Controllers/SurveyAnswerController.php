@@ -39,6 +39,7 @@ class SurveyAnswerController extends Controller
             'average_annual_income' => 'nullable|string',
             'user_id' => 'required|string',
             'status' => 'nullable|string',
+            'form_specs' => 'nullable|array',
         ]);
 
         if ($validator->fails()) {

@@ -39,9 +39,11 @@ class SurveyAnswer extends Model
         'status',
         'user_id',
         'updated',
+        'form_specs',
     ];
 
     protected $casts = [
+        'form_specs' => 'array',
         'house_hold_member' => 'array',
         'household_livelihood_activities' => 'array',
         'updated' => 'boolean',
