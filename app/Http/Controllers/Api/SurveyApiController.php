@@ -131,8 +131,10 @@ class SurveyApiController extends Controller
                         "title" => "Demographic Information",
                         "surveyId" => 17,
                         "components" => [
-                            ["type" => "Text", "id" => "district", "label" => "District", "hint" => "Enter District", "required" => true, 'header' => true, 'holdPreviousValue' => true],
-                            ["type" => "Text", "id" => "vcdc", "label" => "VCDC", "hint" => "Enter VCDC", "required" => true, 'header' => true, 'holdPreviousValue' => true],
+                            ["type" => "Dropdown", "id" => "district", "label" => "District", "options" => ["KOKRAJHAR", "CHIRANG", "BAKSA", "TAMULPUR", "UDALGURI"], "required" => true, 'header' => true, 'holdPreviousValue' => true],
+                            ["type" => "AutoComplete", "id" => "vcdc", "label" => "VCDC", "options" => ["AFLAGAON","ANTHAIBIL","BARAGARI","BINNACHARA","BONGSHIGAON","BORSHIJHORA","CHITHILA","DALOWABARI","DHAULIGURI","DUMARIGURI","GUWABARI","JAGDAI","KARAITARI","KOLABARI","MAGURMARI","PACHAGARH","PRATAPKHATA","RAMFALBIL","SARALPARA","SERFANGURI","SHAKTIASHRAM","SIALMARI","SUKANJHORA","DOTMA DEV"], "required" => true, 'header' => true, 'holdPreviousValue' => true],
+                            /*["type" => "Text", "id" => "district", "label" => "District", "hint" => "Enter District", "required" => true, 'header' => true, 'holdPreviousValue' => true],
+                            ["type" => "AutoComplete", "id" => "vcdc", "label" => "VCDC", "hint" => "Enter VCDC", "required" => true, 'header' => true, 'holdPreviousValue' => true],*/
                             ["type" => "Text", "id" => "village", "label" => "Village Name", "hint" => "Enter village name", "required" => true, 'header' => true, 'holdPreviousValue' => true],
                             ["type" => "Text", "id" => "wardno", "label" => "Ward No", "hint" => "Enter Ward No", "required" => true, 'header' => true, 'holdPreviousValue' => true],
                             ["type" => "Text", "id" => "houseno", "label" => "House No", "hint" => "Enter House No", "required" => true, 'header' => true, 'holdPreviousValue' => false],
