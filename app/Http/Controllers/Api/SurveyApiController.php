@@ -132,12 +132,12 @@ class SurveyApiController extends Controller
                         "surveyId" => 17,
                         "components" => [
                             ["type" => "Dropdown", "id" => "district", "label" => "District", "options" => ["KOKRAJHAR", "CHIRANG", "BAKSA", "TAMULPUR", "UDALGURI"], "required" => true, 'header' => true, 'holdPreviousValue' => true],
-                            ["type" => "AutoComplete", "id" => "vcdc", "label" => "VCDC", "options" => ["AFLAGAON","ANTHAIBIL","BARAGARI","BINNACHARA","BONGSHIGAON","BORSHIJHORA","CHITHILA","DALOWABARI","DHAULIGURI","DUMARIGURI","GUWABARI","JAGDAI","KARAITARI","KOLABARI","MAGURMARI","PACHAGARH","PRATAPKHATA","RAMFALBIL","SARALPARA","SERFANGURI","SHAKTIASHRAM","SIALMARI","SUKANJHORA","DOTMA DEV"], "required" => true, 'header' => true, 'holdPreviousValue' => true],
+                            /*["type" => "AutoComplete", "id" => "vcdc", "label" => "VCDC", "options" => ["AFLAGAON","ANTHAIBIL","BARAGARI","BINNACHARA","BONGSHIGAON","BORSHIJHORA","CHITHILA","DALOWABARI","DHAULIGURI","DUMARIGURI","GUWABARI","JAGDAI","KARAITARI","KOLABARI","MAGURMARI","PACHAGARH","PRATAPKHATA","RAMFALBIL","SARALPARA","SERFANGURI","SHAKTIASHRAM","SIALMARI","SUKANJHORA","DOTMA DEV"], "required" => true, 'header' => true, 'holdPreviousValue' => true],*/
                             /*["type" => "Text", "id" => "district", "label" => "District", "hint" => "Enter District", "required" => true, 'header' => true, 'holdPreviousValue' => true],
                             ["type" => "AutoComplete", "id" => "vcdc", "label" => "VCDC", "hint" => "Enter VCDC", "required" => true, 'header' => true, 'holdPreviousValue' => true],*/
-                            ["type" => "Text", "id" => "village", "label" => "Village Name", "hint" => "Enter village name", "required" => true, 'header' => true, 'holdPreviousValue' => true],
-                            ["type" => "Text", "id" => "wardno", "label" => "Ward No", "hint" => "Enter Ward No", "required" => true, 'header' => true, 'holdPreviousValue' => true],
-                            ["type" => "Text", "id" => "houseno", "label" => "House No", "hint" => "Enter House No", "required" => true, 'header' => true, 'holdPreviousValue' => false],
+                            ["type" => "Text", "id" => "village", "label" => "Village/Town Name", "hint" => "Enter village/town name", "required" => true, 'header' => true, 'holdPreviousValue' => true],
+                            ["type" => "Text", "id" => "wardno", "label" => "Ward No", "hint" => "Enter Ward No", "required" => false, 'header' => true, 'holdPreviousValue' => false],
+                            ["type" => "Text", "id" => "houseno", "label" => "House No", "hint" => "Enter House No", "required" => false, 'header' => true, 'holdPreviousValue' => false],
                             /*["type" => "Number", "id" => "age", "label" => "Age", "hint" => "18+", "required" => true, "min" => 18, "max" => 100],
                             ["type" => "Radio", "id" => "gender", "label" => "Gender", "options" => ["Male", "Female", "Other"], "required" => true],
                             ["type" => "Checkbox", "id" => "hobbies", "label" => "Hobbies", "options" => ["Sports", "Music", "Reading"]],
