@@ -156,8 +156,8 @@ class SurveyApiController extends Controller
                             ["type" => "Number", "id" => "phone", "label" => "Phone / Mobile Number (Optional)", "hint" => "Enter Phone / Mobile Number", "required" => false, 'header' => true, 'holdPreviousValue' => false],
                             ["type" => "Number", "id" => "age", "label" => "Age", "hint" => "Enter Age", "required" => true, "min" => 5, "max" => 100, 'header' => false, 'holdPreviousValue' => false],
                             ["type" => "Text", "id" => "relationshipWithHousehold", "label" => "Relationship with Head of Household", "hint" => "Enter Relationship with Head of Household", "required" => true, 'header' => false, 'holdPreviousValue' => false],
-                            ["type" => "Dropdown", "id" => "gender", "label" => "Gender", "options" => ["MALE", "FEMALE", "OTHER"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
-                            ["type" => "Dropdown", "id" => "caste", "label" => "Caste", "options" => ["GENERAL", "OBC / MOBC", "SC", "ST"], "required" => true, 'header' => false, 'holdPreviousValue' => false]
+                            /*["type" => "Dropdown", "id" => "gender", "label" => "Gender", "options" => ["MALE", "FEMALE", "OTHER"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
+                            ["type" => "Dropdown", "id" => "caste", "label" => "Caste", "options" => ["GENERAL", "OBC / MOBC", "SC", "ST"], "required" => true, 'header' => false, 'holdPreviousValue' => false]*/
                         ]
                     ]
                 ]
