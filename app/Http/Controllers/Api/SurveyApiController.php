@@ -120,49 +120,110 @@ class SurveyApiController extends Controller
         ];
 
 
+        $surveyHeaderSections = [];
+
+        if ($surveyId == 17) {
+            $surveyHeaderSections = [
+                [
+                    "id" => 1,
+                    "title" => "Demographic Information",
+                    "surveyId" => 17,
+                    "components" => [
+                        ["type" => "Dropdown", "id" => "district", "label" => "District", "options" => ["KOKRAJHAR", "CHIRANG", "BAKSA", "TAMULPUR", "UDALGURI"], "required" => true, 'header' => true, 'holdPreviousValue' => true],
+                        ["type" => "Text", "id" => "village", "label" => "Village/Town Name", "hint" => "Enter village/town name", "required" => true, 'header' => true, 'holdPreviousValue' => true],
+                        ["type" => "Text", "id" => "wardno", "label" => "Ward No", "hint" => "Enter Ward No", "required" => false, 'header' => true, 'holdPreviousValue' => false],
+                        ["type" => "Text", "id" => "houseno", "label" => "House No", "hint" => "Enter House No", "required" => false, 'header' => true, 'holdPreviousValue' => false],
+                    ]
+                ],
+                [
+                    "id" => 2,
+                    "title" => "Responder's Information",
+                    "surveyId" => 17,
+                    "components" => [
+                        ["type" => "Text", "id" => "name", "label" => "Name of the Responder", "hint" => "Enter Name of the Responder", "required" => true, 'header' => true, 'holdPreviousValue' => false],
+                        ["type" => "Number", "id" => "phone", "label" => "Phone / Mobile Number (Optional)", "hint" => "Enter Phone / Mobile Number", "required" => false, 'header' => true, 'holdPreviousValue' => false],
+                        ["type" => "Number", "id" => "age", "label" => "Age", "hint" => "Enter Age", "required" => true, "min" => 5, "max" => 100, 'header' => false, 'holdPreviousValue' => false],
+                        ["type" => "Text", "id" => "relationshipWithHousehold", "label" => "Relationship with Head of Household", "hint" => "Enter Relationship with Head of Household", "required" => true, 'header' => false, 'holdPreviousValue' => false],
+                    ]
+                ]
+            ];
+        } elseif ($surveyId == 21) {
+            $surveyHeaderSections = [
+                [
+                    "id" => 3,
+                    "title" => "Demographic Information",
+                    "surveyId" => 21,
+                    "components" => [
+                        ["type" => "Dropdown", "id" => "district", "label" => "District", "options" => ["KOKRAJHAR", "CHIRANG", "BAKSA", "TAMULPUR", "UDALGURI"], "required" => true, 'header' => true, 'holdPreviousValue' => true],
+                        ["type" => "Text", "id" => "village", "label" => "Village/Town Name", "hint" => "Enter village/town name", "required" => true, 'header' => true, 'holdPreviousValue' => true],
+
+                        
+                        ["type" => "Text", "id" => "name", "label" => "Name of the Participant", "hint" => "Enter Name of the Participant", "required" => true, 'header' => true, 'holdPreviousValue' => false],
+                        ["type" => "Radio", "id" => "gender", "label" => "Gender", "options" => ["Male", "Female", "Other"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
+                        ["type" => "Radio", "id" => "religion", "label" => "Religion", "options" => ["Hindu", "Muslim", "Christian", "Bathouism", "Sikh", "Other"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
+                        ["type" => "Number", "id" => "age", "label" => "Age", "hint" => "Enter Age", "required" => true, "min" => 5, "max" => 100, 'header' => false, 'holdPreviousValue' => false],
+                        ["type" => "Dropdown", "id" => "caste", "label" => "Caste", "options" => ["GENERAL", "OBC / MOBC", "SC", "ST"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
+                        ["type" => "Text", "id" => "name", "label" => "Name of the Community", "hint" => "E.g. Boro Kochari", "required" => true, 'header' => false, 'holdPreviousValue' => false],
+
+                        ["type" => "Dropdown", "id" => "age", "label" => "Which category below includes your age?", "options" => ["Under 20", "20-30", "31-40", "41-50", "Over 50"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
+                        ["type" => "Dropdown", "id" => "marital_status", "label" => "Marital Status", "options" => ["Married", "Unmarried", "Divorce/Separated", "Widowed"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
+                        ["type" => "Dropdown", "id" => "education", "label" => "Education", "options" => ["No formal education", "Primary", "HSLC", "Higher Secondary", "Graduate & Above", "Other"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
+                        ["type" => "Dropdown", "id" => "occupation", "label" => "Occupation", "options" => ["Housewife", "Daily wage laborer", "Government/Private Employee", "Self-Employed", "Other"], "required" => true, 'header' => false, 'holdPreviousValue' => false]
+                    ]
+                ]
+            ];
+        }
+
         return response()->json([
             'status' => 200,
             'message' => "Survey Fetched Successfully",
             'survey' => $data,
-            'surveyHeaderSections' =>
-                [
-                    [
-                        "id" => 1,
-                        "title" => "Demographic Information",
-                        "surveyId" => 17,
-                        "components" => [
-                            ["type" => "Dropdown", "id" => "district", "label" => "District", "options" => ["KOKRAJHAR", "CHIRANG", "BAKSA", "TAMULPUR", "UDALGURI"], "required" => true, 'header' => true, 'holdPreviousValue' => true],
-                            /*["type" => "AutoComplete", "id" => "vcdc", "label" => "VCDC", "options" => ["AFLAGAON","ANTHAIBIL","BARAGARI","BINNACHARA","BONGSHIGAON","BORSHIJHORA","CHITHILA","DALOWABARI","DHAULIGURI","DUMARIGURI","GUWABARI","JAGDAI","KARAITARI","KOLABARI","MAGURMARI","PACHAGARH","PRATAPKHATA","RAMFALBIL","SARALPARA","SERFANGURI","SHAKTIASHRAM","SIALMARI","SUKANJHORA","DOTMA DEV"], "required" => true, 'header' => true, 'holdPreviousValue' => true],*/
-                            /*["type" => "Text", "id" => "district", "label" => "District", "hint" => "Enter District", "required" => true, 'header' => true, 'holdPreviousValue' => true],
-                            ["type" => "AutoComplete", "id" => "vcdc", "label" => "VCDC", "hint" => "Enter VCDC", "required" => true, 'header' => true, 'holdPreviousValue' => true],*/
-                            ["type" => "Text", "id" => "village", "label" => "Village/Town Name", "hint" => "Enter village/town name", "required" => true, 'header' => true, 'holdPreviousValue' => true],
-                            ["type" => "Text", "id" => "wardno", "label" => "Ward No", "hint" => "Enter Ward No", "required" => false, 'header' => true, 'holdPreviousValue' => false],
-                            ["type" => "Text", "id" => "houseno", "label" => "House No", "hint" => "Enter House No", "required" => false, 'header' => true, 'holdPreviousValue' => false],
-                            /*["type" => "Number", "id" => "age", "label" => "Age", "hint" => "18+", "required" => true, "min" => 18, "max" => 100],
-                            ["type" => "Radio", "id" => "gender", "label" => "Gender", "options" => ["Male", "Female", "Other"], "required" => true],
-                            ["type" => "Checkbox", "id" => "hobbies", "label" => "Hobbies", "options" => ["Sports", "Music", "Reading"]],
-                            ["type" => "Dropdown", "id" => "country", "label" => "Country", "options" => ["India", "USA", "UK"], "required" => true],
-                            ["type" => "Date", "id" => "dob", "label" => "Date of Birth"],
-                            ["type" => "Text", "id" => "pan", "label" => "PAN", "hint" => "ABCDE1234F", "regex" => "^[A-Z]{5}[0-9]{4}[A-Z]$"],
-                            ["type" => "Button", "id" => "submit", "label" => "Submit"]*/
-                        ]
-                    ],
-                    [
-                        "id" => 2,
-                        "title" => "Responder's Information",
-                        "surveyId" => 17,
-                        "components" => [
-                            ["type" => "Text", "id" => "name", "label" => "Name of the Responder", "hint" => "Enter Name of the Responder", "required" => true, 'header' => true, 'holdPreviousValue' => false],
-                            ["type" => "Number", "id" => "phone", "label" => "Phone / Mobile Number (Optional)", "hint" => "Enter Phone / Mobile Number", "required" => false, 'header' => true, 'holdPreviousValue' => false],
-                            ["type" => "Number", "id" => "age", "label" => "Age", "hint" => "Enter Age", "required" => true, "min" => 5, "max" => 100, 'header' => false, 'holdPreviousValue' => false],
-                            ["type" => "Text", "id" => "relationshipWithHousehold", "label" => "Relationship with Head of Household", "hint" => "Enter Relationship with Head of Household", "required" => true, 'header' => false, 'holdPreviousValue' => false],
-                            /*["type" => "Dropdown", "id" => "gender", "label" => "Gender", "options" => ["MALE", "FEMALE", "OTHER"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
-                            ["type" => "Dropdown", "id" => "caste", "label" => "Caste", "options" => ["GENERAL", "OBC / MOBC", "SC", "ST"], "required" => true, 'header' => false, 'holdPreviousValue' => false]*/
-                        ]
-                    ]
-                ]
-
+            'surveyHeaderSections' => $surveyHeaderSections
         ], 200);
+
+        // return response()->json([
+        //     'status' => 200,
+        //     'message' => "Survey Fetched Successfully",
+        //     'survey' => $data,
+        //     'surveyHeaderSections' =>
+        //         [
+        //             [
+        //                 "id" => 1,
+        //                 "title" => "Demographic Information",
+        //                 "surveyId" => 17,
+        //                 "components" => [
+        //                     ["type" => "Dropdown", "id" => "district", "label" => "District", "options" => ["KOKRAJHAR", "CHIRANG", "BAKSA", "TAMULPUR", "UDALGURI"], "required" => true, 'header' => true, 'holdPreviousValue' => true],
+        //                     /*["type" => "AutoComplete", "id" => "vcdc", "label" => "VCDC", "options" => ["AFLAGAON","ANTHAIBIL","BARAGARI","BINNACHARA","BONGSHIGAON","BORSHIJHORA","CHITHILA","DALOWABARI","DHAULIGURI","DUMARIGURI","GUWABARI","JAGDAI","KARAITARI","KOLABARI","MAGURMARI","PACHAGARH","PRATAPKHATA","RAMFALBIL","SARALPARA","SERFANGURI","SHAKTIASHRAM","SIALMARI","SUKANJHORA","DOTMA DEV"], "required" => true, 'header' => true, 'holdPreviousValue' => true],*/
+        //                     /*["type" => "Text", "id" => "district", "label" => "District", "hint" => "Enter District", "required" => true, 'header' => true, 'holdPreviousValue' => true],
+        //                     ["type" => "AutoComplete", "id" => "vcdc", "label" => "VCDC", "hint" => "Enter VCDC", "required" => true, 'header' => true, 'holdPreviousValue' => true],*/
+        //                     ["type" => "Text", "id" => "village", "label" => "Village/Town Name", "hint" => "Enter village/town name", "required" => true, 'header' => true, 'holdPreviousValue' => true],
+        //                     ["type" => "Text", "id" => "wardno", "label" => "Ward No", "hint" => "Enter Ward No", "required" => false, 'header' => true, 'holdPreviousValue' => false],
+        //                     ["type" => "Text", "id" => "houseno", "label" => "House No", "hint" => "Enter House No", "required" => false, 'header' => true, 'holdPreviousValue' => false],
+        //                     /*["type" => "Number", "id" => "age", "label" => "Age", "hint" => "18+", "required" => true, "min" => 18, "max" => 100],
+        //                     ["type" => "Radio", "id" => "gender", "label" => "Gender", "options" => ["Male", "Female", "Other"], "required" => true],
+        //                     ["type" => "Checkbox", "id" => "hobbies", "label" => "Hobbies", "options" => ["Sports", "Music", "Reading"]],
+        //                     ["type" => "Dropdown", "id" => "country", "label" => "Country", "options" => ["India", "USA", "UK"], "required" => true],
+        //                     ["type" => "Date", "id" => "dob", "label" => "Date of Birth"],
+        //                     ["type" => "Text", "id" => "pan", "label" => "PAN", "hint" => "ABCDE1234F", "regex" => "^[A-Z]{5}[0-9]{4}[A-Z]$"],
+        //                     ["type" => "Button", "id" => "submit", "label" => "Submit"]*/
+        //                 ]
+        //             ],
+        //             [
+        //                 "id" => 2,
+        //                 "title" => "Responder's Information",
+        //                 "surveyId" => 17,
+        //                 "components" => [
+        //                     ["type" => "Text", "id" => "name", "label" => "Name of the Responder", "hint" => "Enter Name of the Responder", "required" => true, 'header' => true, 'holdPreviousValue' => false],
+        //                     ["type" => "Number", "id" => "phone", "label" => "Phone / Mobile Number (Optional)", "hint" => "Enter Phone / Mobile Number", "required" => false, 'header' => true, 'holdPreviousValue' => false],
+        //                     ["type" => "Number", "id" => "age", "label" => "Age", "hint" => "Enter Age", "required" => true, "min" => 5, "max" => 100, 'header' => false, 'holdPreviousValue' => false],
+        //                     ["type" => "Text", "id" => "relationshipWithHousehold", "label" => "Relationship with Head of Household", "hint" => "Enter Relationship with Head of Household", "required" => true, 'header' => false, 'holdPreviousValue' => false],
+        //                     /*["type" => "Dropdown", "id" => "gender", "label" => "Gender", "options" => ["MALE", "FEMALE", "OTHER"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
+        //                     ["type" => "Dropdown", "id" => "caste", "label" => "Caste", "options" => ["GENERAL", "OBC / MOBC", "SC", "ST"], "required" => true, 'header' => false, 'holdPreviousValue' => false]*/
+        //                 ]
+        //             ]
+        //         ]
+
+        // ], 200);
 
         //return ApiResponse::success(200, "Survey Fetched Successfully", "survey", $data);
     }
