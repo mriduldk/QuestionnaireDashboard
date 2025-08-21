@@ -1,7 +1,7 @@
 <x-app-layout-admin>
     <h2 class="mb-3">Survey: {{ $survey->title }}</h2>
 
-    <form method="GET" class="row g-3 mb-4">
+    <form hidden method="GET" class="row g-3 mb-4">
         <div class="col-md-3">
             <select name="district" class="form-control">
                 <option value="">-- Select District --</option>
@@ -56,6 +56,7 @@
                     @foreach($allHeaders as $header)
                         <th>{{ $header }}</th>
                     @endforeach
+                    <th>Submitted On</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -77,6 +78,7 @@
                         @foreach($allHeaders as $header)
                             <td>{{ $headers[$header] ?? '-' }}</td>
                         @endforeach
+                        <td>{{ $ans->created_at?->format('d-m-Y h:i A') }}</td>
                         <td>
                             <a href="{{ route('survey-answers.show', $ans->survey_answer_id) }}"
                             class="btn btn-sm btn-info">
