@@ -31,8 +31,31 @@
         </div>
 
         <div class="card-body">
-            {{-- Basic info --}}
+
+            @php
+                $headers = collect($surveyAnswer->form_specs ?? [])
+                    ->flatMap(fn($section) => $section['components'] ?? [])
+                    ->where('header', true)
+                    ->mapWithKeys(fn($c) => [
+                        $c['label'] ?? 'Unknown' => $c['answer'] ?? null
+                    ])
+                    ->toArray();
+            @endphp
+
             <table class="table table-bordered">
+                <tbody>
+                    @foreach($headers as $label => $answer)
+                        <tr>
+                            <th style="width: 30%">{{ $label }}</th>
+                            <td>{{ $answer ?? '-' }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+
+
+            {{-- <table class="table table-bordered">
                 <tbody>
                 <tr>
                     <th>Responder's Name</th><td>{{ $surveyAnswer->name }}</td>
@@ -45,8 +68,6 @@
                 </tr>
                 <tr>
                     <th>District</th><td>{{ $surveyAnswer->district }}</td>
-                    {{--<th>Sub Division</th><td>{{ $surveyAnswer->sub_division }}</td>
-                    <th>Block</th><td>{{ $surveyAnswer->block }}</td>--}}
                     <th>VCDC</th>
                     <td>{{ $surveyAnswer->vcdc }}</td>
                     <th>Village</th>
@@ -58,10 +79,117 @@
                     <td>{{ $surveyAnswer->updated_at ? $surveyAnswer->updated_at->format('d-m-Y h:i A') : 'N/A' }}</td>
                 </tr>
                 </tbody>
-            </table>
+            </table> --}}
 
-            {{-- Survey Sections, Questions, Sub-Questions --}}
+        
             @if ($survey)
+                <div class="card mb-4">
+                    <div class="card-header h4 bg-primary text-white">
+                        <strong>Survey:</strong> {{ $survey->title }}
+                    </div>
+                    <div class="card-body">
+                        @foreach ($survey->sections as $section)
+                            <div class="mb-8">
+
+                                <h5 class="text-info font-size-h4 font-weight-bolder">Section: {{ $section->title }}</h5>
+
+                                <table class="table table-sm table-striped table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 40%;" class="font-size-h5">Question</th>
+                                        <th style="width: 60%;" class="font-size-h5">Answer</th>
+                                    </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        @foreach ($section->questions as $question)
+                                            <tr>
+                                                <td>{{ $question->question_text }}</td>
+                                                <td>
+                                                    {{-- ✅ Check for multiple answers first --}}
+                                                    @if (isset($multipleQuestionAnswers[$question->id]))
+
+                                                        {{-- Nest a borderless table for a true 2-column table layout --}}
+                                                        <table class="table table-sm table-bordered mb-0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    @php 
+                                                                        $count = count($multipleQuestionAnswers[$question->id]); 
+                                                                    @endphp
+                                                                    {{-- Chunk the answers into groups of 2. Each group is a row. --}}
+                                                                    @foreach ($multipleQuestionAnswers[$question->id] as $answerChunk)
+
+                                                                        <td style="width: {{ 100 / $count }}%;">
+                                                                            @if (isset($answerChunk))
+                                                                                {{ $answerChunk->answer_text }}
+                                                                            @endif
+                                                                        </td>
+                                                                    @endforeach
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+
+                                                    {{-- ✅ Then, check for a single answer --}}
+                                                    @elseif (isset($questionAnswers[$question->id]))
+                                                        {{ $questionAnswers[$question->id]->answer_text }}
+
+                                                    {{-- If no answer is found, display the default dash --}}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                            </tr>
+
+                                            {{-- Apply the same logic for sub-questions --}}
+                                            @foreach ($question->subQuestions as $sub)
+                                                <tr>
+                                                    <td class="ps-4">↳ {{ $sub->question_text }}</td>
+                                                    <td>
+                                                        {{-- ✅ Check for multiple answers for the sub-question --}}
+                                                        @if (isset($multipleQuestionAnswers[$sub->id]))
+                                                            <table class="table table-sm table-borderless mb-0">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        @php 
+                                                                            $count = count($multipleQuestionAnswers[$sub->id]); 
+                                                                        @endphp
+                                                                        @foreach ($multipleQuestionAnswers[$sub->id] as $answerChunk)
+                                                                        <td style="width: {{ 100 / $count }}%;">
+                                                                            @if (isset($answerChunk))
+                                                                                {{ $answerChunk->answer_text }}
+                                                                            @endif
+                                                                        </td>
+                                                                        @endforeach
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        
+                                                        {{-- ✅ Check for a single answer for the sub-question --}}
+                                                        @elseif (isset($questionAnswers[$sub->id]))
+                                                            {{ $questionAnswers[$sub->id]->answer_text }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endforeach
+                                    </tbody>
+                                
+                                </table>
+
+
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @else
+                <p class="text-muted">No survey data found for this answer.</p>
+            @endif
+
+        
+
+            {{-- @if ($survey)
                 <div class="card mb-4">
                     <div class="card-header h4 bg-primary text-white">
                         <strong>Survey:</strong> {{ $survey->title }}
@@ -100,7 +228,7 @@
                 </div>
             @else
                 <p class="text-muted">No survey data found for this answer.</p>
-            @endif
+            @endif --}}
 
         </div>
     </div>

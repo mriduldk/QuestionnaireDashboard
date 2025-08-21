@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\SectionAdminController;
 use App\Http\Controllers\Admin\QuestionAdminController;
 use App\Http\Controllers\Api\SurveyApiController;
 use App\Http\Controllers\CallLetterController;
+use App\Http\Controllers\Admin\SurveySectionController;
 
 
 /*Route::get('/', function () {
@@ -58,6 +59,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::resource('sub-divisions', SubDivisionController::class);
     Route::resource('blocks', BlockController::class);
     Route::resource('vcdcs', VcdcController::class);
+    Route::resource('survey-sections', SurveySectionController::class);
 
     Route::get('/api/sub-divisions/{district}', [LocationController::class, 'getSubDivisions']);
     Route::get('/api/blocks/{subDivision}', [LocationController::class, 'getBlocks']);

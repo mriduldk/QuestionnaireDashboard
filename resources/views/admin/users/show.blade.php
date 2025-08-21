@@ -74,14 +74,69 @@
             @if ($surveyAnswers->isEmpty())
                 <p class="text-muted">No survey answers submitted by this user.</p>
             @else
+                @php
+                    // Collect all unique header labels across all answers
+                    $allHeaders = collect($surveyAnswers)
+                        ->flatMap(fn($ans) => collect($ans->form_specs ?? [])
+                            ->flatMap(fn($section) => $section['components'] ?? [])
+                            ->where('header', true)
+                            ->pluck('label')
+                        )
+                        ->unique()
+                        ->values();
+                @endphp
+
+                <table class="table table-bordered table-striped" id="kt_datatables">
+                    <thead>
+                    <tr>
+                        @foreach($allHeaders as $header)
+                            <th>{{ $header }}</th>
+                        @endforeach
+                        <th>Submitted On</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    @foreach ($surveyAnswers as $answer)
+                        @php
+                            // Extract only header:true fields for this row
+                            $headers = collect($answer->form_specs ?? [])
+                                ->flatMap(fn($section) => $section['components'] ?? [])
+                                ->where('header', true)
+                                ->mapWithKeys(fn($c) => [
+                                    $c['label'] ?? 'Unknown' => $c['answer'] ?? null
+                                ])
+                                ->toArray();
+                        @endphp
+
+                        <tr>
+                            @foreach($allHeaders as $header)
+                                <td>{{ $headers[$header] ?? '-' }}</td>
+                            @endforeach
+                            <td>{{ $answer->created_at?->format('d-m-Y h:i A') }}</td>
+                            <td>
+                                <a href="{{ route('survey-answers.show', $answer->survey_answer_id) }}"
+                                class="btn btn-sm btn-primary">View</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            @endif
+        </div>
+
+
+        {{-- <div class="card-body">
+            @if ($surveyAnswers->isEmpty())
+                <p class="text-muted">No survey answers submitted by this user.</p>
+            @else
                 <table class="table table-bordered table-striped" id="kt_datatables">
                     <thead>
                     <tr>
                         <th>Responder's Name</th>
                         <th>Responder's Phone</th>
                         <th>District</th>
-                        {{--<th>Sub Division</th>
-                        <th>Block</th>--}}
                         <th>VCDC</th>
                         <th>Village</th>
                         <th>Submitted On</th>
@@ -94,8 +149,6 @@
                             <td>{{ $answer->name }}</td>
                             <td>{{ $answer->phone_number }}</td>
                             <td>{{ $answer->district }}</td>
-                            {{--<td>{{ $answer->sub_division }}</td>
-                            <td>{{ $answer->block }}</td>--}}
                             <td>{{ $answer->vcdc }}</td>
                             <td>{{ $answer->village }}</td>
                             <td>{{ $answer->created_at?->format('d-m-Y h:i A') }}</td>
@@ -108,6 +161,6 @@
                     </tbody>
                 </table>
             @endif
-        </div>
+        </div> --}}
     </div>
 </x-app-layout-admin>

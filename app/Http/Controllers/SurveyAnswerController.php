@@ -122,11 +122,16 @@ class SurveyAnswerController extends Controller
             ->get()
             ->keyBy('question_id');
 
+        // Multiple answers (Checkbox, Multi-select, etc.)
+        $multipleQuestionAnswers = \App\Models\MultipleQuestionAnswer::where('survey_answer_id', $surveyAnswer->survey_answer_id)
+        ->get()
+        ->groupBy('question_id');
+
         $survey = $surveyAnswer->survey()
             ->with(['sections.questions.subQuestions'])
             ->first();
 
-        return view('admin.survey_answers.show', compact('surveyAnswer', 'questionAnswers', 'survey'));
+        return view('admin.survey_answers.show', compact('surveyAnswer', 'questionAnswers', 'multipleQuestionAnswers', 'survey'));
     }
 
     public function bySurvey(Request $request, Survey $survey)
