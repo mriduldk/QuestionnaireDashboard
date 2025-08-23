@@ -6,11 +6,14 @@ use App\Exports\SurveyAnswerExport;
 use App\Models\Survey;
 use Illuminate\Http\Request;
 use App\Models\SurveyAnswer;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Helpers\ApiResponse;
 use Maatwebsite\Excel\Facades\Excel;
+use Throwable;
 
 class SurveyAnswerController extends Controller
 {
@@ -103,6 +106,82 @@ class SurveyAnswerController extends Controller
         }
         return $data;
     }
+
+    public function bulkSync(Request $request)
+    {
+        // The request is already validated by BulkSyncRequest
+        $surveysData = $request->surveys;
+
+        // Use a database transaction to ensure data integrity
+        DB::beginTransaction();
+
+        try {
+            foreach ($surveysData as $surveyData) {
+                // 1. Create the main Survey record
+                // Use updateOrCreate to handle potential re-submissions gracefully
+                $survey = SurveyAnswer::updateOrCreate(
+                    ['survey_answer_id' => $surveyData['survey_answer_id']],
+                    [
+                        'survey_id' => $surveyData['survey_id'],
+                        'form_specs'  => $surveyData['form_specs'],
+                        'user_id'  => $surveyData['user_id'],
+                    ]
+                );
+
+                // 2. Create the related QuestionAnswer records
+                foreach ($surveyData['questions'] ?? [] as $questionData) {
+                    $survey->questionAnswers()->updateOrCreate(
+                        ['question_answer_id' => $questionData['question_answer_id']],
+                        [
+                            'survey_answer_id' => $questionData['survey_answer_id'],
+                            'question_id' => $questionData['question_id'],
+                            'section_id' => $questionData['section_id'],
+                            'survey_id' => $questionData['survey_id'],
+                            'type' => $questionData['type'],
+                            'answer_text' => $questionData['answer_text'],
+                            'is_answered' => $questionData['is_answered'],
+                            'is_multiple' => $questionData['is_multiple'],
+                            'user_id' => $questionData['user_id']
+                        ]
+                    );
+                }
+
+                // 3. Create the related MultipleQuestionAnswer records
+                foreach ($surveyData['multiple_answers'] ?? [] as $multiAnswerData) {
+                    $survey->multipleQuestionAnswers()->updateOrCreate(
+                        ['multiple_question_answer_id' => $multiAnswerData['multiple_question_answer_id']],
+                        [
+                            'question_answer_id' => $multiAnswerData['question_answer_id'],
+                            'survey_answer_id' => $multiAnswerData['survey_answer_id'],
+                            'question_id'   => $multiAnswerData['question_id'],
+                            'section_id'    => $multiAnswerData['section_id'],
+                            'survey_id' => $multiAnswerData['survey_id'],
+                            'type'  => $multiAnswerData['type'],
+                            'answer_text'   => $multiAnswerData['answer_text'],
+                            'is_answered'   => $multiAnswerData['is_answered'],
+                            'is_multiple'   => $multiAnswerData['is_multiple'],
+                            'sl_no' => $multiAnswerData['sl_no'],
+
+                        ]
+                    );
+                }
+            }
+
+            // If everything was successful, commit the transaction
+            DB::commit();
+
+            return response()->json(['message' => 'Data synced successfully'], 200);
+
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error('Bulk sync failed: ' . $e->getMessage());
+            return response()->json(['message' => 'An error occurred during sync.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+
+
+
 
     // Show list of survey answers
     public function index(Request $request)

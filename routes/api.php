@@ -24,6 +24,7 @@ Route::get('/surveys/{surveyId}/{userId}', [SurveyApiController::class, 'showWit
 
 Route::post('/survey-answer/upsert', [SurveyAnswerController::class, 'upsert']);
 Route::get('/survey-answer/getByUserId/{userId}', [SurveyAnswerController::class, 'getByUserId']);
+Route::post('/survey-answer/bulk-sync', [SurveyAnswerController::class, 'bulkSync']);
 
 Route::post('/question-answer/upsert', [QuestionAnswerController::class, 'upsert']);
 
