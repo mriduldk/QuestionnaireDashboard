@@ -28,13 +28,22 @@ class AdminDashboardController extends Controller
         $trendLabels = $trend->pluck('date')->toArray();
         $trendData = $trend->pluck('count')->toArray();
 
-        $districtCounts = DB::table('survey_answers')
-            ->select(
-                DB::raw("JSON_UNQUOTE(JSON_EXTRACT(form_specs, '$[0].components[0].answer')) as district"),
-                DB::raw("COUNT(*) as total")
-            )
-            ->groupBy(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(form_specs, '$[0].components[0].answer'))"))
+        // $districtCounts = DB::table('survey_answers')
+        //     ->select(
+        //         DB::raw("JSON_UNQUOTE(JSON_EXTRACT(form_specs, '$[0].components[0].answer')) as district"),
+        //         DB::raw("COUNT(*) as total")
+        //     )
+        //     ->groupBy(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(form_specs, '$[0].components[0].answer'))"))
+        //     ->get();
+
+        $districtCounts = DB::table(DB::raw("( 
+                SELECT JSON_UNQUOTE(JSON_EXTRACT(form_specs, '$[0].components[0].answer')) as district 
+                FROM survey_answers
+            ) as t"))
+            ->select('district', DB::raw('COUNT(*) as total'))
+            ->groupBy('district')
             ->get();
+
 
 
 
