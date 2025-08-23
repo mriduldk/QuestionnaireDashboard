@@ -170,12 +170,14 @@ class SurveyAnswerController extends Controller
             // If everything was successful, commit the transaction
             DB::commit();
 
-            return response()->json(['message' => 'Data synced successfully'], 200);
+            return ApiResponse::success(200, 'Survey Saved Successfully', "surveyAnswer", null);
+            //return response()->json(['message' => 'Data synced successfully'], 200);
 
         } catch (Throwable $e) {
             DB::rollBack();
             Log::error('Bulk sync failed: ' . $e->getMessage());
-            return response()->json(['message' => 'An error occurred during sync.', 'error' => $e->getMessage()], 500);
+            //return response()->json(['message' => 'An error occurred during sync.', 'error' => $e->getMessage()], 500);
+            return ApiResponse::error('An error occurred during sync. Please try again', $e->getMessage(), 422);
         }
     }
 
