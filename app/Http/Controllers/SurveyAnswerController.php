@@ -129,7 +129,7 @@ class SurveyAnswerController extends Controller
                 );
 
                 // 2. Create the related QuestionAnswer records
-                foreach ($surveyData['questions'] ?? [] as $questionData) {
+                foreach ($surveyData['questionAnswers'] ?? [] as $questionData) {
                     $survey->questionAnswers()->updateOrCreate(
                         ['question_answer_id' => $questionData['question_answer_id']],
                         [
@@ -147,7 +147,7 @@ class SurveyAnswerController extends Controller
                 }
 
                 // 3. Create the related MultipleQuestionAnswer records
-                foreach ($surveyData['multiple_answers'] ?? [] as $multiAnswerData) {
+                foreach ($surveyData['multiple_question_answers'] ?? [] as $multiAnswerData) {
                     $survey->multipleQuestionAnswers()->updateOrCreate(
                         ['multiple_question_answer_id' => $multiAnswerData['multiple_question_answer_id']],
                         [
