@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Vcdc;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -152,7 +153,8 @@ class AuthController extends Controller
             'user_id' => 'required',
             'block' => 'required',
             'village' => 'required',
-            'address' => 'required'
+            'address' => 'required',
+            'vcdc' => 'nullable'
         ]);
 
 
@@ -170,6 +172,18 @@ class AuthController extends Controller
                 return ApiResponse::error('User is not active.', null, 403);
             }
             else{
+
+                try {
+                    if (isset($request->vcdc)) {
+                        $vcdc = Vcdc::firstOrCreate(
+                            ['name' => $request->vcdc], // search by name
+                            ['name' => $request->vcdc, 'district_id' => $user->district]  // values to insert if not found
+                        );
+                        $user->vcdc = $vcdc->id;
+                    }
+                } catch (\Exception $ex){
+
+                }
 
                 $user->block = $request->block;
                 $user->village = $request->village;
