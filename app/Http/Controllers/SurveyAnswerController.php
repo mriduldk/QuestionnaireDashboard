@@ -128,26 +128,33 @@ class SurveyAnswerController extends Controller
                     ]
                 );
 
+
                 // 2. Create the related QuestionAnswer records
                 foreach ($surveyData['questionAnswers'] ?? [] as $questionData) {
+
+                    //dd($questionData);
+
                     $survey->questionAnswers()->updateOrCreate(
-                        ['question_answer_id' => $questionData['question_answer_id']],
+                        ['question_answer_id' => $questionData['questionAnswerId']],
                         [
-                            'survey_answer_id' => $questionData['survey_answer_id'],
-                            'question_id' => $questionData['question_id'],
-                            'section_id' => $questionData['section_id'],
-                            'survey_id' => $questionData['survey_id'],
+                            'survey_answer_id' => $questionData['surveyAnswerId'],
+                            'question_id' => $questionData['questionId'],
+                            'section_id' => $questionData['sectionId'],
+                            'survey_id' => $questionData['surveyId'],
                             'type' => $questionData['type'],
-                            'answer_text' => $questionData['answer_text'],
-                            'is_answered' => $questionData['is_answered'],
-                            'is_multiple' => $questionData['is_multiple'],
-                            'user_id' => $questionData['user_id']
+                            'answer_text' => $questionData['answerText'] ?? "",
+                            'is_answered' => $questionData['isAnswered'],
+                            'is_multiple' => $questionData['isMultiple'],
+                            //'user_id' => $questionData['user_id']
                         ]
                     );
                 }
 
                 // 3. Create the related MultipleQuestionAnswer records
                 foreach ($surveyData['multiple_question_answers'] ?? [] as $multiAnswerData) {
+
+                    //dd($multiAnswerData);
+
                     $survey->multipleQuestionAnswers()->updateOrCreate(
                         ['multiple_question_answer_id' => $multiAnswerData['multiple_question_answer_id']],
                         [
