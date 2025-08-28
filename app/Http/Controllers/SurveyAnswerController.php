@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\SurveyAnswerExport;
 use App\Models\Survey;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\SurveyAnswer;
 use Illuminate\Support\Facades\DB;
@@ -257,6 +258,23 @@ class SurveyAnswerController extends Controller
         return Excel::download(new SurveyAnswerExport($surveyAnswer), $filename);
     }
 
+
+    public function indexWithUser(Request $request)
+    {
+        /*$surveyAnswers = SurveyAnswer::latest()->get();
+        return view('admin.survey_answers.index', compact('surveyAnswers'));*/
+
+        $surveys = Survey::withCount(['surveyAnswers', 'users'])->get();
+        return view('admin.survey_answers.index_with_user', compact('surveys'));
+    }
+
+    public function userListBySurvey($id)
+    {
+        $users = User::where('is_delete', false)->where('survey_id', $id)->with('survey')->withCount('surveyAnswers')->get();
+        //$users = User::where('is_delete', false)->where('survey_id', $id)->with('survey')->withCount('surveyAnswers')->paginate(10);
+
+        return view('admin.survey_answers.users_by_survey', compact('users'));
+    }
 
 
 }

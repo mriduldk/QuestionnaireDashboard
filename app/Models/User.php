@@ -93,5 +93,10 @@ class User extends Authenticatable
         return $this->belongsTo(Vcdc::class, 'vcdc');
     }
 
+    public function surveyAnswers()
+    {
+        return $this->hasMany(SurveyAnswer::class, 'user_id', 'user_id');
+    }
+
 
 }

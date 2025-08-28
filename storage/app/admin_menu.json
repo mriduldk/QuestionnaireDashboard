@@ -35,6 +35,12 @@
         "type": "link"
     },
     {
+        "title": "Surveys With Users",
+        "icon": "list",
+        "route": "surveys.answersWithUser",
+        "type": "link"
+    },
+    {
         "title": "Map",
         "icon": "list",
         "route": "admin.user-locations.map",
