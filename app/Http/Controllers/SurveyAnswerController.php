@@ -278,6 +278,7 @@ class SurveyAnswerController extends Controller
 
     public function surveyAnswerReport() 
     {
+        $surveyNames = \App\Models\Survey::pluck('title', 'id');
 
         // Survey-wise trend
         $trend = SurveyAnswer::selectRaw("survey_id, DATE(created_at) as date, COUNT(*) as count")
@@ -287,8 +288,8 @@ class SurveyAnswerController extends Controller
             ->get();
 
         // Format survey-wise trend
-        $trendBySurvey = $trend->groupBy('survey_id')->map(function ($rows, $surveyId) {
-            $surveyName = \App\Models\Survey::find($surveyId)?->name ?? "Survey {$surveyId}";
+        $trendBySurvey = $trend->groupBy('survey_id')->map(function ($rows, $surveyId) use ($surveyNames) {
+            $surveyName = $surveyNames[$surveyId] ?? "Survey {$surveyId}";
             return [
                 'name'   => $surveyName,
                 'labels' => $rows->pluck('date')->toArray(),
@@ -296,6 +297,7 @@ class SurveyAnswerController extends Controller
             ];
         });
 
+        
         // District counts per survey
         $districtCounts = DB::table(DB::raw("( 
                 SELECT survey_id, JSON_UNQUOTE(JSON_EXTRACT(form_specs, '$[0].components[0].answer')) as district 
@@ -306,9 +308,20 @@ class SurveyAnswerController extends Controller
             ->get()
             ->groupBy('survey_id');
 
+        // Format for chart
+        $districtChartData = $districtCounts->map(function ($rows, $surveyId) use ($surveyNames) {
+            return [
+                'name'   => $surveyNames[$surveyId] ?? "Survey {$surveyId}",
+                'labels' => $rows->pluck('district')->toArray(),
+                'data'   => $rows->pluck('total')->toArray(),
+            ];
+        });
+
+        //dd($trendBySurvey);
+
         return view('admin.survey_answers.survey-answer-report', compact(
             'trendBySurvey',
-            'districtCounts'
+            'districtChartData'
         ));
 
     }

@@ -4,43 +4,14 @@
 
         {{-- Survey-wise Trend --}}
         <div class="bg-white p-4 shadow rounded mb-6">
-            <h3 class="font-semibold text-lg mb-3">Survey-wise Trends</h3>
             <canvas id="trendChart" height="100"></canvas>
         </div>
 
-        {{-- District Counts Survey-wise --}}
-        <div class="bg-white p-4 shadow rounded">
-            <h3 class="font-semibold text-lg mb-3">District-wise Counts (per Survey)</h3>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                @foreach($districtCounts as $surveyId => $rows)
-                    <div class="bg-gray-50 p-3 rounded shadow">
-                        <h4 class="font-semibold text-md mb-2">Survey ID: {{ \App\Models\Survey::find($surveyId)?->title ?? $surveyId }}</h4>
-                        <table class="w-full table-auto border">
-                            <thead class="bg-gray-100">
-                                <tr>
-                                    <th class="border px-2 py-1">District</th>
-                                    <th class="border px-2 py-1">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($rows as $row)
-                                    <tr>
-                                        <td class="border px-2 py-1">{{ $row->district }}</td>
-                                        <td class="border px-2 py-1">{{ $row->total }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                @endforeach
-
-            </div>
+        <div class="bg-white p-4 shadow rounded mb-6">
+            <canvas id="districtChart"></canvas>
         </div>
 
-
-
+        
 
     </div>
 
@@ -66,6 +37,25 @@
             data: {
                 labels: trendData[Object.keys(trendData)[0]].labels, // first survey's labels
                 datasets: datasets
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Daily Count - Survey Wise',
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { precision: 0 }
+                    }
+                }
             }
         });
 
@@ -75,5 +65,69 @@
             const b = Math.floor(Math.random() * 255);
             return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         }
+
+
+
+
+
+        const districtCtx = document.getElementById('districtChart').getContext('2d');
+        const districtData = @json($districtChartData);
+
+        // Union of all district labels from all surveys
+        const allLabels = [...new Set([].concat(...Object.values(districtData).map(d => d.labels)))];
+
+        // Build datasets: align data with allLabels
+        const datasets2 = Object.keys(districtData).map((surveyId) => {
+            const survey = districtData[surveyId];
+            const data = allLabels.map(label => {
+                const idx = survey.labels.indexOf(label);
+                return idx !== -1 ? survey.data[idx] : 0; // fill 0 if district not present
+            });
+
+            return {
+                label: survey.name,
+                data: data,
+                backgroundColor: getRandomColor(0.5),
+                borderColor: getRandomColor(),
+                borderWidth: 1
+            };
+        });
+
+        new Chart(districtCtx, {
+            type: 'bar',
+            data: {
+                labels: allLabels,
+                datasets: datasets2
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'District-wise Counts per Survey',
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { precision: 0 }
+                    }
+                }
+            }
+        });
+
+        function getRandomColor2(alpha = 1) {
+            const r = Math.floor(Math.random() * 255);
+            const g = Math.floor(Math.random() * 255);
+            const b = Math.floor(Math.random() * 255);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+
+        
     </script>
 </x-app-layout-admin>
