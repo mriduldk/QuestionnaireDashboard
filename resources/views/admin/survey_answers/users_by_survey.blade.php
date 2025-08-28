@@ -16,6 +16,7 @@
                     <th>Contact</th>
                     <th>Father's Name</th>
                     <th>Address</th>
+                    <th>District</th>
                     <th>Photo</th>
                     <th>Survey</th>
                     <th>Survey Answer Count</th>
@@ -30,18 +31,18 @@
 
                         <td>{{ $u->father_name }}</td>
                         <td>{{ $u->village }} {{ $u->address }}</td>
+                        <td>{{ $u->districtInfo->name ?? '' }}</td>
                         <td>
                             @if($u->photo)
                                 <img src="{{ asset($u->photo) }}" height="50">
                             @endif
                         </td>
-
                         <td>{{ $u->survey->title ?? 'N/A' }}</td>
                         <td>
                             <p>
                                 <span class="badge rounded-pill">
-                                    {{ $u->survey_answers_count }} Answers
-                                </span>
+                                {{ $u->survey_answers_count }} Answers
+                            </span>
                             </p>
                         </td>
                         <td>

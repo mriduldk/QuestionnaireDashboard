@@ -16,7 +16,7 @@
 
                 @foreach($districtCounts as $surveyId => $rows)
                     <div class="bg-gray-50 p-3 rounded shadow">
-                        <h4 class="font-semibold text-md mb-2">Survey ID: {{ $surveyId }}</h4>
+                        <h4 class="font-semibold text-md mb-2">Survey ID: {{ \App\Models\Survey::find($surveyId)?->title ?? $surveyId }}</h4>
                         <table class="w-full table-auto border">
                             <thead class="bg-gray-100">
                                 <tr>
@@ -53,7 +53,7 @@
 
         const datasets = Object.keys(trendData).map((surveyId, index) => {
             return {
-                label: "Survey " + surveyId,
+                label: "Survey " + trendData[surveyId].name,
                 data: trendData[surveyId].data,
                 borderColor: getRandomColor(),
                 backgroundColor: getRandomColor(0.2),

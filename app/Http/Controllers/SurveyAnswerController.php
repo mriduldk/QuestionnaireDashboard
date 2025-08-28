@@ -287,8 +287,10 @@ class SurveyAnswerController extends Controller
             ->get();
 
         // Format survey-wise trend
-        $trendBySurvey = $trend->groupBy('survey_id')->map(function ($rows) {
+        $trendBySurvey = $trend->groupBy('survey_id')->map(function ($rows, $surveyId) {
+            $surveyName = \App\Models\Survey::find($surveyId)?->name ?? "Survey {$surveyId}";
             return [
+                'name'   => $surveyName,
                 'labels' => $rows->pluck('date')->toArray(),
                 'data'   => $rows->pluck('count')->toArray(),
             ];
