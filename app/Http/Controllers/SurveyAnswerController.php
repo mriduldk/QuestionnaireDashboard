@@ -276,5 +276,40 @@ class SurveyAnswerController extends Controller
         return view('admin.survey_answers.users_by_survey', compact('users'));
     }
 
+    public function surveyAnswerReport() 
+    {
+
+        // Survey-wise trend
+        $trend = SurveyAnswer::selectRaw("survey_id, DATE(created_at) as date, COUNT(*) as count")
+            ->groupBy('survey_id', 'date')
+            ->orderBy('survey_id')
+            ->orderBy('date')
+            ->get();
+
+        // Format survey-wise trend
+        $trendBySurvey = $trend->groupBy('survey_id')->map(function ($rows) {
+            return [
+                'labels' => $rows->pluck('date')->toArray(),
+                'data'   => $rows->pluck('count')->toArray(),
+            ];
+        });
+
+        // District counts per survey
+        $districtCounts = DB::table(DB::raw("( 
+                SELECT survey_id, JSON_UNQUOTE(JSON_EXTRACT(form_specs, '$[0].components[0].answer')) as district 
+                FROM survey_answers
+            ) as t"))
+            ->select('survey_id', 'district', DB::raw('COUNT(*) as total'))
+            ->groupBy('survey_id', 'district')
+            ->get()
+            ->groupBy('survey_id');
+
+        return view('admin.survey_answers.survey-answer-report', compact(
+            'trendBySurvey',
+            'districtCounts'
+        ));
+
+    }
+
 
 }

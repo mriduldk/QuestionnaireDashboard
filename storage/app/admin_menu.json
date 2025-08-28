@@ -41,6 +41,12 @@
         "type": "link"
     },
     {
+        "title": "Survey Answer Report",
+        "icon": "list",
+        "route": "surveys.surveyAnswerReport",
+        "type": "link"
+    },
+    {
         "title": "Map",
         "icon": "list",
         "route": "admin.user-locations.map",

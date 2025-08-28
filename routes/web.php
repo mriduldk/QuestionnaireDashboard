@@ -75,6 +75,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::resource('survey-answers', SurveyAnswerController::class)->only(['index', 'show']);
     Route::get('survey-answers-with-user', [SurveyAnswerController::class, 'indexWithUser'])->name('surveys.answersWithUser');
     Route::get('users-list-by-survey/{id}', [SurveyAnswerController::class, 'userListBySurvey'])->name('surveys.userListBySurvey');
+    Route::get('survey-reports', [SurveyAnswerController::class, 'surveyAnswerReport'])->name('surveys.surveyAnswerReport');
 
     Route::get('users/{user_id}', [UserController::class, 'show'])->name('admin.users.show');
 
