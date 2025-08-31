@@ -157,7 +157,7 @@ class SurveyApiController extends Controller
                         ["type" => "Dropdown", "id" => "district", "label" => "District", "options" => ["KOKRAJHAR", "CHIRANG", "BAKSA", "TAMULPUR", "UDALGURI"], "required" => true, 'header' => true, 'holdPreviousValue' => true],
                         ["type" => "Text", "id" => "village", "label" => "Village/Town Name", "hint" => "Enter village/town name", "required" => true, 'header' => true, 'holdPreviousValue' => true],
 
-                        
+
                         ["type" => "Text", "id" => "name", "label" => "Name of the Participant", "hint" => "Enter Name of the Participant", "required" => true, 'header' => true, 'holdPreviousValue' => false],
                         ["type" => "Radio", "id" => "gender", "label" => "Gender", "options" => ["Male", "Female", "Other"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
                         ["type" => "Radio", "id" => "religion", "label" => "Religion", "options" => ["Hindu", "Muslim", "Christian", "Bathouism", "Sikh", "Other"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
@@ -169,6 +169,27 @@ class SurveyApiController extends Controller
                         ["type" => "Dropdown", "id" => "marital_status", "label" => "Marital Status", "options" => ["Married", "Unmarried", "Divorce/Separated", "Widowed"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
                         ["type" => "Dropdown", "id" => "education", "label" => "Education", "options" => ["No formal education", "Primary", "HSLC", "Higher Secondary", "Graduate & Above", "Other"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
                         ["type" => "Dropdown", "id" => "occupation", "label" => "Occupation", "options" => ["Housewife", "Daily wage laborer", "Government/Private Employee", "Self-Employed", "Other"], "required" => true, 'header' => false, 'holdPreviousValue' => false]
+                    ]
+                ]
+            ];
+        } elseif ($surveyId == 22) {
+            $surveyHeaderSections = [
+                [
+                    "id" => 4,
+                    "title" => "Respondent Information",
+                    "surveyId" => 22,
+                    "components" => [
+                        ["type" => "Dropdown", "id" => "district", "label" => "District", "options" => ["KOKRAJHAR", "CHIRANG", "BAKSA", "TAMULPUR", "UDALGURI"], "required" => true, 'header' => true, 'holdPreviousValue' => true],
+                        ["type" => "Text", "id" => "village", "label" => "Village/Town Name", "hint" => "Enter village/town name", "required" => true, 'header' => true, 'holdPreviousValue' => true],
+
+                        ["type" => "Text", "id" => "name", "label" => "Name of the Participant", "hint" => "Enter Name of the Participant", "required" => true, 'header' => true, 'holdPreviousValue' => false],
+                        ["type" => "Number", "id" => "age", "label" => "Age", "hint" => "Enter Age", "required" => true, "min" => 5, "max" => 100, 'header' => true, 'holdPreviousValue' => false],
+                        ["type" => "Radio", "id" => "gender", "label" => "Gender", "options" => ["Male", "Female", "Other"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
+                        ["type" => "Radio", "id" => "religion", "label" => "Religion", "options" => ["Hindu", "Muslim", "Christian", "Bathouism", "Sikh", "Other"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
+                        ["type" => "Dropdown", "id" => "caste", "label" => "Caste", "options" => ["GENERAL", "OBC / MOBC", "SC", "ST"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
+                        ["type" => "Dropdown", "id" => "marital_status", "label" => "Marital Status", "options" => ["Married", "Unmarried", "Divorce/Separated", "Widowed"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
+                        ["type" => "Dropdown", "id" => "education", "label" => "Education", "options" => ["No formal education", "Primary", "HSLC", "Higher Secondary", "Graduate & Above", "Other"], "required" => true, 'header' => false, 'holdPreviousValue' => false],
+                        ["type" => "Text", "id" => "occupation", "label" => "Occupation", "hint" => "Enter Occupation", "required" => true, 'header' => true, 'holdPreviousValue' => false],
                     ]
                 ]
             ];

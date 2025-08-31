@@ -7,7 +7,13 @@
     <span>
         <strong>{{ $indent > 0 ? '→ Sub-Q' : 'Q' }} {{ $question->id }}:</strong>
         {{ $question->question_text }} ({{ $question->type }})
-    </span><br>
+        @if($question->is_multiple == 1)
+            <span class="badge badge-warning">
+                Multiple
+            </span>
+        @endif
+    </span>
+    <br>
 
     {{-- Conditional logic --}}
     @if (isset($question->conditional_logic))
