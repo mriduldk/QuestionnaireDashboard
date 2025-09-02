@@ -274,7 +274,7 @@ class SurveyAnswerController extends Controller
         //$users = User::where('is_delete', false)->where('survey_id', $id)->with('survey')->withCount('surveyAnswers')->get();
         //$filter = $request->get('performance'); // zero, low, medium, high
 
-        $districts = District::pluck('name', 'id'); // assuming you have District model
+        $districts = District::orderBy('id', 'asc')->pluck('name', 'id'); // assuming you have District model
 
 
         $users = User::with(['districtInfo', 'survey'])
