@@ -1,31 +1,13 @@
 <x-app-layout-admin>
     <h2 class="mb-3">Survey: {{ $survey->title }}</h2>
 
-    <form hidden method="GET" class="row g-3 mb-4">
+    <form method="GET" class="row g-3 mb-4">
         <div class="col-md-3">
             <select name="district" class="form-control">
                 <option value="">-- Select District --</option>
                 <option value="">All</option>
                 @foreach ($districts as $dist)
                     <option value="{{ $dist }}" {{ request('district') == $dist ? 'selected' : '' }}>{{ $dist }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-3">
-            <select name="subDivision" class="form-control">
-                <option value="">-- Select Sub Division --</option>
-                <option value="">All</option>
-                @foreach ($subDivisions as $subDivision)
-                    <option value="{{ $subDivision }}" {{ request('constituency') == $subDivision ? 'selected' : '' }}>{{ $subDivision }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-3">
-            <select name="vcdc" class="form-control">
-                <option value="">-- Select VCDC --</option>
-                <option value="">All</option>
-                @foreach ($vcdcs as $vcdc)
-                    <option value="{{ $vcdc }}" {{ request('vcdc') == $vcdc ? 'selected' : '' }}>{{ $vcdc }}</option>
                 @endforeach
             </select>
         </div>
@@ -37,7 +19,7 @@
 
     <div class="card">
         <div class="card-body">
-            
+
             <table class="table table-bordered table-sm" id="kt_datatables">
             @php
                 // Collect all unique header labels across all answers
@@ -95,7 +77,7 @@
         </table>
 
 
-{{-- 
+{{--
             <table class="table table-bordered table-sm" id="kt_datatables">
                 <thead>
                     <tr>

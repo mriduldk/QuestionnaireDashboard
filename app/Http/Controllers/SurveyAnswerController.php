@@ -226,29 +226,48 @@ class SurveyAnswerController extends Controller
 
     public function bySurvey(Request $request, Survey $survey)
     {
-        $query = SurveyAnswer::where('survey_id', $survey->id);
+        $districts = District::orderBy('id', 'asc')->pluck('name', 'id');
+        //$query = SurveyAnswer::where('survey_id', $survey->id);
+        $answers = SurveyAnswer::where('survey_id', $survey->id)->get();
 
         if ($request->filled('district')) {
-            $query->where('district', $request->district);
+
+            $districtFilter = $request->district;
+
+            $answers = $answers->filter(function ($ans) use ($districtFilter) {
+
+                if ($ans->form_specs == null){
+                    return false;
+                }
+                // Ensure $data is always an array
+                $data = is_array($ans->form_specs)
+                    ? $ans->form_specs
+                    : json_decode($ans->form_specs, true);
+
+
+                if (!$data) {
+                    return false;
+                }
+
+                foreach ($data as $section) {
+                    foreach ($section['components'] as $comp) {
+                        if (($comp['id'] ?? null) === 'district' && ($comp['answer'] ?? null) == $districtFilter) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            });
+
         }
 
-        if ($request->filled('vcdc')) {
-            $query->where('vcdc', $request->vcdc);
-        }
+        //$answers = $query->get();
 
-        if ($request->filled('subDivision')) {
-            $query->where('sub_division', $request->subDivision); // if you have this column
-        }
-
-        // Get distinct values for dropdowns
-        $districts = SurveyAnswer::where('survey_id', $survey->id)->select('district')->distinct()->pluck('district');
-        $vcdcs = SurveyAnswer::where('survey_id', $survey->id)->select('vcdc')->distinct()->pluck('vcdc');
-        $subDivisions = SurveyAnswer::where('survey_id', $survey->id)->select('sub_division')->distinct()->pluck('sub_division');
-
-
-        $answers = $query->get();
-
-        return view('admin.survey_answers.by_survey', compact('survey', 'answers', 'districts', 'vcdcs', 'subDivisions'));
+        return view('admin.survey_answers.by_survey', compact(
+            'survey',
+            'answers',
+            'districts',
+        ));
     }
 
     public function exportExcel($id)
