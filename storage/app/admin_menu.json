@@ -35,7 +35,7 @@
         "type": "link"
     },
     {
-        "title": "Surveys Answer Report",
+        "title": "Report",
         "icon": "list",
         "route": "surveys.answersWithUser",
         "type": "link"

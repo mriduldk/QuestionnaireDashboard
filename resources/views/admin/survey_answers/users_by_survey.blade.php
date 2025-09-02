@@ -12,6 +12,10 @@
         <canvas id="districtChart"></canvas>
     </div>
 
+    <div class="bg-white p-4 shadow rounded mb-6">
+        <canvas id="districtTrendChart"></canvas>
+    </div>
+
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h2 class="card-label">User List</h2>
@@ -20,11 +24,21 @@
                 <form method="GET" action="{{ route('surveys.userListBySurvey', $id) }}" class="form-inline">
                     <select id="performanceFilter" name="performance" class="form-control mr-2">
                         <option value="">-- Filter Performance --</option>
+                        <option value="high" {{ request('performance')=='high' ? 'selected' : '' }}>Good (Above 80%)</option>
+                        <option value="medium" {{ request('performance')=='medium' ? 'selected' : '' }}>Average (50% - 80%)</option>
+                        <option value="low" {{ request('performance')=='low' ? 'selected' : '' }}>Below Average (Below 50%)</option>
                         <option value="zero" {{ request('performance')=='zero' ? 'selected' : '' }}>0 Answers</option>
-                        <option value="low" {{ request('performance')=='low' ? 'selected' : '' }}>Below 50%</option>
-                        <option value="medium" {{ request('performance')=='medium' ? 'selected' : '' }}>50% - 80%</option>
-                        <option value="high" {{ request('performance')=='high' ? 'selected' : '' }}>Above 80%</option>
                     </select>
+
+                    <select id="districtFilter" name="district" class="form-control mr-2">
+                        <option value="">-- Filter District --</option>
+                        @foreach($districts as $districtId => $districtName)
+                            <option value="{{ $districtId }}" {{ request('district') == $districtId ? 'selected' : '' }}>
+                                {{ $districtName }}
+                            </option>
+                        @endforeach
+                    </select>
+
                     <button type="submit" class="btn btn-primary">Search</button>
                 </form>
             </div>
@@ -68,34 +82,10 @@
                             </p>
                         </td>
                         <td>
-                        <span class="badge font-size-h6 font-weight-bolder bg-{{ $u->performance >= 80 ? 'success' : ($u->performance >= 50 ? 'warning' : 'danger') }}">
-                            {{ $u->performance }}%
-                        </span>
-                        </td>
-
-                        {{--<td>
-                            @php
-                                if ($u->survey_id == 17){
-                                    $startDate = \Carbon\Carbon::create(2025, 8, 20);
-                                } else if ($u->survey_id == 21){
-                                    $startDate = \Carbon\Carbon::create(2025, 8, 26);
-                                } else if ($u->survey_id == 22){
-                                    $startDate = \Carbon\Carbon::create(2025, 9, 1);
-                                } else {
-                                    $startDate = \Carbon\Carbon::create(2025, 9, 1);
-                                }
-                                $today = \Carbon\Carbon::today();
-                                $totalDays = $startDate->diffInDays($today) + 1; // include today
-                                $expectedAnswers = $totalDays * 5;
-                                $performance = ($expectedAnswers > 0)
-                                    ? round(($u->survey_answers_count / $expectedAnswers) * 100, 2)
-                                    : 0;
-                            @endphp
-
-                            <span class="badge font-size-h6 font-weight-bolder bg-{{ $performance >= 80 ? 'success' : ($performance >= 50 ? 'warning' : 'danger') }}">
-                                {{ $performance }}%
+                            <span class="badge font-size-h6 font-weight-bolder bg-{{ $u->performance >= 80 ? 'success' : ($u->performance >= 50 ? 'warning' : 'danger') }}">
+                                {{ $u->performance }}%
                             </span>
-                        </td>--}}
+                        </td>
 
                         <td>
                             <a href="{{ route('admin.users.show', $u->user_id) }}" class="btn btn-sm btn-info btn-block mb-1">View Details</a>
@@ -156,9 +146,9 @@
             const r = Math.floor(Math.random() * 255);
             const g = Math.floor(Math.random() * 255);
             const b = Math.floor(Math.random() * 255);
-            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            //return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            return `rgba(10, 160, 220, 1)`;
         }
-
 
 
         const districtCtx = document.getElementById('districtChart').getContext('2d');
@@ -191,17 +181,90 @@
             }
         });
 
-
         function getRandomColor2(alpha = 1) {
             const r = Math.floor(Math.random() * 255);
             const g = Math.floor(Math.random() * 255);
             const b = Math.floor(Math.random() * 255);
+            //return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            return `rgba(10, 160, 220, 1)`;
+        }
+
+
+    </script>
+
+    <script>
+        const districtTrendData = @json($districtTrendChart);
+
+        // Collect all unique dates across all districts
+        let allDates = [];
+        districtTrendData.forEach(d => {
+            allDates = [...new Set([...allDates, ...d.labels])];
+        });
+        allDates.sort(); // ensure chronological order
+
+        const fixedColors = [
+            'rgba(54, 162, 235, 0.9)',  // Blue
+            'rgba(255, 99, 132, 0.9)',  // Red
+            'rgba(75, 192, 192, 0.9)',  // Teal
+            'rgba(255, 206, 86, 0.9)',  // Yellow
+            'rgba(153, 102, 255, 0.9)'  // Purple
+        ];
+
+        // Build datasets
+        const datasets3 = districtTrendData.map((d, idx) => {
+            // Fill missing dates with 0
+            const data = allDates.map(date => {
+                const index = d.labels.indexOf(date);
+                return index !== -1 ? d.data[index] : 0;
+            });
+
+            return {
+                label: d.name,
+                data: data,
+                fill: false,
+                borderColor: fixedColors[idx % fixedColors.length],  // cycle colors
+                backgroundColor: fixedColors[idx % fixedColors.length],
+                tension: 0.3
+            };
+        });
+
+        const ctx3 = document.getElementById('districtTrendChart').getContext('2d');
+        new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: allDates,
+                datasets: datasets3
+            },
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                stacked: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Daily Submissions by District'
+                    }
+                },
+                scales: {
+                    x: { title: { display: true, text: 'Date' } },
+                    y: { title: { display: true, text: 'Count' }, beginAtZero: true }
+                }
+            }
+        });
+
+        // Your earlier light blue generator
+        function getRandomLightBlue(alpha = 1) {
+            const r = Math.floor(Math.random() * 100);
+            const g = Math.floor(150 + Math.random() * 105);
+            const b = Math.floor(200 + Math.random() * 55);
             return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         }
 
 
 
     </script>
-
 
 </x-app-layout-admin>

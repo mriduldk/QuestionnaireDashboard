@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\SurveyAnswerExport;
+use App\Models\District;
 use App\Models\Survey;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -273,6 +274,9 @@ class SurveyAnswerController extends Controller
         //$users = User::where('is_delete', false)->where('survey_id', $id)->with('survey')->withCount('surveyAnswers')->get();
         //$filter = $request->get('performance'); // zero, low, medium, high
 
+        $districts = District::pluck('name', 'id'); // assuming you have District model
+
+
         $users = User::with(['districtInfo', 'survey'])
             ->withCount('surveyAnswers')
             ->where('survey_id', $id)
@@ -302,6 +306,9 @@ class SurveyAnswerController extends Controller
 
         // Apply filter
         $performanceFilter = $request->performance;
+        $districtFilter    = $request->district;
+
+
         if ($performanceFilter) {
             $users = $users->filter(function ($u) use ($performanceFilter) {
                 if ($performanceFilter === 'zero') {
@@ -314,6 +321,13 @@ class SurveyAnswerController extends Controller
                     return $u->performance >= 80;
                 }
                 return true;
+            });
+        }
+
+        // District filter
+        if ($districtFilter) {
+            $users = $users->filter(function ($u) use ($districtFilter) {
+                return $u->district == $districtFilter;
             });
         }
 
@@ -341,22 +355,11 @@ class SurveyAnswerController extends Controller
 
 
         // District counts per survey
-        /*$districtCounts = DB::table(DB::raw("(
-                SELECT survey_id, JSON_UNQUOTE(JSON_EXTRACT(form_specs, '$[0].components[0].answer')) as district
-                FROM survey_answers
-            ) as t"))
-            ->select('survey_id', 'district', DB::raw('COUNT(*) as total'))
-            ->where('survey_id', $id)
-            ->groupBy('survey_id', 'district')
-            ->get()
-            ->groupBy('survey_id');*/
-
         $answers = DB::table('survey_answers')
             ->where('survey_id', $id)
             ->get();
 
         $districtCounts = collect();
-
         foreach ($answers as $ans) {
             $data = json_decode($ans->form_specs, true);
             if (!$data) continue;
@@ -372,31 +375,57 @@ class SurveyAnswerController extends Controller
                 }
             }
         }
-
         $districtChartData = [
             'name'   => $surveyNames[$id] ?? "Survey {$id}",
             'labels' => $districtCounts->keys()->toArray(),   // District names
             'data'   => $districtCounts->values()->toArray(), // Counts
         ];
 
-        //dd($districtChartData);
 
-        // Format for chart
-        /*$districtChartData = $districtCounts->map(function ($rows, $surveyId) use ($surveyNames) {
-            return [
-                'name'   => $surveyNames[$surveyId] ?? "Survey {$surveyId}",
-                'labels' => $districtCounts->keys()->toArray(),
-                'data'   => $districtCounts->values()->toArray(),
+        $answers2 = DB::table('survey_answers')
+            ->where('survey_id', $id)
+            ->select('form_specs', DB::raw('DATE(created_at) as date'))
+            ->get();
+
+        $districtTrend = [];
+
+        foreach ($answers2 as $ans) {
+            $data = json_decode($ans->form_specs, true);
+            if (!$data) continue;
+
+            $district = null;
+            foreach ($data as $section) {
+                foreach ($section['components'] as $comp) {
+                    if (($comp['id'] ?? null) === 'district') {
+                        $district = $comp['answer'] ?? null;
+                        break 2; // stop both loops once found
+                    }
+                }
+            }
+
+            if ($district) {
+                $districtTrend[$district][$ans->date] = ($districtTrend[$district][$ans->date] ?? 0) + 1;
+            }
+        }
+
+        // Format for chart (district → {name, labels, data})
+        $districtTrendChart = [];
+        foreach ($districtTrend as $district => $rows) {
+            ksort($rows); // sort by date
+            $districtTrendChart[] = [
+                'name'   => $district,
+                'labels' => array_keys($rows),
+                'data'   => array_values($rows),
             ];
-        });*/
-
-        //dd($districtChartData);
+        }
 
         return view('admin.survey_answers.users_by_survey', compact(
             'id',
             'users',
             'trendBySurvey',
-            'districtChartData'
+            'districtChartData',
+            'districtTrendChart',
+            'districts'
         ));
     }
 
@@ -449,6 +478,57 @@ class SurveyAnswerController extends Controller
         ));
 
     }
+
+
+    public function sectionWiseReport($surveyId)
+    {
+        $survey = Survey::findOrFail($surveyId);
+
+        // Paginate sections with their main questions
+        $sections = $survey->sections()
+            ->with(['questions' => function ($q) {
+                $q->whereNull('parent_id'); // only main questions
+            }])
+            ->paginate(1); // show 1 section per page (adjust as needed)
+
+        // Pre-fetch aggregated counts for this survey
+        $counts = \App\Models\QuestionAnswer::select(
+            'question_id',
+            'answer_text',
+            \DB::raw('COUNT(*) as total')
+        )
+            ->where('survey_id', $surveyId)
+            ->groupBy('question_id', 'answer_text')
+            ->get()
+            ->groupBy('question_id');
+
+        $chartData = [];
+
+        foreach ($sections as $section) {
+            $sectionData = [
+                'title' => $section->title,
+                'questions' => []
+            ];
+
+            foreach ($section->questions as $question) {
+                $questionCounts = $counts->get($question->id, collect());
+
+                $labels = $questionCounts->pluck('answer_text')->toArray();
+                $data   = $questionCounts->pluck('total')->toArray();
+
+                $sectionData['questions'][] = [
+                    'text'   => $question->question_text,
+                    'labels' => $labels,
+                    'data'   => $data,
+                ];
+            }
+
+            $chartData[] = $sectionData;
+        }
+
+        return view('admin.survey_answers.section_wise_report', compact('survey', 'sections', 'chartData'));
+    }
+
 
 
 }

@@ -77,6 +77,9 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::get('users-list-by-survey/{id}', [SurveyAnswerController::class, 'userListBySurvey'])->name('surveys.userListBySurvey');
     Route::get('survey-reports', [SurveyAnswerController::class, 'surveyAnswerReport'])->name('surveys.surveyAnswerReport');
 
+    Route::get('section-wise-report/{id}', [SurveyAnswerController::class, 'sectionWiseReport'])->name('survey.sectionReport');
+
+
     Route::get('users/{user_id}', [UserController::class, 'show'])->name('admin.users.show');
 
     Route::get('user-locations', [UserLocationController::class, 'index'])->name('admin.user-locations.map');
