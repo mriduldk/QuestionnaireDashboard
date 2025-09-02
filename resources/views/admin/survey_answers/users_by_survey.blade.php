@@ -77,7 +77,7 @@
                         <td>
                             <p>
                                 <span class="badge badge-light font-size-h5 font-weight-bolder rounded-pill">
-                                {{ $u->survey_answers_count }} Answers
+                                {{ $u->survey_answers_count }} Survey
                             </span>
                             </p>
                         </td>
