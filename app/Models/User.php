@@ -42,6 +42,7 @@ class User extends Authenticatable
         'village',
         'address',
         'photo',
+        'performance',
     ];
 
     /**

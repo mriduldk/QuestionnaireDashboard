@@ -11,7 +11,7 @@
             <canvas id="districtChart"></canvas>
         </div>
 
-        
+
 
     </div>
 
@@ -128,6 +128,7 @@
         }
 
 
-        
+
     </script>
+
 </x-app-layout-admin>

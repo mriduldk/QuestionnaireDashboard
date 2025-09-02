@@ -35,15 +35,9 @@
         "type": "link"
     },
     {
-        "title": "Surveys With Users",
+        "title": "Surveys Answer Report",
         "icon": "list",
         "route": "surveys.answersWithUser",
-        "type": "link"
-    },
-    {
-        "title": "Survey Answer Report",
-        "icon": "list",
-        "route": "surveys.surveyAnswerReport",
         "type": "link"
     },
     {

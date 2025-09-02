@@ -268,15 +268,139 @@ class SurveyAnswerController extends Controller
         return view('admin.survey_answers.index_with_user', compact('surveys'));
     }
 
-    public function userListBySurvey($id)
+    public function userListBySurvey($id, Request $request)
     {
-        $users = User::where('is_delete', false)->where('survey_id', $id)->with('survey')->withCount('surveyAnswers')->get();
-        //$users = User::where('is_delete', false)->where('survey_id', $id)->with('survey')->withCount('surveyAnswers')->paginate(10);
+        //$users = User::where('is_delete', false)->where('survey_id', $id)->with('survey')->withCount('surveyAnswers')->get();
+        //$filter = $request->get('performance'); // zero, low, medium, high
 
-        return view('admin.survey_answers.users_by_survey', compact('users'));
+        $users = User::with(['districtInfo', 'survey'])
+            ->withCount('surveyAnswers')
+            ->where('survey_id', $id)
+            ->where('is_delete', false)
+            ->get();
+
+        // Calculate performance for each user
+        foreach ($users as $u) {
+            if ($u->survey_id == 17) {
+                $startDate = \Carbon\Carbon::create(2025, 8, 20);
+            } else if ($u->survey_id == 21) {
+                $startDate = \Carbon\Carbon::create(2025, 8, 26);
+            } else if ($u->survey_id == 22) {
+                $startDate = \Carbon\Carbon::create(2025, 9, 1);
+            } else {
+                $startDate = \Carbon\Carbon::create(2025, 9, 1);
+            }
+
+            $today = \Carbon\Carbon::today();
+            $totalDays = $startDate->diffInDays($today) + 1;
+            $expectedAnswers = $totalDays * 5;
+
+            $u->performance = $expectedAnswers > 0
+                ? round(($u->survey_answers_count / $expectedAnswers) * 100, 2)
+                : 0;
+        }
+
+        // Apply filter
+        $performanceFilter = $request->performance;
+        if ($performanceFilter) {
+            $users = $users->filter(function ($u) use ($performanceFilter) {
+                if ($performanceFilter === 'zero') {
+                    return $u->survey_answers_count == 0;
+                } elseif ($performanceFilter === 'low') {
+                    return $u->performance < 50;
+                } elseif ($performanceFilter === 'medium') {
+                    return $u->performance >= 50 && $u->performance < 80;
+                } elseif ($performanceFilter === 'high') {
+                    return $u->performance >= 80;
+                }
+                return true;
+            });
+        }
+
+
+
+        $surveyNames = Survey::pluck('title', 'id');
+
+        // Survey-wise trend
+        $trend = SurveyAnswer::selectRaw("survey_id, DATE(created_at) as date, COUNT(*) as count")
+            ->where('survey_id', $id)
+            ->groupBy('survey_id', 'date')
+            ->orderBy('survey_id')
+            ->orderBy('date')
+            ->get();
+
+        // Format survey-wise trend
+        $trendBySurvey = $trend->groupBy('survey_id')->map(function ($rows, $surveyId) use ($surveyNames) {
+            $surveyName = $surveyNames[$surveyId] ?? "Survey {$surveyId}";
+            return [
+                'name'   => $surveyName,
+                'labels' => $rows->pluck('date')->toArray(),
+                'data'   => $rows->pluck('count')->toArray(),
+            ];
+        });
+
+
+        // District counts per survey
+        /*$districtCounts = DB::table(DB::raw("(
+                SELECT survey_id, JSON_UNQUOTE(JSON_EXTRACT(form_specs, '$[0].components[0].answer')) as district
+                FROM survey_answers
+            ) as t"))
+            ->select('survey_id', 'district', DB::raw('COUNT(*) as total'))
+            ->where('survey_id', $id)
+            ->groupBy('survey_id', 'district')
+            ->get()
+            ->groupBy('survey_id');*/
+
+        $answers = DB::table('survey_answers')
+            ->where('survey_id', $id)
+            ->get();
+
+        $districtCounts = collect();
+
+        foreach ($answers as $ans) {
+            $data = json_decode($ans->form_specs, true);
+            if (!$data) continue;
+
+            foreach ($data as $section) {
+                foreach ($section['components'] as $comp) {
+                    if (($comp['id'] ?? null) === 'district') {
+                        $district = $comp['answer'] ?? null;
+                        if ($district) {
+                            $districtCounts[$district] = ($districtCounts[$district] ?? 0) + 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        $districtChartData = [
+            'name'   => $surveyNames[$id] ?? "Survey {$id}",
+            'labels' => $districtCounts->keys()->toArray(),   // District names
+            'data'   => $districtCounts->values()->toArray(), // Counts
+        ];
+
+        //dd($districtChartData);
+
+        // Format for chart
+        /*$districtChartData = $districtCounts->map(function ($rows, $surveyId) use ($surveyNames) {
+            return [
+                'name'   => $surveyNames[$surveyId] ?? "Survey {$surveyId}",
+                'labels' => $districtCounts->keys()->toArray(),
+                'data'   => $districtCounts->values()->toArray(),
+            ];
+        });*/
+
+        //dd($districtChartData);
+
+        return view('admin.survey_answers.users_by_survey', compact(
+            'id',
+            'users',
+            'trendBySurvey',
+            'districtChartData'
+        ));
     }
 
-    public function surveyAnswerReport() 
+    public function surveyAnswerReport()
     {
         $surveyNames = \App\Models\Survey::pluck('title', 'id');
 
@@ -297,10 +421,10 @@ class SurveyAnswerController extends Controller
             ];
         });
 
-        
+
         // District counts per survey
-        $districtCounts = DB::table(DB::raw("( 
-                SELECT survey_id, JSON_UNQUOTE(JSON_EXTRACT(form_specs, '$[0].components[0].answer')) as district 
+        $districtCounts = DB::table(DB::raw("(
+                SELECT survey_id, JSON_UNQUOTE(JSON_EXTRACT(form_specs, '$[0].components[0].answer')) as district
                 FROM survey_answers
             ) as t"))
             ->select('survey_id', 'district', DB::raw('COUNT(*) as total'))
@@ -317,7 +441,7 @@ class SurveyAnswerController extends Controller
             ];
         });
 
-        //dd($trendBySurvey);
+        //dd($districtChartData);
 
         return view('admin.survey_answers.survey-answer-report', compact(
             'trendBySurvey',
