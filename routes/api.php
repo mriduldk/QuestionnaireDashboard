@@ -43,3 +43,9 @@ Route::post('/update-profile-info', [AuthController::class, 'updateSubDivisionAn
 Route::post('/getByUserId', [AuthController::class, 'getByUserId']);
 Route::post('/updateUserLanguage', [AuthController::class, 'updateUserLanguage']);
 
+
+
+use App\Http\Controllers\UserDataController;
+
+Route::post('/user-data/store', [UserDataController::class, 'store']);
+Route::get('/user-data/count', [UserDataController::class, 'count']);
