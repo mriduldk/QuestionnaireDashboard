@@ -49,3 +49,4 @@ use App\Http\Controllers\UserDataController;
 
 Route::post('/user-data/store', [UserDataController::class, 'store']);
 Route::get('/user-data/count', [UserDataController::class, 'count']);
+Route::post('/user-data/store-message', [UserDataController::class, 'storeMessage']);

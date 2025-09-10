@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserData;
+use App\Models\UserMessage;
 use Illuminate\Http\Request;
 
 class UserDataController extends Controller
@@ -29,4 +30,24 @@ class UserDataController extends Controller
         $count = UserData::count();
         return response()->json(['count' => $count]);
     }
+
+    public function storeMessage(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string|max:1000',
+        ]);
+
+        $ip = $request->ip();
+
+        $entry = UserMessage::create([
+            'ipaddress' => $ip,
+            'message'   => $request->message,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => $entry
+        ]);
+    }
+
 }
