@@ -99,7 +99,7 @@
 
 
     {{-- Chart.js --}}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ctx = document.getElementById('trendChart').getContext('2d');
 
@@ -265,6 +265,6 @@
 
 
 
-    </script>
+    </script> --}}
 
 </x-app-layout-admin>
