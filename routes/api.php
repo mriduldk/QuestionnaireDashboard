@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\MultipleQuestionAnswerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SurveyApiController;
@@ -47,6 +48,10 @@ Route::post('/updateUserLanguage', [AuthController::class, 'updateUserLanguage']
 Route::get('/survey-answer/getOnlySurveyAnswerByUserId/{userId}', [SurveyAnswerController::class, 'getOnlySurveyAnswerByUserId']);
 Route::get('/survey-answer/getOnlyQuestionAnswerBySurveyAnswerId/{surveyAnswerId}', [SurveyAnswerController::class, 'getOnlyQuestionAnswerBySurveyAnswerId']);
 
+
+Route::post('/leave/apply-leave', [LeaveController::class, 'applyLeaveStore']);
+Route::get('/leave/view-leave/{id}', [LeaveController::class, 'viewLeave']);
+Route::post('/leave/my-leaves', [LeaveController::class, 'myLeaves']);
 
 
 
