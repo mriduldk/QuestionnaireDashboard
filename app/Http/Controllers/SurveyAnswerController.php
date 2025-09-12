@@ -219,15 +219,38 @@ class SurveyAnswerController extends Controller
         ->first(); // 👈 convert models to plain array first
 
         if ($surveyAnswer) {
+            $surveyAnswerArray = $surveyAnswer->toArray();
+            $surveyAnswerCamelCase = $this->toCamelCaseData2($surveyAnswerArray);
 
-            $surveyAnswerCamelCase = $this->toCamelCaseArray($surveyAnswer);
-
-            return ApiResponse::success(200, 'Survey answer updated', "surveyAnswerServer", $surveyAnswerCamelCase);
+            return ApiResponse::success(200, 'Survey answer fetched', "surveyAnswerServer", $surveyAnswerCamelCase);
 
         } else {
-            return ApiResponse::success(204, 'Survey answer updated', "surveyAnswerServer", null);
+            return ApiResponse::success(204, 'Survey answer fetched', "surveyAnswerServer", null);
         }
     }
+    private function toCamelCaseData2($data)
+    {
+        if (is_array($data)) {
+            $newArray = [];
+            foreach ($data as $key => $value) {
+                // keep "multiple_question_answers" as-is
+                if ($key === 'multiple_question_answers') {
+                    $newArray[$key] = $value;
+                    continue;
+                }
+
+                $camelKey = is_string($key)
+                    ? lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))))
+                    : $key;
+
+                $newArray[$camelKey] = $this->toCamelCaseData2($value);
+            }
+            return $newArray;
+        }
+
+        return $data;
+    }
+
 
     // END
 
