@@ -43,6 +43,11 @@ Route::post('/update-profile-info', [AuthController::class, 'updateSubDivisionAn
 Route::post('/getByUserId', [AuthController::class, 'getByUserId']);
 Route::post('/updateUserLanguage', [AuthController::class, 'updateUserLanguage']);
 
+//New
+Route::get('/survey-answer/getOnlySurveyAnswerByUserId/{userId}', [SurveyAnswerController::class, 'getOnlySurveyAnswerByUserId']);
+
+
+
 
 
 use App\Http\Controllers\UserDataController;

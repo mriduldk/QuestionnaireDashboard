@@ -191,6 +191,29 @@ class SurveyAnswerController extends Controller
     }
 
 
+    // New API Start -- 12-09-2025
+
+    public function getOnlySurveyAnswerByUserId($userId)
+    {
+        //$surveyAnswer = SurveyAnswer::with('survey', 'questionAnswers', 'multipleQuestionAnswers')->where('user_id', $userId)->get();
+
+        $surveyAnswer = SurveyAnswer::with('survey')
+        ->where('user_id', $userId)
+        ->get()
+        ->toArray(); // 👈 convert models to plain array first
+
+        if ($surveyAnswer) {
+
+            $surveyAnswerCamelCase = $this->toCamelCaseArray($surveyAnswer);
+
+            return ApiResponse::success(200, 'Survey answer updated', "surveyAnswersServer", $surveyAnswerCamelCase);
+
+        } else {
+            return ApiResponse::success(204, 'Survey answer updated', "surveyAnswersServer", null);
+        }
+    }
+
+    // END
 
 
 
