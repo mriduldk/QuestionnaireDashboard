@@ -212,6 +212,22 @@ class SurveyAnswerController extends Controller
             return ApiResponse::success(204, 'Survey answer updated', "surveyAnswersServer", null);
         }
     }
+    public function getOnlyQuestionAnswerBySurveyAnswerId($surveyAnswerId)
+    {
+        $surveyAnswer = SurveyAnswer::with('survey', 'questionAnswers', 'multipleQuestionAnswers')
+        ->where('survey_answer_id', $surveyAnswerId)
+        ->first(); // 👈 convert models to plain array first
+
+        if ($surveyAnswer) {
+
+            $surveyAnswerCamelCase = $this->toCamelCaseArray($surveyAnswer);
+
+            return ApiResponse::success(200, 'Survey answer updated', "surveyAnswerServer", $surveyAnswerCamelCase);
+
+        } else {
+            return ApiResponse::success(204, 'Survey answer updated', "surveyAnswerServer", null);
+        }
+    }
 
     // END
 

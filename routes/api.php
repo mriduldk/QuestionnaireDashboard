@@ -45,6 +45,7 @@ Route::post('/updateUserLanguage', [AuthController::class, 'updateUserLanguage']
 
 //New
 Route::get('/survey-answer/getOnlySurveyAnswerByUserId/{userId}', [SurveyAnswerController::class, 'getOnlySurveyAnswerByUserId']);
+Route::get('/survey-answer/getOnlyQuestionAnswerBySurveyAnswerId/{surveyAnswerId}', [SurveyAnswerController::class, 'getOnlyQuestionAnswerBySurveyAnswerId']);
 
 
 
