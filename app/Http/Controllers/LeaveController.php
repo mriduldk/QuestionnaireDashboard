@@ -54,7 +54,7 @@ class LeaveController extends Controller
             'submitted_by'         => $request->submitted_by,
             'submitted_on'         => now(),
             'is_deleted'           => false,
-            'is_approved'          => false,
+            'is_approved'          => 0,
         ]);
 
         return ApiResponse::success(200, 'Leave Applied Successfully', "leave", $leave);
