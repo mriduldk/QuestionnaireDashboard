@@ -23,6 +23,12 @@
         "route": "users.index",
         "type": "link"
     },
+    {
+        "title": "User Leaves",
+        "icon": "list",
+        "route": "leaves.index",
+        "type": "link"
+    },
 
     {
         "title": "Surveys Answers",

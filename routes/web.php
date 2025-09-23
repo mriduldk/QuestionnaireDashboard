@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\SubDivisionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserLocationController;
 use App\Http\Controllers\Admin\VcdcController;
+use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\SurveyAnswerController;
 use App\Http\Controllers\VisitorController;
 use Illuminate\Support\Facades\Route;
@@ -60,6 +61,12 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::resource('blocks', BlockController::class);
     Route::resource('vcdcs', VcdcController::class);
     Route::resource('survey-sections', SurveySectionController::class);
+    Route::resource('leaves', LeaveController::class);
+
+    // Custom approve/reject actions
+    Route::post('/leaves/{leave}/approve', [LeaveController::class, 'approve'])->name('leaves.approve');
+    Route::post('/leaves/{leave}/reject', [LeaveController::class, 'reject'])->name('leaves.reject');
+
 
     Route::get('/api/sub-divisions/{district}', [LocationController::class, 'getSubDivisions']);
     Route::get('/api/blocks/{subDivision}', [LocationController::class, 'getBlocks']);

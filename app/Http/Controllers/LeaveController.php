@@ -103,4 +103,62 @@ class LeaveController extends Controller
 
     }
 
+
+    /**
+     * Admin Leave Management
+     */
+    public function index(Request $request)
+    {
+        $query = Leave::query();
+
+        // Filters
+        if ($request->leave_type) {
+            $query->where('leave_type', $request->leave_type);
+        }
+
+        if ($request->is_approved !== null && $request->is_approved !== '') {
+            $query->where('is_approved', $request->is_approved);
+        }
+
+        if ($request->submitted_by) {
+            $query->where('submitted_by', $request->submitted_by);
+        }
+
+        $leaves = $query->with(['submitter', 'approver'])->get();
+
+        return view('admin.leaves.index', compact('leaves'));
+    }
+
+    public function show($id)
+    {
+        $leave = Leave::find($id);
+        return view('admin.leaves.show', compact('leave'));
+    }
+    public function approve(Leave $leave, Request $request)
+    {
+        $leave->update([
+            'is_approved' => 1,
+            'approved_by' => auth()->id(),
+            'approved_on' => now(),
+            'remarks'     => $request->remarks,
+        ]);
+
+        return redirect()->route('leaves.show', $leave)->with('success', 'Leave approved successfully.');
+    }
+
+    public function reject(Leave $leave, Request $request)
+    {
+        $leave->update([
+            'is_approved' => 2,
+            'approved_by' => auth()->id(),
+            'approved_on' => now(),
+            'remarks'     => $request->remarks,
+        ]);
+
+        return redirect()->route('leaves.show', $leave)->with('error', 'Leave rejected.');
+    }
+
+
+
+
 }
