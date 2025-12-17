@@ -74,16 +74,16 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" hidden>
                     <label>Sub-Division</label>
-                    <select name="sub_division_id" id="sub_division_id" class="form-control" required>
+                    <select name="sub_division_id" id="sub_division_id" class="form-control" >
                         <option value="">-- Select Sub-Division --</option>
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" hidden>
                     <label>Block</label>
-                    <select name="block_id" id="block_id" class="form-control" required>
+                    <select name="block_id" id="block_id" class="form-control" >
                         <option value="">-- Select Block --</option>
                     </select>
                 </div>
@@ -120,15 +120,25 @@
                 console.log("districtId: " + districtId)
 
                 if (districtId) {
-                    $.get('/admin/api/sub-divisions/' + districtId, function (data) {
-                        let options = '<option value="">-- Select Sub-Division --</option>';
+
+                    $.get('/admin/api/vcdcs/' + districtId, function (data) {
+                        let options = '<option value="">-- Select VCDC --</option>';
                         $.each(data, function (id, name) {
                             options += `<option value="${id}">${name}</option>`;
                         });
-                        $('select[name="sub_division_id"]').html(options);
-                        $('select[name="block_id"]').html('<option value="">-- Select Block --</option>');
-                        $('select[name="vcdc_id"]').html('<option value="">-- Select VCDC --</option>');
+                        $('select[name="vcdc_id"]').html(options);
                     });
+
+
+                    // $.get('/admin/api/sub-divisions/' + districtId, function (data) {
+                    //     let options = '<option value="">-- Select Sub-Division --</option>';
+                    //     $.each(data, function (id, name) {
+                    //         options += `<option value="${id}">${name}</option>`;
+                    //     });
+                    //     $('select[name="sub_division_id"]').html(options);
+                    //     $('select[name="block_id"]').html('<option value="">-- Select Block --</option>');
+                    //     $('select[name="vcdc_id"]').html('<option value="">-- Select VCDC --</option>');
+                    // });
                 }
             });
 

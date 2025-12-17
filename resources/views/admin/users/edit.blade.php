@@ -50,7 +50,7 @@
                     <label>Photo</label>
                     <input type="file" name="photo" class="form-control">
                     @if($user->photo)
-                        <img src="{{ asset('storage/' . $user->photo) }}" alt="User Photo" height="80">
+                        <img src="{{ asset($user->photo) }}" height="50">
                     @endif
                 </div>
 
@@ -74,9 +74,9 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" hidden>
                     <label>Sub-Division</label>
-                    <select name="sub_division_id" id="sub_division_id" class="form-control" required>
+                    <select name="sub_division_id" id="sub_division_id" class="form-control" >
                         <option value="">-- Select Sub-Division --</option>
                         @foreach($subDivisions as $id => $name)
                             <option value="{{ $id }}" {{ $user->sub_division == $id ? 'selected' : '' }}>{{ $name }}</option>
@@ -84,9 +84,9 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" hidden>
                     <label>Block</label>
-                    <select name="block_id" id="block_id" class="form-control" required>
+                    <select name="block_id" id="block_id" class="form-control" >
                         <option value="">-- Select Block --</option>
                         @foreach($blocks as $id => $name)
                             <option value="{{ $id }}" {{ $user->block == $id ? 'selected' : '' }}>{{ $name }}</option>
@@ -122,15 +122,23 @@
             $('select[name="district_id"]').on('change', function () {
                 let districtId = $(this).val();
                 if (districtId) {
-                    $.get('/admin/api/sub-divisions/' + districtId, function (data) {
-                        let options = '<option value="">-- Select Sub-Division --</option>';
+                    $.get('/admin/api/vcdcs/' + districtId, function (data) {
+                        let options = '<option value="">-- Select VCDC --</option>';
                         $.each(data, function (id, name) {
                             options += `<option value="${id}">${name}</option>`;
                         });
-                        $('select[name="sub_division_id"]').html(options).val('');
-                        $('select[name="block_id"]').html('<option value="">-- Select Block --</option>');
-                        $('select[name="vcdc_id"]').html('<option value="">-- Select VCDC --</option>');
+                        $('select[name="vcdc_id"]').html(options).val('');
                     });
+
+                    // $.get('/admin/api/sub-divisions/' + districtId, function (data) {
+                    //     let options = '<option value="">-- Select Sub-Division --</option>';
+                    //     $.each(data, function (id, name) {
+                    //         options += `<option value="${id}">${name}</option>`;
+                    //     });
+                    //     $('select[name="sub_division_id"]').html(options).val('');
+                    //     $('select[name="block_id"]').html('<option value="">-- Select Block --</option>');
+                    //     $('select[name="vcdc_id"]').html('<option value="">-- Select VCDC --</option>');
+                    // });
                 }
             });
 

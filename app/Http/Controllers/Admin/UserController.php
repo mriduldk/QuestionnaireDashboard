@@ -50,8 +50,8 @@ class UserController extends Controller
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
 
             'district_id' => 'required|string|max:255',
-            'sub_division_id' => 'required|string|max:255',
-            'block_id' => 'required|string|max:255',
+            //'sub_division_id' => 'required|string|max:255',
+            //'block_id' => 'required|string|max:255',
             'vcdc_id' => 'required|string|max:255',
 
             'is_active' => 'nullable|boolean',
@@ -82,8 +82,8 @@ class UserController extends Controller
             'photo' => $photoPath,
 
             'district' => $request->district_id,
-            'sub_division' => $request->sub_division_id,
-            'block' => $request->block_id,
+            //'sub_division' => $request->sub_division_id,
+            //'block' => $request->block_id,
             'vcdc' => $request->vcdc_id,
         ]);
 
@@ -139,8 +139,8 @@ class UserController extends Controller
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
 
             'district_id' => 'required|string|max:255',
-            'sub_division_id' => 'required|string|max:255',
-            'block_id' => 'required|string|max:255',
+            //'sub_division_id' => 'required|string|max:255',
+            //'block_id' => 'required|string|max:255',
             'vcdc_id' => 'required|string|max:255',
         ]);
 
@@ -164,8 +164,8 @@ class UserController extends Controller
         $user->village = $request->village;
 
         $user->district = $request->district_id;
-        $user->sub_division = $request->sub_division_id;
-        $user->block = $request->block_id;
+        //$user->sub_division = $request->sub_division_id;
+        //$user->block = $request->block_id;
         $user->vcdc = $request->vcdc_id;
 
         /*if ($request->password) {

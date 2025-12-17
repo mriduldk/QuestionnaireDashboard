@@ -20,9 +20,9 @@ class LocationController extends Controller
         return Block::where('sub_division_id', $subDivisionId)->pluck('name', 'id');
     }
 
-    public function getVcdcs($blockId)
+    public function getVcdcs($districtId)
     {
-        return Vcdc::pluck('name', 'id');
+        return Vcdc::where('district_id', $districtId)->pluck('name', 'id');
     }
 }
 
