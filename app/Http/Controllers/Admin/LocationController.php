@@ -22,7 +22,7 @@ class LocationController extends Controller
 
     public function getVcdcs($blockId)
     {
-        return Vcdc::where('block_id', $blockId)->pluck('name', 'id');
+        return Vcdc::pluck('name', 'id');
     }
 }
 

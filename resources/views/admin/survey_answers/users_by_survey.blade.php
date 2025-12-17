@@ -4,15 +4,15 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <div class="bg-white p-4 shadow rounded mb-6">
+    <div class="bg-white p-4 shadow rounded mb-6" hidden>
         <canvas id="trendChart" height="100"></canvas>
     </div>
 
-    <div class="bg-white p-4 shadow rounded mb-6">
+    <div class="bg-white p-4 shadow rounded mb-6" hidden>
         <canvas id="districtChart"></canvas>
     </div>
 
-    <div class="bg-white p-4 shadow rounded mb-6">
+    <div class="bg-white p-4 shadow rounded mb-6" hidden>
         <canvas id="districtTrendChart"></canvas>
     </div>
 

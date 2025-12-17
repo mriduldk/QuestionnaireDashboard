@@ -114,7 +114,7 @@ class UserController extends Controller
         $districts = District::pluck('name', 'id');
         $subDivisions = SubDivision::where('district_id', $user->district_id)->pluck('name', 'id');
         $blocks = Block::where('sub_division_id', $user->sub_division_id)->pluck('name', 'id');
-        $vcdcs = Vcdc::where('block_id', $user->block_id)->pluck('name', 'id');
+        $vcdcs = Vcdc::pluck('name', 'id');
 
         return view('admin.users.edit', compact('user', 'surveys', 'districts', 'subDivisions', 'blocks', 'vcdcs'));
 
