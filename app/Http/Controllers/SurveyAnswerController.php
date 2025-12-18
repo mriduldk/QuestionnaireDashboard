@@ -414,96 +414,99 @@ class SurveyAnswerController extends Controller
 
 
 
-        // $surveyNames = Survey::pluck('title', 'id');
+        $surveyNames = Survey::pluck('title', 'id');
 
         // // Survey-wise trend
-        // $trend = SurveyAnswer::selectRaw("survey_id, DATE(created_at) as date, COUNT(*) as count")
-        //     ->where('survey_id', $id)
-        //     ->groupBy('survey_id', 'date')
-        //     ->orderBy('survey_id')
-        //     ->orderBy('date')
-        //     ->get();
+        $trend = SurveyAnswer::selectRaw("survey_id, DATE(created_at) as date, COUNT(*) as count")
+            ->where('survey_id', $id)
+            ->groupBy('survey_id', 'date')
+            ->orderBy('survey_id')
+            ->orderBy('date')
+            ->get();
 
         // // Format survey-wise trend
-        // $trendBySurvey = $trend->groupBy('survey_id')->map(function ($rows, $surveyId) use ($surveyNames) {
-        //     $surveyName = $surveyNames[$surveyId] ?? "Survey {$surveyId}";
-        //     return [
-        //         'name'   => $surveyName,
-        //         'labels' => $rows->pluck('date')->toArray(),
-        //         'data'   => $rows->pluck('count')->toArray(),
-        //     ];
-        // });
+        $trendBySurvey = $trend->groupBy('survey_id')->map(function ($rows, $surveyId) use ($surveyNames) {
+            $surveyName = $surveyNames[$surveyId] ?? "Survey {$surveyId}";
+            return [
+                'name'   => $surveyName,
+                'labels' => $rows->pluck('date')->toArray(),
+                'data'   => $rows->pluck('count')->toArray(),
+            ];
+        });
 
 
         // District counts per survey
-        // $answers = DB::table('survey_answers')
-        //     ->where('survey_id', $id)
-        //     ->get();
+        $answers = DB::table('survey_answers')
+            ->where('survey_id', $id)
+            ->get();
 
-        // $districtCounts = collect();
-        // foreach ($answers as $ans) {
-        //     $data = json_decode($ans->form_specs, true);
-        //     if (!$data) continue;
+        $districtCounts = collect();
+        foreach ($answers as $ans) {
+            $data = json_decode($ans->form_specs, true);
+            if (!$data) continue;
 
-        //     foreach ($data as $section) {
-        //         foreach ($section['components'] as $comp) {
-        //             if (($comp['id'] ?? null) === 'district') {
-        //                 $district = $comp['answer'] ?? null;
-        //                 if ($district) {
-        //                     $districtCounts[$district] = ($districtCounts[$district] ?? 0) + 1;
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        // $districtChartData = [
-        //     'name'   => $surveyNames[$id] ?? "Survey {$id}",
-        //     'labels' => $districtCounts->keys()->toArray(),   // District names
-        //     'data'   => $districtCounts->values()->toArray(), // Counts
-        // ];
+            foreach ($data as $section) {
+                foreach ($section['components'] as $comp) {
+                    if (($comp['id'] ?? null) === 'district') {
+                        $district = $comp['answer'] ?? null;
+                        if ($district) {
+                            $districtCounts[$district] = ($districtCounts[$district] ?? 0) + 1;
+                        }
+                    }
+                }
+            }
+        }
+        $districtChartData = [
+            'name'   => $surveyNames[$id] ?? "Survey {$id}",
+            'labels' => $districtCounts->keys()->toArray(),   // District names
+            'data'   => $districtCounts->values()->toArray(), // Counts
+        ];
 
 
-        // $answers2 = DB::table('survey_answers')
-        //     ->where('survey_id', $id)
-        //     ->select('form_specs', DB::raw('DATE(created_at) as date'))
-        //     ->get();
+        $answers2 = DB::table('survey_answers')
+            ->where('survey_id', $id)
+            ->select('form_specs', DB::raw('DATE(created_at) as date'))
+            ->get();
 
-        // $districtTrend = [];
+        $districtTrend = [];
 
-        // foreach ($answers2 as $ans) {
-        //     $data = json_decode($ans->form_specs, true);
-        //     if (!$data) continue;
+        foreach ($answers2 as $ans) {
+            $data = json_decode($ans->form_specs, true);
+            if (!$data) continue;
 
-        //     $district = null;
-        //     foreach ($data as $section) {
-        //         foreach ($section['components'] as $comp) {
-        //             if (($comp['id'] ?? null) === 'district') {
-        //                 $district = $comp['answer'] ?? null;
-        //                 break 2; // stop both loops once found
-        //             }
-        //         }
-        //     }
+            $district = null;
+            foreach ($data as $section) {
+                foreach ($section['components'] as $comp) {
+                    if (($comp['id'] ?? null) === 'district') {
+                        $district = $comp['answer'] ?? null;
+                        break 2; // stop both loops once found
+                    }
+                }
+            }
 
-        //     if ($district) {
-        //         $districtTrend[$district][$ans->date] = ($districtTrend[$district][$ans->date] ?? 0) + 1;
-        //     }
-        // }
+            if ($district) {
+                $districtTrend[$district][$ans->date] = ($districtTrend[$district][$ans->date] ?? 0) + 1;
+            }
+        }
 
         // // Format for chart (district → {name, labels, data})
-        // $districtTrendChart = [];
-        // foreach ($districtTrend as $district => $rows) {
-        //     ksort($rows); // sort by date
-        //     $districtTrendChart[] = [
-        //         'name'   => $district,
-        //         'labels' => array_keys($rows),
-        //         'data'   => array_values($rows),
-        //     ];
-        // }
+        $districtTrendChart = [];
+        foreach ($districtTrend as $district => $rows) {
+            ksort($rows); // sort by date
+            $districtTrendChart[] = [
+                'name'   => $district,
+                'labels' => array_keys($rows),
+                'data'   => array_values($rows),
+            ];
+        }
 
         return view('admin.survey_answers.users_by_survey', compact(
             'id',
             'users',
-            'districts'
+            'districts',
+            'districtTrendChart',
+            'districtChartData',
+            'trendBySurvey',
         ));
     }
 

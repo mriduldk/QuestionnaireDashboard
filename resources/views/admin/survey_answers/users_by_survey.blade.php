@@ -4,15 +4,15 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <div class="bg-white p-4 shadow rounded mb-6" hidden>
+    <div class="bg-white p-4 shadow rounded mb-6">
         <canvas id="trendChart" height="100"></canvas>
     </div>
 
-    <div class="bg-white p-4 shadow rounded mb-6" hidden>
+    <div class="bg-white p-4 shadow rounded mb-6">
         <canvas id="districtChart"></canvas>
     </div>
 
-    <div class="bg-white p-4 shadow rounded mb-6" hidden>
+    <div class="bg-white p-4 shadow rounded mb-6">
         <canvas id="districtTrendChart"></canvas>
     </div>
 
@@ -99,7 +99,7 @@
 
 
     {{-- Chart.js --}}
-    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ctx = document.getElementById('trendChart').getContext('2d');
 
@@ -265,6 +265,6 @@
 
 
 
-    </script> --}}
+    </script> 
 
 </x-app-layout-admin>
