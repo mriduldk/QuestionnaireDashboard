@@ -85,6 +85,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::get('survey-reports', [SurveyAnswerController::class, 'surveyAnswerReport'])->name('surveys.surveyAnswerReport');
 
     Route::get('section-wise-report/{id}', [SurveyAnswerController::class, 'sectionWiseReport'])->name('survey.sectionReport');
+    Route::get('question-wise-report/{id}', [SurveyAnswerController::class, 'questionWiseReport'])->name('survey.questionReport');
 
 
     Route::get('users/{user_id}', [UserController::class, 'show'])->name('admin.users.show');

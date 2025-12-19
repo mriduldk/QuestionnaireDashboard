@@ -1,7 +1,7 @@
 <x-app-layout-admin>
     <h2 class="mb-3">Survey: {{ $survey->title }}</h2>
 
-    <form method="GET" class="row g-3 mb-4">
+    <form method="GET" class="row g-3 mb-4" hidden>
         <div class="col-md-3">
             <select name="district" class="form-control">
                 <option value="">-- Select District --</option>
@@ -19,11 +19,12 @@
 
     <div class="card">
         <div class="card-body">
-
-            <table class="table table-bordered table-sm" id="kt_datatables">
+     
+            <table class="table table-bordered table-sm" id="ktsdatatables">
             @php
+                //dd($answers);
                 // Collect all unique header labels across all answers
-                $allHeaders = collect($answers)
+                $allHeaders = collect($answers->items())
                     ->flatMap(fn($ans) => collect($ans->form_specs ?? [])
                         ->flatMap(fn($section) => $section['components'] ?? [])
                         ->where('header', true)
@@ -76,46 +77,36 @@
             </tbody>
         </table>
 
-
-{{--
-            <table class="table table-bordered table-sm" id="kt_datatables">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @forelse($answers as $ans)
-                    <tr>
-                        <td>
-                            @php
-                                $headers = collect($ans->form_specs)
-                                    ->flatMap(fn($section) => $section['components'] ?? [])
-                                    ->where('header', true)
-                                    ->mapWithKeys(fn($c) => [
-                                        $c['label'] ?? 'Unknown' => $c['answer'] ?? null
-                                    ])
-                                    ->toArray();
-                            @endphp
-
-                            @foreach($headers as $label => $answer)
-                                <strong>{{ $label }}:</strong> {{ $answer ?? '-' }} <br>
-                            @endforeach
-                        </td>
-                        <td>
-                            <a href="{{ route('survey-answers.show', $ans->survey_answer_id) }}" class="btn btn-sm btn-info">
-                                View
-                            </a>
-                        </td>
-
-                    </tr>
-                @empty
-                    <tr><td colspan="8" class="text-center">No answers found.</td></tr>
-                @endforelse
-                </tbody>
-            </table> --}}
+        <div class="mt-3">
+            {{ $answers->links('pagination::bootstrap-5') }}
+        </div>
 
         </div>
     </div>
+
+    <script>
+        // disable datatables buttons
+        
+
+        $(document).ready(function() {
+            $('#ktsdatatables').DataTable({
+                responsive: true,
+                pagingType: 'full_numbers',
+                order: [],
+                dom: '<"float-left"l><"float-right"f>rt<"row"<"col-sm-4"><"col-sm-4"><"col-sm-4">>',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5'
+                ],
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    ['10 rows', '25 rows', '50 rows', '100 rows', 'Show all']
+                ]
+            });
+        });
+
+    </script>
+
 </x-app-layout-admin>

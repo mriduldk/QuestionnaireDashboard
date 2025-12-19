@@ -45,6 +45,7 @@
                         <th>Text</th>
                         <th>Type</th>
                         <th>Required</th>
+                        <th>Report</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -56,10 +57,13 @@
                             <td>{{ $q->type }}</td>
                             <td>{{ $q->is_required ? 'Yes' : 'No' }}</td>
                             <td>
-                                <a href="{{ route('questions.edit', $q) }}" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="{{ route('survey.questionReport', $q->id) }}" class="btn btn-sm btn-info" target="_blank">Report</a>
+                            </td>
+                            <td>
+                                <a href="{{ route('questions.edit', $q) }}" class="btn btn-sm btn-warning btn-block mb-1">Edit</a>
                                 <form action="{{ route('questions.destroy', $q) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this question?')">
                                     @csrf @method('DELETE')
-                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                    <button class="btn btn-sm btn-danger btn-block">Delete</button>
                                 </form>
                             </td>
                         </tr>

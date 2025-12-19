@@ -290,7 +290,7 @@ class SurveyAnswerController extends Controller
     {
         $districts = District::orderBy('id', 'asc')->pluck('name', 'id');
         //$query = SurveyAnswer::where('survey_id', $survey->id);
-        $answers = SurveyAnswer::where('survey_id', $survey->id)->get();
+        $answers = SurveyAnswer::where('survey_id', $survey->id)->paginate(10);
 
         if ($request->filled('district')) {
 
@@ -610,6 +610,42 @@ class SurveyAnswerController extends Controller
         return view('admin.survey_answers.section_wise_report', compact('survey', 'sections', 'chartData'));
     }
 
+    public function questionWiseReport($questionId)
+    {
+        
+        // Fetch question with section & survey
+        $question = \App\Models\Question::with(['section', 'survey'])
+            //->whereNull('parent_id')
+            ->findOrFail($questionId);
+
+        //dd($question);
+
+        // Aggregate answers for this question only
+        $counts = \App\Models\QuestionAnswer::where('question_id', $questionId)
+            ->select(
+                'answer_text',
+                \DB::raw('COUNT(*) as total')
+            )
+            ->groupBy('answer_text')
+            ->get();
+
+        // Prepare chart data
+        $chartData = [
+            'question_id'   => $question->id,
+            'question_text' => $question->question_text,
+            'section_id'    => $question->section->id ?? null,
+            'section_title' => $question->section->title ?? null,
+            'survey_id'     => $question->survey->id ?? null,
+            'survey_title'  => $question->survey->title ?? null,
+            'labels'        => $counts->pluck('answer_text')->values(),
+            'data'          => $counts->pluck('total')->values(),
+        ];
+
+        return view(
+            'admin.survey_answers.question_wise_report',
+            compact('question', 'chartData')
+        );
+    }
 
 
 }

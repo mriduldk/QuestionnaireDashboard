@@ -33,6 +33,11 @@ class Question extends Model
     {
         return $this->belongsTo(Question::class, 'parent_id');
     }
+    public function survey()
+    {
+        return $this->belongsTo(\App\Models\Survey::class)
+            ->whereNull('deleted_at');
+    }
 
 
 }
