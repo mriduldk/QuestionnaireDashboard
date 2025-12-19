@@ -618,16 +618,32 @@ class SurveyAnswerController extends Controller
             //->whereNull('parent_id')
             ->findOrFail($questionId);
 
-        //dd($question);
 
-        // Aggregate answers for this question only
-        $counts = \App\Models\QuestionAnswer::where('question_id', $questionId)
-            ->select(
-                'answer_text',
-                \DB::raw('COUNT(*) as total')
-            )
-            ->groupBy('answer_text')
-            ->get();
+        if($question->is_multiple == 1)
+        {
+
+            $counts = \App\Models\MultipleQuestionAnswer::where('question_id', $questionId)
+                ->where('is_answered', 1)
+                ->select(
+                    'answer_text',
+                    \DB::raw('COUNT(*) as total')
+                )
+                ->groupBy('answer_text')
+                ->get();
+        }
+        else
+        {
+            // Aggregate answers for this question only
+            $counts = \App\Models\QuestionAnswer::where('question_id', $questionId)
+                ->where('is_answered', 1)
+                ->select(
+                    'answer_text',
+                    \DB::raw('COUNT(*) as total')
+                )
+                ->groupBy('answer_text')
+                ->get();
+
+        }
 
         // Prepare chart data
         $chartData = [

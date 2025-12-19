@@ -25,49 +25,63 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-            const chartData = @json($chartData);
+    const chartData = @json($chartData);
 
-            const ctx = document
-                .getElementById('questionChart')
-                .getContext('2d');
+    const ctx = document
+        .getElementById('questionChart')
+        .getContext('2d');
 
-            new Chart(ctx, {
-                type: 'bar',   // can change to pie/doughnut
-                data: {
-                    labels: chartData.labels,
-                    datasets: [{
-                        label: chartData.question_text,
-                        data: chartData.data,
-                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }]
+    // 🔥 REGISTER PLUGIN
+    Chart.register(ChartDataLabels);
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: chartData.labels,
+            datasets: [{
+                label: chartData.question_text,
+                data: chartData.data,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: chartData.question_text,
+                    font: { size: 18 }
                 },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: chartData.question_text,
-                            font: { size: 18 }
-                        },
-                        legend: {
-                            display: false
-                        }
+                datalabels: {
+                    anchor: 'end',
+                    align: 'top',
+                    color: '#000',
+                    font: {
+                        weight: 'bold',
+                        size: 12
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { precision: 0 }
-                        }
+                    formatter: (value) => value
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
                     }
                 }
-            });
-        });
-    </script>
+            }
+        }
+    });
+});
+</script>
 
 </x-app-layout-admin>
